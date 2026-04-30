@@ -1,0 +1,30 @@
+.venv/
+__pycache__/
+*.pyc
+
+# Large/raw data
+*.csv
+*.parquet
+*.tgz
+*.tar.gz
+*.zip
+
+# Local outputs
+project2026/outputs/*
+!project2026/outputs/.gitkeep
+
+# Spark/Hadoop local artifacts
+.spark-warehouse/
+metastore_db/
+derby.log
+*.log
+
+# Editor files
+.vscode/
+
+# Credentials / private configs
+*.ovpn
+config
+.kube/
+*.key
+*.pem
