@@ -1,6 +1,6 @@
-#Project 2026 Big Data
+# Project 2026 Big Data
 
-##Environment
+## Environment
 
 - WSL2 Ubuntu
 - Java 11
@@ -10,7 +10,7 @@
 - OpenVPN connection to vdcloud
 - Kubernetes namespace: `ipelekanos-priv`
 
-##Info
+## Info
 
 ID: `2121261`
 
@@ -21,3 +21,15 @@ parameters:
 - `d = 26`
 - `days_2024 = [26, 27, 28]`
 - `K = 20`
+
+## Layout
+
+```text
+project2026/
+  jobs/
+  lib/
+  docs/
+  outputs/
+README.md
+RUNBOOK.md
+requirements.txt
