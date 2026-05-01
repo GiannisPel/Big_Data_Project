@@ -32,4 +32,3 @@ project2026/
   outputs/
 README.md
 RUNBOOK.md
-requirements.txt
