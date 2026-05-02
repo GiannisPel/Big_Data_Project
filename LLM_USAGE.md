@@ -2,13 +2,11 @@
 |---|---|---|---|
 | Ρύθμιση WSL, Docker, Spark, Hadoop, kubectl | ChatGPT | Καθοδήγηση βημάτων, εξήγηση σφαλμάτων, debugging | Εκτέλεσα ο ίδιος όλες τις εντολές, έλεγξα τα outputs και διόρθωσα το περιβάλλον σύμφωνα με τους οδηγούς του μαθήματος |
 | Ρύθμιση OpenVPN, kubeconfig, HDFS και Kubernetes | - | - | Σύνδεσα μόνος μου το VPN, αντέγραψα το kubeconfig, έλεγξα `kubectl`, DNS και HDFS πρόσβαση |
-| `spark-defaults.conf` και remote smoke test | ChatGPT | Βοήθεια στον εντοπισμό προβλημάτων με `spark.kubernetes.file.upload.path`, HDFS permissions και `HADOOP_USER_NAME` | Έτρεξα ο ίδιος το remote Spark job, checkαρα driver pod, executor pod, HDFS output και επιβεβαίωσα το `_SUCCESS` και το `part-00000` |
+| `spark-defaults.conf` και remote smoke test | ChatGPT | Βοήθεια στον εντοπισμό προβλημάτων με `spark.kubernetes.file.upload.path` και HDFS permissions | Έτρεξα ο ίδιος το remote Spark job, checkαρα driver pod, executor pod, HDFS output και επιβεβαίωσα το `_SUCCESS` και το `part-00000` |
 | `README.md` | - | - | Επεξεργάστηκα τα δικά μου στοιχεία, project, ΑΜ, namespace και HDFS paths |
 | `RUNBOOK.md` | - | - | Ενημερώνεται από εμένα με τις πραγματικές εντολές, application IDs, HDFS paths και αποτελέσματα κάθε job |
-| `project2026/lib/personalization.py` | - | - | Επαλήθευσα τους υπολογισμούς για ΑΜ 2121261 και θα χρησιμοποιήσω τις παραμέτρους στα φίλτρα των queries |
-| `project2026/lib/schemas.py` | - | - | - |
-| `project2026/jobs/prepare_data.py` | - | - | - |
-| `project2026/jobs/eda.py` | - | - |
+| `project2026/jobs/common.py` | ChatGPT | Αρχικός σκελετός helper module, HDFS helpers, metrics helpers | Έλεγξα τη χρήση του στο remote Spark submit, διόρθωσα τη ροή με `--py-files` και το χρησιμοποιώ ως κοινό module για τα jobs |
+| `project2026/jobs/prepare_parquet.py` | ChatGPT | Αρχική υλοποίηση για normalization και debugging | Έτρεξα το job στην απομακρυσμένη υποδομή, επιβεβαίωσα HDFS Parquet outputs, partitioning, metrics JSON, Spark application ID |
 | Q1 - Demand analysis | - | - |
 | Q2 - Speed/congestion analysis | - | - |
 | Q3 - Revenue/zones analysis | - | - |

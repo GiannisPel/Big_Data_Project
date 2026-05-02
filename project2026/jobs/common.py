@@ -78,3 +78,117 @@ class Timer:
     def elapsed_seconds(self) -> float:
         end = self.end if self.end is not None else time.perf_counter()
         return end - self.start
+
+from pyspark.sql.types import (
+    StructType, StructField,
+    StringType, IntegerType, DoubleType
+)
+
+
+def schema_2015_raw() -> StructType:
+    return StructType([
+        StructField("VendorID", StringType(), True),
+        StructField("tpep_pickup_datetime", StringType(), True),
+        StructField("tpep_dropoff_datetime", StringType(), True),
+        StructField("passenger_count", StringType(), True),
+        StructField("trip_distance", StringType(), True),
+        StructField("pickup_longitude", StringType(), True),
+        StructField("pickup_latitude", StringType(), True),
+        StructField("RateCodeID", StringType(), True),
+        StructField("store_and_fwd_flag", StringType(), True),
+        StructField("dropoff_longitude", StringType(), True),
+        StructField("dropoff_latitude", StringType(), True),
+        StructField("payment_type", StringType(), True),
+        StructField("fare_amount", StringType(), True),
+        StructField("extra", StringType(), True),
+        StructField("mta_tax", StringType(), True),
+        StructField("tip_amount", StringType(), True),
+        StructField("tolls_amount", StringType(), True),
+        StructField("improvement_surcharge", StringType(), True),
+        StructField("total_amount", StringType(), True),
+    ])
+
+
+def schema_2024_raw() -> StructType:
+    return StructType([
+        StructField("VendorID", StringType(), True),
+        StructField("tpep_pickup_datetime", StringType(), True),
+        StructField("tpep_dropoff_datetime", StringType(), True),
+        StructField("passenger_count", StringType(), True),
+        StructField("trip_distance", StringType(), True),
+        StructField("RatecodeID", StringType(), True),
+        StructField("store_and_fwd_flag", StringType(), True),
+        StructField("PULocationID", StringType(), True),
+        StructField("DOLocationID", StringType(), True),
+        StructField("payment_type", StringType(), True),
+        StructField("fare_amount", StringType(), True),
+        StructField("extra", StringType(), True),
+        StructField("mta_tax", StringType(), True),
+        StructField("tip_amount", StringType(), True),
+        StructField("tolls_amount", StringType(), True),
+        StructField("improvement_surcharge", StringType(), True),
+        StructField("total_amount", StringType(), True),
+        StructField("congestion_surcharge", StringType(), True),
+        StructField("Airport_fee", StringType(), True),
+    ])
+
+
+def schema_zones_raw() -> StructType:
+    return StructType([
+        StructField("LocationID", StringType(), True),
+        StructField("Borough", StringType(), True),
+        StructField("Zone", StringType(), True),
+        StructField("service_zone", StringType(), True),
+    ])
+
+
+def join_hdfs_path(base: str, *parts: str) -> str:
+    cleaned_base = base.rstrip("/")
+    cleaned_parts = [part.strip("/") for part in parts if part]
+    return f"{cleaned_base}/{'/'.join(cleaned_parts)}"
+
+
+def write_text_hdfs(spark: SparkSession, path: str, text: str, overwrite: bool = True) -> None:
+    jvm = spark.sparkContext._jvm
+    conf = spark.sparkContext._jsc.hadoopConfiguration()
+    fs = jvm.org.apache.hadoop.fs.FileSystem.get(conf)
+    hdfs_path_obj = jvm.org.apache.hadoop.fs.Path(path)
+
+    if overwrite and fs.exists(hdfs_path_obj):
+        fs.delete(hdfs_path_obj, False)
+
+    stream = fs.create(hdfs_path_obj, True)
+    stream.write(bytearray(text, "utf-8"))
+    stream.close()
+
+
+def hdfs_size_bytes(spark: SparkSession, path: str) -> int:
+    jvm = spark.sparkContext._jvm
+    conf = spark.sparkContext._jsc.hadoopConfiguration()
+    fs = jvm.org.apache.hadoop.fs.FileSystem.get(conf)
+    p = jvm.org.apache.hadoop.fs.Path(path)
+
+    if not fs.exists(p):
+        return 0
+
+    return int(fs.getContentSummary(p).getLength())
+
+
+def hdfs_file_count(spark: SparkSession, path: str) -> int:
+    jvm = spark.sparkContext._jvm
+    conf = spark.sparkContext._jsc.hadoopConfiguration()
+    fs = jvm.org.apache.hadoop.fs.FileSystem.get(conf)
+    p = jvm.org.apache.hadoop.fs.Path(path)
+
+    if not fs.exists(p):
+        return 0
+
+    iterator = fs.listFiles(p, True)
+    count = 0
+    while iterator.hasNext():
+        status = iterator.next()
+        name = status.getPath().getName()
+        if not name.startswith("_") and not name.startswith("."):
+            count += 1
+
+    return count
