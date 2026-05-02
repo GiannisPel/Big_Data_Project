@@ -7,10 +7,10 @@ Pod example: test-wordcount-py-786c2c9ddf7882d8-driver
 Input: hdfs:///user/ipelekanos/project2026/tmp/test_text.txt
 Output: hdfs:///user/ipelekanos/project2026/output/test_wordcount
 Result:
-('spark', 4)
-('data', 2)
-('big', 1)
-('python', 1)
+- ('spark', 4)
+- ('data', 2)
+- ('big', 1)
+- ('python', 1)
 
 ## Before working on anything
 
@@ -18,7 +18,7 @@ Result:
 - Open WSL
 - Load environment:
 
-```bash
+
 cd ~/project2026-bigdata
 source ~/bigdata-env.sh
 
@@ -27,7 +27,7 @@ source ~/bigdata-env.sh
 Εδω διαβασα τα 3 datasets, δημιουργησα βοηθητικες στηλες/διαμορφωσα τα ονοματα των στηλων οπως τα ζητησατε,
 αναλυση χρονικων και αριθμητικων πεδιων, αναγραφη εξοδων parquet και αποηθηκευση μετρησεων προετοιμασιας.
 
-### Commands
+### Prepare Parquate Commands
 
 spark-submit \
   --py-files project2026/jobs/common.py \
