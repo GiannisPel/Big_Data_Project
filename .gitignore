@@ -2,27 +2,27 @@
 __pycache__/
 *.pyc
 
-# Large/raw data
+#Large/raw data
 *.csv
 *.parquet
 *.tgz
 *.tar.gz
 *.zip
 
-# Local outputs
+#Local outputs
 project2026/outputs/*
 !project2026/outputs/.gitkeep
 
-# Spark/Hadoop local artifacts
+#Spark/Hadoop local artifacts
 .spark-warehouse/
 metastore_db/
 derby.log
 *.log
 
-# Editor files
+#Editor files
 .vscode/
 
-# Credentials / private configs
+#Credentials / private configs
 *.ovpn
 config
 .kube/
