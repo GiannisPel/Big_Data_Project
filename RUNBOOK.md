@@ -64,6 +64,7 @@ hdfs dfs -ls /user/$VDCLOUD_USER/project2026/data/parquet/yellow_tripdata_2024 |
 hdfs dfs -ls /user/$VDCLOUD_USER/project2026/data/parquet/taxi_zone_lookup
 hdfs dfs -cat /user/$VDCLOUD_USER/project2026/results/metrics/prepare_parquet_metrics.json
 
+
 ## EDA Commands
 
 spark-submit \
@@ -72,3 +73,24 @@ spark-submit \
   --student-id 2121261 \
   --input-base hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/$VDCLOUD_USER/project2026 \
   --output-base hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/$VDCLOUD_USER/project2026
+
+
+## EDA
+
+```bash
+./project2026/scripts/run_eda.sh
+
+### EDA outputs
+
+/user/ipelekanos/project2026/results/tables/eda/null_percentages
+/user/ipelekanos/project2026/results/tables/eda/pickup_day_distribution_2024
+/user/ipelekanos/project2026/results/tables/eda/pickup_hour_distribution
+/user/ipelekanos/project2026/results/tables/eda/top_10_pickup_zones_2024
+/user/ipelekanos/project2026/results/tables/eda/total_amount_log_histogram
+/user/ipelekanos/project2026/results/tables/eda/trip_distance_log_histogram
+
+### EDA Spark
+
+Spark app ID: spark-7055d17eb1074174a68bf1a8e581be7a
+Metrics path: /user/ipelekanos/project2026/results/metrics/eda_metrics.json
+

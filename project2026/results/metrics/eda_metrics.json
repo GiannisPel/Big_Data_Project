@@ -1,0 +1,1588 @@
+{
+  "job": "eda",
+  "student_id": 2121261,
+  "spark_application_id": "spark-7055d17eb1074174a68bf1a8e581be7a",
+  "input_base": "hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/project2026",
+  "output_base": "hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/project2026",
+  "paths": {
+    "yellow_tripdata_2015": "hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/project2026/data/parquet/yellow_tripdata_2015",
+    "yellow_tripdata_2024": "hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/project2026/data/parquet/yellow_tripdata_2024",
+    "taxi_zone_lookup": "hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/project2026/data/parquet/taxi_zone_lookup",
+    "metrics_output_path": "hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/project2026/results/metrics/eda_metrics.json",
+    "eda_tables_dir": "hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/project2026/results/tables/eda"
+  },
+  "row_counts": {
+    "yellow_tripdata_2015": 12748986,
+    "yellow_tripdata_2024": 41169664,
+    "taxi_zone_lookup": 265
+  },
+  "schemas": {
+    "yellow_tripdata_2015": {
+      "tree_string": "root\n |-- vendor_id: integer (nullable = true)\n |-- pickup_ts: timestamp (nullable = true)\n |-- dropoff_ts: timestamp (nullable = true)\n |-- passenger_count: integer (nullable = true)\n |-- trip_distance: double (nullable = true)\n |-- pickup_longitude: double (nullable = true)\n |-- pickup_latitude: double (nullable = true)\n |-- rate_code_id: integer (nullable = true)\n |-- store_and_fwd_flag: string (nullable = true)\n |-- dropoff_longitude: double (nullable = true)\n |-- dropoff_latitude: double (nullable = true)\n |-- payment_type: integer (nullable = true)\n |-- fare_amount: double (nullable = true)\n |-- extra: double (nullable = true)\n |-- mta_tax: double (nullable = true)\n |-- tip_amount: double (nullable = true)\n |-- tolls_amount: double (nullable = true)\n |-- improvement_surcharge: double (nullable = true)\n |-- total_amount: double (nullable = true)\n |-- pickup_date: date (nullable = true)\n |-- pickup_day: integer (nullable = true)\n |-- duration_minutes: double (nullable = true)\n |-- trip_distance_km: double (nullable = true)\n |-- pickup_hour: integer (nullable = true)\n",
+      "simple_string": "struct<vendor_id:int,pickup_ts:timestamp,dropoff_ts:timestamp,passenger_count:int,trip_distance:double,pickup_longitude:double,pickup_latitude:double,rate_code_id:int,store_and_fwd_flag:string,dropoff_longitude:double,dropoff_latitude:double,payment_type:int,fare_amount:double,extra:double,mta_tax:double,tip_amount:double,tolls_amount:double,improvement_surcharge:double,total_amount:double,pickup_date:date,pickup_day:int,duration_minutes:double,trip_distance_km:double,pickup_hour:int>",
+      "json": {
+        "fields": [
+          {
+            "metadata": {},
+            "name": "vendor_id",
+            "nullable": true,
+            "type": "integer"
+          },
+          {
+            "metadata": {},
+            "name": "pickup_ts",
+            "nullable": true,
+            "type": "timestamp"
+          },
+          {
+            "metadata": {},
+            "name": "dropoff_ts",
+            "nullable": true,
+            "type": "timestamp"
+          },
+          {
+            "metadata": {},
+            "name": "passenger_count",
+            "nullable": true,
+            "type": "integer"
+          },
+          {
+            "metadata": {},
+            "name": "trip_distance",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "pickup_longitude",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "pickup_latitude",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "rate_code_id",
+            "nullable": true,
+            "type": "integer"
+          },
+          {
+            "metadata": {},
+            "name": "store_and_fwd_flag",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "dropoff_longitude",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "dropoff_latitude",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "payment_type",
+            "nullable": true,
+            "type": "integer"
+          },
+          {
+            "metadata": {},
+            "name": "fare_amount",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "extra",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "mta_tax",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "tip_amount",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "tolls_amount",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "improvement_surcharge",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "total_amount",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "pickup_date",
+            "nullable": true,
+            "type": "date"
+          },
+          {
+            "metadata": {},
+            "name": "pickup_day",
+            "nullable": true,
+            "type": "integer"
+          },
+          {
+            "metadata": {},
+            "name": "duration_minutes",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "trip_distance_km",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "pickup_hour",
+            "nullable": true,
+            "type": "integer"
+          }
+        ],
+        "type": "struct"
+      }
+    },
+    "yellow_tripdata_2024": {
+      "tree_string": "root\n |-- vendor_id: integer (nullable = true)\n |-- pickup_ts: timestamp (nullable = true)\n |-- dropoff_ts: timestamp (nullable = true)\n |-- passenger_count: integer (nullable = true)\n |-- trip_distance: double (nullable = true)\n |-- rate_code_id: integer (nullable = true)\n |-- store_and_fwd_flag: string (nullable = true)\n |-- pu_location_id: integer (nullable = true)\n |-- do_location_id: integer (nullable = true)\n |-- payment_type: integer (nullable = true)\n |-- fare_amount: double (nullable = true)\n |-- extra: double (nullable = true)\n |-- mta_tax: double (nullable = true)\n |-- tip_amount: double (nullable = true)\n |-- tolls_amount: double (nullable = true)\n |-- improvement_surcharge: double (nullable = true)\n |-- total_amount: double (nullable = true)\n |-- congestion_surcharge: double (nullable = true)\n |-- airport_fee: double (nullable = true)\n |-- pickup_date: date (nullable = true)\n |-- pickup_hour: integer (nullable = true)\n |-- duration_minutes: double (nullable = true)\n |-- trip_distance_km: double (nullable = true)\n |-- pickup_day: integer (nullable = true)\n",
+      "simple_string": "struct<vendor_id:int,pickup_ts:timestamp,dropoff_ts:timestamp,passenger_count:int,trip_distance:double,rate_code_id:int,store_and_fwd_flag:string,pu_location_id:int,do_location_id:int,payment_type:int,fare_amount:double,extra:double,mta_tax:double,tip_amount:double,tolls_amount:double,improvement_surcharge:double,total_amount:double,congestion_surcharge:double,airport_fee:double,pickup_date:date,pickup_hour:int,duration_minutes:double,trip_distance_km:double,pickup_day:int>",
+      "json": {
+        "fields": [
+          {
+            "metadata": {},
+            "name": "vendor_id",
+            "nullable": true,
+            "type": "integer"
+          },
+          {
+            "metadata": {},
+            "name": "pickup_ts",
+            "nullable": true,
+            "type": "timestamp"
+          },
+          {
+            "metadata": {},
+            "name": "dropoff_ts",
+            "nullable": true,
+            "type": "timestamp"
+          },
+          {
+            "metadata": {},
+            "name": "passenger_count",
+            "nullable": true,
+            "type": "integer"
+          },
+          {
+            "metadata": {},
+            "name": "trip_distance",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "rate_code_id",
+            "nullable": true,
+            "type": "integer"
+          },
+          {
+            "metadata": {},
+            "name": "store_and_fwd_flag",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "pu_location_id",
+            "nullable": true,
+            "type": "integer"
+          },
+          {
+            "metadata": {},
+            "name": "do_location_id",
+            "nullable": true,
+            "type": "integer"
+          },
+          {
+            "metadata": {},
+            "name": "payment_type",
+            "nullable": true,
+            "type": "integer"
+          },
+          {
+            "metadata": {},
+            "name": "fare_amount",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "extra",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "mta_tax",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "tip_amount",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "tolls_amount",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "improvement_surcharge",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "total_amount",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "congestion_surcharge",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "airport_fee",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "pickup_date",
+            "nullable": true,
+            "type": "date"
+          },
+          {
+            "metadata": {},
+            "name": "pickup_hour",
+            "nullable": true,
+            "type": "integer"
+          },
+          {
+            "metadata": {},
+            "name": "duration_minutes",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "trip_distance_km",
+            "nullable": true,
+            "type": "double"
+          },
+          {
+            "metadata": {},
+            "name": "pickup_day",
+            "nullable": true,
+            "type": "integer"
+          }
+        ],
+        "type": "struct"
+      }
+    },
+    "taxi_zone_lookup": {
+      "tree_string": "root\n |-- location_id: integer (nullable = true)\n |-- borough: string (nullable = true)\n |-- zone: string (nullable = true)\n |-- service_zone: string (nullable = true)\n",
+      "simple_string": "struct<location_id:int,borough:string,zone:string,service_zone:string>",
+      "json": {
+        "fields": [
+          {
+            "metadata": {},
+            "name": "location_id",
+            "nullable": true,
+            "type": "integer"
+          },
+          {
+            "metadata": {},
+            "name": "borough",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "zone",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "service_zone",
+            "nullable": true,
+            "type": "string"
+          }
+        ],
+        "type": "struct"
+      }
+    }
+  },
+  "describe_outputs": {
+    "yellow_tripdata_2015": [
+      {
+        "summary": "count",
+        "vendor_id": "12748986",
+        "passenger_count": "12748986",
+        "trip_distance": "12748986",
+        "pickup_longitude": "12748986",
+        "pickup_latitude": "12748986",
+        "rate_code_id": "12748986",
+        "store_and_fwd_flag": "12748986",
+        "dropoff_longitude": "12748986",
+        "dropoff_latitude": "12748986",
+        "payment_type": "12748986",
+        "fare_amount": "12748986",
+        "extra": "12748986",
+        "mta_tax": "12748986",
+        "tip_amount": "12748986",
+        "tolls_amount": "12748986",
+        "improvement_surcharge": "12748983",
+        "total_amount": "12748986",
+        "pickup_day": "12748986",
+        "duration_minutes": "12748986",
+        "trip_distance_km": "12748986",
+        "pickup_hour": "12748986"
+      },
+      {
+        "summary": "mean",
+        "vendor_id": "1.5214373127400094",
+        "passenger_count": "1.6814908260154964",
+        "trip_distance": "13.459129611562817",
+        "pickup_longitude": "-72.56183777902534",
+        "pickup_latitude": "39.97282304763482",
+        "rate_code_id": "1.0369007386156044",
+        "store_and_fwd_flag": null,
+        "dropoff_longitude": "-72.60903923063492",
+        "dropoff_latitude": "39.9996144802455",
+        "payment_type": "1.3867115392549652",
+        "fare_amount": "11.90565942577682",
+        "extra": "0.3082789572441291",
+        "mta_tax": "0.4977986092384132",
+        "tip_amount": "1.853813646042279",
+        "tolls_amount": "0.24349839430352802",
+        "improvement_surcharge": "0.2831430789375931",
+        "total_amount": "15.108294537439122",
+        "pickup_day": "16.02682440783918",
+        "duration_minutes": "14.179003858293735",
+        "trip_distance_km": "21.660369485605244",
+        "pickup_hour": "13.567395242256914"
+      },
+      {
+        "summary": "stddev",
+        "vendor_id": "0.49954024982562195",
+        "passenger_count": "1.337923517287471",
+        "trip_distance": "9844.094218468574",
+        "pickup_longitude": "10.125103592972929",
+        "pickup_latitude": "5.578690519088411",
+        "rate_code_id": "0.6732239779497593",
+        "store_and_fwd_flag": null,
+        "dropoff_longitude": "9.96603703803104",
+        "dropoff_latitude": "5.48774188661967",
+        "payment_type": "0.49886106350539144",
+        "fare_amount": "10.302537135952305",
+        "extra": "0.5916643112912925",
+        "mta_tax": "0.03534228670983145",
+        "tip_amount": "1106.4323141838631",
+        "tolls_amount": "1.5271714003797894",
+        "improvement_surcharge": "0.06908632935830748",
+        "total_amount": "1106.5032467104643",
+        "pickup_day": "8.779920272033854",
+        "duration_minutes": "649.3011594739806",
+        "trip_distance_km": "15842.533965927",
+        "pickup_hour": "6.411435593403046"
+      },
+      {
+        "summary": "min",
+        "vendor_id": "1",
+        "passenger_count": "0",
+        "trip_distance": "0.0",
+        "pickup_longitude": "-121.92581176757812",
+        "pickup_latitude": "0.0",
+        "rate_code_id": "1",
+        "store_and_fwd_flag": "N",
+        "dropoff_longitude": "-740.1666870117188",
+        "dropoff_latitude": "-9.029156684875488",
+        "payment_type": "1",
+        "fare_amount": "-450.0",
+        "extra": "-79.0",
+        "mta_tax": "-0.5",
+        "tip_amount": "-92.42",
+        "tolls_amount": "-26.0",
+        "improvement_surcharge": "0.0",
+        "total_amount": "-450.3",
+        "pickup_day": "1",
+        "duration_minutes": "-1211.0166666666667",
+        "trip_distance_km": "0.0",
+        "pickup_hour": "0"
+      },
+      {
+        "summary": "max",
+        "vendor_id": "2",
+        "passenger_count": "9",
+        "trip_distance": "1.54200045E7",
+        "pickup_longitude": "78.66265106201172",
+        "pickup_latitude": "404.70001220703125",
+        "rate_code_id": "99",
+        "store_and_fwd_flag": "Y",
+        "dropoff_longitude": "85.2740249633789",
+        "dropoff_latitude": "459.5333251953125",
+        "payment_type": "5",
+        "fare_amount": "4008.0",
+        "extra": "999.99",
+        "mta_tax": "0.5",
+        "tip_amount": "3950588.8",
+        "tolls_amount": "1450.09",
+        "improvement_surcharge": "0.3",
+        "total_amount": "3950611.6",
+        "pickup_day": "31",
+        "duration_minutes": "548555.6333333333",
+        "trip_distance_km": "2.4816091722048003E7",
+        "pickup_hour": "23"
+      }
+    ],
+    "yellow_tripdata_2024": [
+      {
+        "summary": "count",
+        "vendor_id": "41169664",
+        "passenger_count": "37078432",
+        "trip_distance": "41169664",
+        "rate_code_id": "37078432",
+        "store_and_fwd_flag": "37078432",
+        "pu_location_id": "41169664",
+        "do_location_id": "41169664",
+        "payment_type": "41169664",
+        "fare_amount": "41169664",
+        "extra": "41169664",
+        "mta_tax": "41169664",
+        "tip_amount": "41169664",
+        "tolls_amount": "41169664",
+        "improvement_surcharge": "41169664",
+        "total_amount": "41169664",
+        "congestion_surcharge": "37078432",
+        "airport_fee": "37078432",
+        "pickup_hour": "41169664",
+        "duration_minutes": "41169664",
+        "trip_distance_km": "41169664",
+        "pickup_day": "41169664"
+      },
+      {
+        "summary": "mean",
+        "vendor_id": "1.7642319354367333",
+        "passenger_count": "1.3339304909118055",
+        "trip_distance": "4.9760989436295855",
+        "rate_code_id": "2.322151729609278",
+        "store_and_fwd_flag": null,
+        "pu_location_id": "164.24280098569665",
+        "do_location_id": "163.44744338938497",
+        "payment_type": "1.1072589516397315",
+        "fare_amount": "19.2684965099555",
+        "extra": "1.3859523611851683",
+        "mta_tax": "0.47977741742074953",
+        "tip_amount": "3.307883209832414",
+        "tolls_amount": "0.5615246743310349",
+        "improvement_surcharge": "0.9629933754135109",
+        "total_amount": "27.832795809555176",
+        "congestion_surcharge": "2.232144734976927",
+        "airport_fee": "0.14700547477304327",
+        "pickup_hour": "14.328790781484154",
+        "duration_minutes": "17.467351031008523",
+        "trip_distance_km": "8.008254978345175",
+        "pickup_day": "15.614721096582182"
+      },
+      {
+        "summary": "stddev",
+        "vendor_id": "0.42585701454610664",
+        "passenger_count": "0.8158239355437142",
+        "trip_distance": "419.2307823964912",
+        "rate_code_id": "10.92805727629947",
+        "store_and_fwd_flag": null,
+        "pu_location_id": "64.34069645441541",
+        "do_location_id": "69.60009024382423",
+        "payment_type": "0.6515108346650547",
+        "fare_amount": "76.71988677535616",
+        "extra": "1.8158775626076644",
+        "mta_tax": "0.13018300196234803",
+        "tip_amount": "4.0905217578859325",
+        "tolls_amount": "2.240541002097691",
+        "improvement_surcharge": "0.255055432637332",
+        "total_amount": "78.0536301027883",
+        "congestion_surcharge": "0.874652248523853",
+        "airport_fee": "0.5020400013735794",
+        "pickup_hour": "5.841857369545783",
+        "duration_minutes": "34.2252537029092",
+        "trip_distance_km": "674.6865442651002",
+        "pickup_day": "8.676975800997015"
+      },
+      {
+        "summary": "min",
+        "vendor_id": "1",
+        "passenger_count": "0",
+        "trip_distance": "0.0",
+        "rate_code_id": "1",
+        "store_and_fwd_flag": "N",
+        "pu_location_id": "1",
+        "do_location_id": "1",
+        "payment_type": "0",
+        "fare_amount": "-2261.2",
+        "extra": "-9.25",
+        "mta_tax": "-0.5",
+        "tip_amount": "-300.0",
+        "tolls_amount": "-140.63",
+        "improvement_surcharge": "-1.0",
+        "total_amount": "-2265.45",
+        "congestion_surcharge": "-2.5",
+        "airport_fee": "-1.75",
+        "pickup_hour": "0",
+        "duration_minutes": "-1427.05",
+        "trip_distance_km": "0.0",
+        "pickup_day": "1"
+      },
+      {
+        "summary": "max",
+        "vendor_id": "7",
+        "passenger_count": "9",
+        "trip_distance": "398608.62",
+        "rate_code_id": "99",
+        "store_and_fwd_flag": "Y",
+        "pu_location_id": "265",
+        "do_location_id": "265",
+        "payment_type": "5",
+        "fare_amount": "335544.44",
+        "extra": "65.99",
+        "mta_tax": "41.3",
+        "tip_amount": "999.99",
+        "tolls_amount": "1702.88",
+        "improvement_surcharge": "2.0",
+        "total_amount": "335550.94",
+        "congestion_surcharge": "2.52",
+        "airport_fee": "1.75",
+        "pickup_hour": "23",
+        "duration_minutes": "9767.516666666666",
+        "trip_distance_km": "641498.3909452801",
+        "pickup_day": "31"
+      }
+    ],
+    "taxi_zone_lookup": [
+      {
+        "summary": "count",
+        "location_id": "265",
+        "borough": "265",
+        "zone": "265",
+        "service_zone": "265"
+      },
+      {
+        "summary": "mean",
+        "location_id": "133.0",
+        "borough": null,
+        "zone": null,
+        "service_zone": null
+      },
+      {
+        "summary": "stddev",
+        "location_id": "76.643112323722",
+        "borough": null,
+        "zone": null,
+        "service_zone": null
+      },
+      {
+        "summary": "min",
+        "location_id": "1",
+        "borough": "Bronx",
+        "zone": "Allerton/Pelham Gardens",
+        "service_zone": "Airports"
+      },
+      {
+        "summary": "max",
+        "location_id": "265",
+        "borough": "Unknown",
+        "zone": "Yorkville West",
+        "service_zone": "Yellow Zone"
+      }
+    ]
+  },
+  "numeric_summaries": {
+    "yellow_tripdata_2015": {
+      "dataset": "yellow_tripdata_2015",
+      "summary": {
+        "trip_distance_non_null_count": 12748986,
+        "trip_distance_min": 0.0,
+        "trip_distance_p25": 1.0,
+        "trip_distance_median": 1.68,
+        "trip_distance_p75": 3.0,
+        "trip_distance_max": 15420004.5,
+        "trip_distance_avg": 13.459129611562817,
+        "trip_distance_km_non_null_count": 12748986,
+        "trip_distance_km_min": 0.0,
+        "trip_distance_km_p25": 1.609344,
+        "trip_distance_km_median": 2.70369792,
+        "trip_distance_km_p75": 4.828032,
+        "trip_distance_km_max": 24816091.722048003,
+        "trip_distance_km_avg": 21.660369485605244,
+        "duration_minutes_non_null_count": 12748986,
+        "duration_minutes_min": -1211.0166666666667,
+        "duration_minutes_p25": 6.1,
+        "duration_minutes_median": 9.95,
+        "duration_minutes_p75": 15.783333333333333,
+        "duration_minutes_max": 548555.6333333333,
+        "duration_minutes_avg": 14.179003858293735,
+        "fare_amount_non_null_count": 12748986,
+        "fare_amount_min": -450.0,
+        "fare_amount_p25": 6.5,
+        "fare_amount_median": 9.0,
+        "fare_amount_p75": 13.5,
+        "fare_amount_max": 4008.0,
+        "fare_amount_avg": 11.90565942577682,
+        "tip_amount_non_null_count": 12748986,
+        "tip_amount_min": -92.42,
+        "tip_amount_p25": 0.0,
+        "tip_amount_median": 1.0,
+        "tip_amount_p75": 2.06,
+        "tip_amount_max": 3950588.8,
+        "tip_amount_avg": 1.853813646042279,
+        "total_amount_non_null_count": 12748986,
+        "total_amount_min": -450.3,
+        "total_amount_p25": 8.16,
+        "total_amount_median": 11.16,
+        "total_amount_p75": 16.3,
+        "total_amount_max": 3950611.6,
+        "total_amount_avg": 15.108294537439122
+      }
+    },
+    "yellow_tripdata_2024": {
+      "dataset": "yellow_tripdata_2024",
+      "summary": {
+        "trip_distance_non_null_count": 41169664,
+        "trip_distance_min": 0.0,
+        "trip_distance_p25": 1.01,
+        "trip_distance_median": 1.76,
+        "trip_distance_p75": 3.36,
+        "trip_distance_max": 398608.62,
+        "trip_distance_avg": 4.9760989436295855,
+        "trip_distance_km_non_null_count": 41169664,
+        "trip_distance_km_min": 0.0,
+        "trip_distance_km_p25": 1.6254374400000002,
+        "trip_distance_km_median": 2.8324454400000003,
+        "trip_distance_km_p75": 5.40739584,
+        "trip_distance_km_max": 641498.3909452801,
+        "trip_distance_km_avg": 8.008254978345175,
+        "duration_minutes_non_null_count": 41169664,
+        "duration_minutes_min": -1427.05,
+        "duration_minutes_p25": 7.833333333333333,
+        "duration_minutes_median": 13.0,
+        "duration_minutes_p75": 21.116666666666667,
+        "duration_minutes_max": 9767.516666666666,
+        "duration_minutes_avg": 17.467351031008523,
+        "fare_amount_non_null_count": 41169664,
+        "fare_amount_min": -2261.2,
+        "fare_amount_p25": 9.3,
+        "fare_amount_median": 13.5,
+        "fare_amount_p75": 22.6,
+        "fare_amount_max": 335544.44,
+        "fare_amount_avg": 19.2684965099555,
+        "tip_amount_non_null_count": 41169664,
+        "tip_amount_min": -300.0,
+        "tip_amount_p25": 0.0,
+        "tip_amount_median": 2.6,
+        "tip_amount_p75": 4.25,
+        "tip_amount_max": 999.99,
+        "tip_amount_avg": 3.307883209832414,
+        "total_amount_non_null_count": 41169664,
+        "total_amount_min": -2265.45,
+        "total_amount_p25": 15.75,
+        "total_amount_median": 21.0,
+        "total_amount_p75": 30.6,
+        "total_amount_max": 335550.94,
+        "total_amount_avg": 27.832795809555176
+      }
+    }
+  },
+  "negative_zero_counts": [
+    {
+      "dataset": "yellow_tripdata_2015",
+      "column_name": "trip_distance",
+      "negative_count": 0,
+      "zero_count": 79365,
+      "positive_count": 12669621,
+      "total_rows": 12748986
+    },
+    {
+      "dataset": "yellow_tripdata_2024",
+      "column_name": "trip_distance",
+      "negative_count": 0,
+      "zero_count": 776305,
+      "positive_count": 40393359,
+      "total_rows": 41169664
+    },
+    {
+      "dataset": "yellow_tripdata_2015",
+      "column_name": "fare_amount",
+      "negative_count": 4064,
+      "zero_count": 3602,
+      "positive_count": 12741320,
+      "total_rows": 12748986
+    },
+    {
+      "dataset": "yellow_tripdata_2024",
+      "column_name": "fare_amount",
+      "negative_count": 731023,
+      "zero_count": 17260,
+      "positive_count": 40421381,
+      "total_rows": 41169664
+    },
+    {
+      "dataset": "yellow_tripdata_2015",
+      "column_name": "total_amount",
+      "negative_count": 4067,
+      "zero_count": 1194,
+      "positive_count": 12743725,
+      "total_rows": 12748986
+    },
+    {
+      "dataset": "yellow_tripdata_2024",
+      "column_name": "total_amount",
+      "negative_count": 609343,
+      "zero_count": 5062,
+      "positive_count": 40555259,
+      "total_rows": 41169664
+    }
+  ],
+  "joinability_2024_pu_location_id": {
+    "total_2024_rows": 41169664,
+    "matched_rows": 41169664,
+    "unmatched_rows": 0,
+    "matched_percentage": 100.0
+  },
+  "anomaly_samples": {
+    "yellow_tripdata_2015": {
+      "dataset": "yellow_tripdata_2015",
+      "largest_trip_distance": [
+        {
+          "vendor_id": 1,
+          "pickup_ts": "2015-01-11T21:55:11",
+          "dropoff_ts": "2015-01-11T22:24:16",
+          "pickup_day": 11,
+          "pickup_hour": 21,
+          "trip_distance": 15420004.5,
+          "duration_minutes": 29.083333333333332,
+          "fare_amount": 34.5,
+          "tip_amount": 0.0,
+          "total_amount": 35.8,
+          "pickup_longitude": -73.99223327636719,
+          "pickup_latitude": 40.729248046875,
+          "dropoff_longitude": -74.02808380126953,
+          "dropoff_latitude": 40.62263870239258
+        },
+        {
+          "vendor_id": 1,
+          "pickup_ts": "2015-01-11T19:01:17",
+          "dropoff_ts": "2015-01-11T19:14:47",
+          "pickup_day": 11,
+          "pickup_hour": 19,
+          "trip_distance": 12331800.0,
+          "duration_minutes": 13.5,
+          "fare_amount": 2.5,
+          "tip_amount": 0.0,
+          "total_amount": 3.3,
+          "pickup_longitude": -73.97734069824219,
+          "pickup_latitude": 40.74946212768555,
+          "dropoff_longitude": -74.00028991699219,
+          "dropoff_latitude": 40.73051071166992
+        },
+        {
+          "vendor_id": 1,
+          "pickup_ts": "2015-01-02T15:09:24",
+          "dropoff_ts": "2015-01-02T15:13:08",
+          "pickup_day": 2,
+          "pickup_hour": 15,
+          "trip_distance": 12000000.0,
+          "duration_minutes": 3.7333333333333334,
+          "fare_amount": 4.5,
+          "tip_amount": 0.0,
+          "total_amount": 5.3,
+          "pickup_longitude": -73.95915985107422,
+          "pickup_latitude": 40.7718505859375,
+          "dropoff_longitude": -73.95509338378906,
+          "dropoff_latitude": 40.78287887573242
+        },
+        {
+          "vendor_id": 1,
+          "pickup_ts": "2015-01-23T15:47:55",
+          "dropoff_ts": "2015-01-23T16:40:57",
+          "pickup_day": 23,
+          "pickup_hour": 15,
+          "trip_distance": 11800001.7,
+          "duration_minutes": 53.03333333333333,
+          "fare_amount": 2.5,
+          "tip_amount": 0.0,
+          "total_amount": 4.3,
+          "pickup_longitude": -73.98719024658203,
+          "pickup_latitude": 40.770870208740234,
+          "dropoff_longitude": -73.8731689453125,
+          "dropoff_latitude": 40.774391174316406
+        },
+        {
+          "vendor_id": 1,
+          "pickup_ts": "2015-01-23T10:30:15",
+          "dropoff_ts": "2015-01-23T10:46:38",
+          "pickup_day": 23,
+          "pickup_hour": 10,
+          "trip_distance": 11800000.6,
+          "duration_minutes": 16.383333333333333,
+          "fare_amount": 2.5,
+          "tip_amount": 0.0,
+          "total_amount": 3.3,
+          "pickup_longitude": -73.94681549072266,
+          "pickup_latitude": 40.78057098388672,
+          "dropoff_longitude": -73.95459747314453,
+          "dropoff_latitude": 40.78956604003906
+        }
+      ],
+      "largest_duration_minutes": [
+        {
+          "vendor_id": 1,
+          "pickup_ts": "2015-01-17T15:16:00",
+          "dropoff_ts": "2016-02-02T13:51:38",
+          "pickup_day": 17,
+          "pickup_hour": 15,
+          "trip_distance": 2.8,
+          "duration_minutes": 548555.6333333333,
+          "fare_amount": 12.5,
+          "tip_amount": 0.0,
+          "total_amount": 13.3,
+          "pickup_longitude": 0.0,
+          "pickup_latitude": 0.0,
+          "dropoff_longitude": 0.0,
+          "dropoff_latitude": 0.0
+        },
+        {
+          "vendor_id": 1,
+          "pickup_ts": "2015-01-17T15:16:00",
+          "dropoff_ts": "2016-02-02T13:26:53",
+          "pickup_day": 17,
+          "pickup_hour": 15,
+          "trip_distance": 3.9,
+          "duration_minutes": 548530.8833333333,
+          "fare_amount": 18.5,
+          "tip_amount": 0.0,
+          "total_amount": 19.3,
+          "pickup_longitude": 0.0,
+          "pickup_latitude": 0.0,
+          "dropoff_longitude": 0.0,
+          "dropoff_latitude": 0.0
+        },
+        {
+          "vendor_id": 1,
+          "pickup_ts": "2015-01-17T15:16:00",
+          "dropoff_ts": "2016-02-02T12:48:56",
+          "pickup_day": 17,
+          "pickup_hour": 15,
+          "trip_distance": 0.7,
+          "duration_minutes": 548492.9333333333,
+          "fare_amount": 4.5,
+          "tip_amount": 0.0,
+          "total_amount": 5.3,
+          "pickup_longitude": 0.0,
+          "pickup_latitude": 0.0,
+          "dropoff_longitude": 0.0,
+          "dropoff_latitude": 0.0
+        },
+        {
+          "vendor_id": 1,
+          "pickup_ts": "2015-01-17T15:16:00",
+          "dropoff_ts": "2016-02-02T12:43:54",
+          "pickup_day": 17,
+          "pickup_hour": 15,
+          "trip_distance": 0.3,
+          "duration_minutes": 548487.9,
+          "fare_amount": 3.5,
+          "tip_amount": 0.8,
+          "total_amount": 5.1,
+          "pickup_longitude": 0.0,
+          "pickup_latitude": 0.0,
+          "dropoff_longitude": 0.0,
+          "dropoff_latitude": 0.0
+        },
+        {
+          "vendor_id": 1,
+          "pickup_ts": "2015-01-17T15:16:00",
+          "dropoff_ts": "2016-02-02T12:39:21",
+          "pickup_day": 17,
+          "pickup_hour": 15,
+          "trip_distance": 1.8,
+          "duration_minutes": 548483.35,
+          "fare_amount": 9.5,
+          "tip_amount": 0.0,
+          "total_amount": 10.3,
+          "pickup_longitude": 0.0,
+          "pickup_latitude": 0.0,
+          "dropoff_longitude": 0.0,
+          "dropoff_latitude": 0.0
+        }
+      ],
+      "negative_fare_amount": [
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2015-01-11T03:56:15",
+          "dropoff_ts": "2015-01-11T03:56:17",
+          "pickup_day": 11,
+          "pickup_hour": 3,
+          "trip_distance": 0.0,
+          "duration_minutes": 0.03333333333333333,
+          "fare_amount": -450.0,
+          "tip_amount": 0.0,
+          "total_amount": -450.3,
+          "pickup_longitude": 0.0,
+          "pickup_latitude": 0.0,
+          "dropoff_longitude": 0.0,
+          "dropoff_latitude": 0.0
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2015-01-15T15:20:22",
+          "dropoff_ts": "2015-01-15T15:20:26",
+          "pickup_day": 15,
+          "pickup_hour": 15,
+          "trip_distance": 0.0,
+          "duration_minutes": 0.06666666666666667,
+          "fare_amount": -400.0,
+          "tip_amount": 0.0,
+          "total_amount": -400.3,
+          "pickup_longitude": 0.0,
+          "pickup_latitude": 0.0,
+          "dropoff_longitude": 0.0,
+          "dropoff_latitude": 0.0
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2015-01-10T02:49:03",
+          "dropoff_ts": "2015-01-10T02:50:35",
+          "pickup_day": 10,
+          "pickup_hour": 2,
+          "trip_distance": 0.0,
+          "duration_minutes": 1.5333333333333334,
+          "fare_amount": -255.0,
+          "tip_amount": 0.0,
+          "total_amount": -255.8,
+          "pickup_longitude": 0.0,
+          "pickup_latitude": 0.0,
+          "dropoff_longitude": 0.0,
+          "dropoff_latitude": 0.0
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2015-01-04T19:23:11",
+          "dropoff_ts": "2015-01-04T19:24:49",
+          "pickup_day": 4,
+          "pickup_hour": 19,
+          "trip_distance": 0.0,
+          "duration_minutes": 1.6333333333333333,
+          "fare_amount": -250.0,
+          "tip_amount": 0.0,
+          "total_amount": -250.3,
+          "pickup_longitude": -73.79354095458984,
+          "pickup_latitude": 40.6568603515625,
+          "dropoff_longitude": -73.79354858398438,
+          "dropoff_latitude": 40.6568717956543
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2015-01-29T01:51:19",
+          "dropoff_ts": "2015-01-29T02:03:17",
+          "pickup_day": 29,
+          "pickup_hour": 1,
+          "trip_distance": 0.78,
+          "duration_minutes": 11.966666666666667,
+          "fare_amount": -242.25,
+          "tip_amount": 0.0,
+          "total_amount": -242.55,
+          "pickup_longitude": -73.9957504272461,
+          "pickup_latitude": 40.75070571899414,
+          "dropoff_longitude": -73.99612426757812,
+          "dropoff_latitude": 40.75883102416992
+        }
+      ],
+      "zero_or_negative_duration": [
+        {
+          "vendor_id": 1,
+          "pickup_ts": "2015-01-21T15:15:05",
+          "dropoff_ts": "2015-01-20T19:04:04",
+          "pickup_day": 21,
+          "pickup_hour": 15,
+          "trip_distance": 4.6,
+          "duration_minutes": -1211.0166666666667,
+          "fare_amount": 23.0,
+          "tip_amount": 2.2,
+          "total_amount": 27.0,
+          "pickup_longitude": -74.0006103515625,
+          "pickup_latitude": 40.75763702392578,
+          "dropoff_longitude": -73.9457015991211,
+          "dropoff_latitude": 40.77554702758789
+        },
+        {
+          "vendor_id": 1,
+          "pickup_ts": "2015-01-06T20:03:18",
+          "dropoff_ts": "2015-01-06T00:03:18",
+          "pickup_day": 6,
+          "pickup_hour": 20,
+          "trip_distance": 0.0,
+          "duration_minutes": -1200.0,
+          "fare_amount": 4.31,
+          "tip_amount": 0.0,
+          "total_amount": 4.31,
+          "pickup_longitude": -73.94883728027344,
+          "pickup_latitude": 40.744911193847656,
+          "dropoff_longitude": 0.0,
+          "dropoff_latitude": 0.0
+        },
+        {
+          "vendor_id": 1,
+          "pickup_ts": "2015-01-23T15:15:13",
+          "dropoff_ts": "2015-01-22T22:49:43",
+          "pickup_day": 23,
+          "pickup_hour": 15,
+          "trip_distance": 1.3,
+          "duration_minutes": -985.5,
+          "fare_amount": 7.5,
+          "tip_amount": 2.0,
+          "total_amount": 10.8,
+          "pickup_longitude": -74.00436401367188,
+          "pickup_latitude": 40.72111511230469,
+          "dropoff_longitude": -74.01507568359375,
+          "dropoff_latitude": 40.71598434448242
+        },
+        {
+          "vendor_id": 1,
+          "pickup_ts": "2015-01-14T08:59:32",
+          "dropoff_ts": "2015-01-13T16:43:17",
+          "pickup_day": 14,
+          "pickup_hour": 8,
+          "trip_distance": 0.0,
+          "duration_minutes": -976.25,
+          "fare_amount": 20.5,
+          "tip_amount": 0.0,
+          "total_amount": 22.3,
+          "pickup_longitude": 0.0,
+          "pickup_latitude": 0.0,
+          "dropoff_longitude": -73.93416595458984,
+          "dropoff_latitude": 40.75229263305664
+        },
+        {
+          "vendor_id": 1,
+          "pickup_ts": "2015-01-06T16:21:46",
+          "dropoff_ts": "2015-01-06T12:27:43",
+          "pickup_day": 6,
+          "pickup_hour": 16,
+          "trip_distance": 0.7,
+          "duration_minutes": -234.05,
+          "fare_amount": 5.0,
+          "tip_amount": 1.7,
+          "total_amount": 7.5,
+          "pickup_longitude": -73.95254516601562,
+          "pickup_latitude": 40.74241638183594,
+          "dropoff_longitude": -73.94770050048828,
+          "dropoff_latitude": 40.752197265625
+        }
+      ],
+      "negative_total_amount": [
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2015-01-11T03:56:15",
+          "dropoff_ts": "2015-01-11T03:56:17",
+          "pickup_day": 11,
+          "pickup_hour": 3,
+          "trip_distance": 0.0,
+          "duration_minutes": 0.03333333333333333,
+          "fare_amount": -450.0,
+          "tip_amount": 0.0,
+          "total_amount": -450.3,
+          "pickup_longitude": 0.0,
+          "pickup_latitude": 0.0,
+          "dropoff_longitude": 0.0,
+          "dropoff_latitude": 0.0
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2015-01-15T15:20:22",
+          "dropoff_ts": "2015-01-15T15:20:26",
+          "pickup_day": 15,
+          "pickup_hour": 15,
+          "trip_distance": 0.0,
+          "duration_minutes": 0.06666666666666667,
+          "fare_amount": -400.0,
+          "tip_amount": 0.0,
+          "total_amount": -400.3,
+          "pickup_longitude": 0.0,
+          "pickup_latitude": 0.0,
+          "dropoff_longitude": 0.0,
+          "dropoff_latitude": 0.0
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2015-01-10T02:49:03",
+          "dropoff_ts": "2015-01-10T02:50:35",
+          "pickup_day": 10,
+          "pickup_hour": 2,
+          "trip_distance": 0.0,
+          "duration_minutes": 1.5333333333333334,
+          "fare_amount": -255.0,
+          "tip_amount": 0.0,
+          "total_amount": -255.8,
+          "pickup_longitude": 0.0,
+          "pickup_latitude": 0.0,
+          "dropoff_longitude": 0.0,
+          "dropoff_latitude": 0.0
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2015-01-04T19:23:11",
+          "dropoff_ts": "2015-01-04T19:24:49",
+          "pickup_day": 4,
+          "pickup_hour": 19,
+          "trip_distance": 0.0,
+          "duration_minutes": 1.6333333333333333,
+          "fare_amount": -250.0,
+          "tip_amount": 0.0,
+          "total_amount": -250.3,
+          "pickup_longitude": -73.79354095458984,
+          "pickup_latitude": 40.6568603515625,
+          "dropoff_longitude": -73.79354858398438,
+          "dropoff_latitude": 40.6568717956543
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2015-01-29T01:51:19",
+          "dropoff_ts": "2015-01-29T02:03:17",
+          "pickup_day": 29,
+          "pickup_hour": 1,
+          "trip_distance": 0.78,
+          "duration_minutes": 11.966666666666667,
+          "fare_amount": -242.25,
+          "tip_amount": 0.0,
+          "total_amount": -242.55,
+          "pickup_longitude": -73.9957504272461,
+          "pickup_latitude": 40.75070571899414,
+          "dropoff_longitude": -73.99612426757812,
+          "dropoff_latitude": 40.75883102416992
+        }
+      ]
+    },
+    "yellow_tripdata_2024": {
+      "dataset": "yellow_tripdata_2024",
+      "largest_trip_distance": [
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2024-11-28T19:28:00",
+          "dropoff_ts": "2024-11-28T19:42:00",
+          "pickup_day": 28,
+          "pickup_hour": 19,
+          "trip_distance": 398608.62,
+          "duration_minutes": 14.0,
+          "fare_amount": 22.04,
+          "tip_amount": 0.0,
+          "total_amount": 26.04,
+          "pu_location_id": 151,
+          "do_location_id": 140
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2024-10-16T17:24:00",
+          "dropoff_ts": "2024-10-16T17:59:00",
+          "pickup_day": 16,
+          "pickup_hour": 17,
+          "trip_distance": 366343.04,
+          "duration_minutes": 35.0,
+          "fare_amount": 22.06,
+          "tip_amount": 0.0,
+          "total_amount": 26.06,
+          "pu_location_id": 48,
+          "do_location_id": 186
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2024-10-03T06:52:00",
+          "dropoff_ts": "2024-10-03T07:01:00",
+          "pickup_day": 3,
+          "pickup_hour": 6,
+          "trip_distance": 331688.82,
+          "duration_minutes": 9.0,
+          "fare_amount": 10.88,
+          "tip_amount": 0.0,
+          "total_amount": 14.88,
+          "pu_location_id": 143,
+          "do_location_id": 237
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2024-09-15T14:18:00",
+          "dropoff_ts": "2024-09-15T14:32:00",
+          "pickup_day": 15,
+          "pickup_hour": 14,
+          "trip_distance": 330397.59,
+          "duration_minutes": 14.0,
+          "fare_amount": 8.86,
+          "tip_amount": 0.0,
+          "total_amount": 12.86,
+          "pu_location_id": 74,
+          "do_location_id": 262
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2024-12-22T08:53:00",
+          "dropoff_ts": "2024-12-22T08:58:00",
+          "pickup_day": 22,
+          "pickup_hour": 8,
+          "trip_distance": 328827.63,
+          "duration_minutes": 5.0,
+          "fare_amount": 15.32,
+          "tip_amount": 0.0,
+          "total_amount": 19.32,
+          "pu_location_id": 137,
+          "do_location_id": 186
+        }
+      ],
+      "largest_duration_minutes": [
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2024-04-08T23:16:11",
+          "dropoff_ts": "2024-04-15T18:03:42",
+          "pickup_day": 8,
+          "pickup_hour": 23,
+          "trip_distance": 13.62,
+          "duration_minutes": 9767.516666666666,
+          "fare_amount": 1.0,
+          "tip_amount": 0.0,
+          "total_amount": 18.26,
+          "pu_location_id": 129,
+          "do_location_id": 138
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2024-10-16T13:03:49",
+          "dropoff_ts": "2024-10-23T07:40:53",
+          "pickup_day": 16,
+          "pickup_hour": 13,
+          "trip_distance": 32.37,
+          "duration_minutes": 9757.066666666668,
+          "fare_amount": 152.5,
+          "tip_amount": 0.0,
+          "total_amount": 170.88,
+          "pu_location_id": 48,
+          "do_location_id": 265
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2024-07-22T20:39:57",
+          "dropoff_ts": "2024-07-29T13:50:14",
+          "pickup_day": 22,
+          "pickup_hour": 20,
+          "trip_distance": 2.34,
+          "duration_minutes": 9670.283333333333,
+          "fare_amount": 31.0,
+          "tip_amount": 0.0,
+          "total_amount": 40.25,
+          "pu_location_id": 138,
+          "do_location_id": 130
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2024-01-24T17:03:14",
+          "dropoff_ts": "2024-01-31T06:38:38",
+          "pickup_day": 24,
+          "pickup_hour": 17,
+          "trip_distance": 2.26,
+          "duration_minutes": 9455.4,
+          "fare_amount": 30.3,
+          "tip_amount": 0.0,
+          "total_amount": 36.8,
+          "pu_location_id": 237,
+          "do_location_id": 170
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2024-03-27T10:36:13",
+          "dropoff_ts": "2024-04-02T18:08:46",
+          "pickup_day": 27,
+          "pickup_hour": 10,
+          "trip_distance": 0.0,
+          "duration_minutes": 9092.55,
+          "fare_amount": 3.0,
+          "tip_amount": 0.0,
+          "total_amount": 4.5,
+          "pu_location_id": 207,
+          "do_location_id": 207
+        }
+      ],
+      "negative_fare_amount": [
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2024-07-22T20:41:53",
+          "dropoff_ts": "2024-07-23T20:11:16",
+          "pickup_day": 22,
+          "pickup_hour": 20,
+          "trip_distance": 63.38,
+          "duration_minutes": 1409.3833333333334,
+          "fare_amount": -2261.2,
+          "tip_amount": 0.0,
+          "total_amount": -2265.45,
+          "pu_location_id": 7,
+          "do_location_id": 7
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2024-07-20T17:37:16",
+          "dropoff_ts": "2024-07-20T22:21:16",
+          "pickup_day": 20,
+          "pickup_hour": 17,
+          "trip_distance": 313.01,
+          "duration_minutes": 284.0,
+          "fare_amount": -2164.6,
+          "tip_amount": 20.0,
+          "total_amount": -2169.29,
+          "pu_location_id": 138,
+          "do_location_id": 265
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2024-11-06T09:05:55",
+          "dropoff_ts": "2024-11-06T14:03:14",
+          "pickup_day": 6,
+          "pickup_hour": 9,
+          "trip_distance": 194.79,
+          "duration_minutes": 297.31666666666666,
+          "fare_amount": -1458.3,
+          "tip_amount": 0.0,
+          "total_amount": -1477.68,
+          "pu_location_id": 94,
+          "do_location_id": 48
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2024-07-12T21:04:59",
+          "dropoff_ts": "2024-07-13T00:17:13",
+          "pickup_day": 12,
+          "pickup_hour": 21,
+          "trip_distance": 203.71,
+          "duration_minutes": 192.23333333333332,
+          "fare_amount": -1349.8,
+          "tip_amount": 0.0,
+          "total_amount": -1374.37,
+          "pu_location_id": 132,
+          "do_location_id": 265
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2024-06-30T18:20:04",
+          "dropoff_ts": "2024-06-30T21:39:34",
+          "pickup_day": 30,
+          "pickup_hour": 18,
+          "trip_distance": 185.27,
+          "duration_minutes": 199.5,
+          "fare_amount": -1285.4,
+          "tip_amount": 0.0,
+          "total_amount": -1315.97,
+          "pu_location_id": 138,
+          "do_location_id": 265
+        }
+      ],
+      "zero_or_negative_duration": [
+        {
+          "vendor_id": 1,
+          "pickup_ts": "2024-10-11T23:58:50",
+          "dropoff_ts": "2024-10-11T00:11:47",
+          "pickup_day": 11,
+          "pickup_hour": 23,
+          "trip_distance": 1.4,
+          "duration_minutes": -1427.05,
+          "fare_amount": 19.5,
+          "tip_amount": 0.0,
+          "total_amount": 20.0,
+          "pu_location_id": 81,
+          "do_location_id": 32
+        },
+        {
+          "vendor_id": 1,
+          "pickup_ts": "2024-10-11T23:56:20",
+          "dropoff_ts": "2024-10-11T01:01:40",
+          "pickup_day": 11,
+          "pickup_hour": 23,
+          "trip_distance": 13.4,
+          "duration_minutes": -1374.6666666666667,
+          "fare_amount": 49.5,
+          "tip_amount": 0.0,
+          "total_amount": 50.0,
+          "pu_location_id": 261,
+          "do_location_id": 183
+        },
+        {
+          "vendor_id": 1,
+          "pickup_ts": "2024-10-11T23:56:04",
+          "dropoff_ts": "2024-10-11T01:15:02",
+          "pickup_day": 11,
+          "pickup_hour": 23,
+          "trip_distance": 13.1,
+          "duration_minutes": -1361.0333333333333,
+          "fare_amount": 49.5,
+          "tip_amount": 0.0,
+          "total_amount": 50.0,
+          "pu_location_id": 261,
+          "do_location_id": 18
+        },
+        {
+          "vendor_id": 1,
+          "pickup_ts": "2024-10-21T15:41:06",
+          "dropoff_ts": "2024-10-21T03:44:25",
+          "pickup_day": 21,
+          "pickup_hour": 15,
+          "trip_distance": 1.4,
+          "duration_minutes": -716.6833333333333,
+          "fare_amount": 12.1,
+          "tip_amount": 2.0,
+          "total_amount": 18.1,
+          "pu_location_id": 90,
+          "do_location_id": 170
+        },
+        {
+          "vendor_id": 1,
+          "pickup_ts": "2024-10-20T20:13:09",
+          "dropoff_ts": "2024-10-20T08:23:59",
+          "pickup_day": 20,
+          "pickup_hour": 20,
+          "trip_distance": 4.9,
+          "duration_minutes": -709.1666666666666,
+          "fare_amount": 26.8,
+          "tip_amount": 6.36,
+          "total_amount": 38.16,
+          "pu_location_id": 158,
+          "do_location_id": 75
+        }
+      ],
+      "negative_total_amount": [
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2024-07-22T20:41:53",
+          "dropoff_ts": "2024-07-23T20:11:16",
+          "pickup_day": 22,
+          "pickup_hour": 20,
+          "trip_distance": 63.38,
+          "duration_minutes": 1409.3833333333334,
+          "fare_amount": -2261.2,
+          "tip_amount": 0.0,
+          "total_amount": -2265.45,
+          "pu_location_id": 7,
+          "do_location_id": 7
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2024-07-20T17:37:16",
+          "dropoff_ts": "2024-07-20T22:21:16",
+          "pickup_day": 20,
+          "pickup_hour": 17,
+          "trip_distance": 313.01,
+          "duration_minutes": 284.0,
+          "fare_amount": -2164.6,
+          "tip_amount": 20.0,
+          "total_amount": -2169.29,
+          "pu_location_id": 138,
+          "do_location_id": 265
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2024-11-06T09:05:55",
+          "dropoff_ts": "2024-11-06T14:03:14",
+          "pickup_day": 6,
+          "pickup_hour": 9,
+          "trip_distance": 194.79,
+          "duration_minutes": 297.31666666666666,
+          "fare_amount": -1458.3,
+          "tip_amount": 0.0,
+          "total_amount": -1477.68,
+          "pu_location_id": 94,
+          "do_location_id": 48
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2024-07-12T21:04:59",
+          "dropoff_ts": "2024-07-13T00:17:13",
+          "pickup_day": 12,
+          "pickup_hour": 21,
+          "trip_distance": 203.71,
+          "duration_minutes": 192.23333333333332,
+          "fare_amount": -1349.8,
+          "tip_amount": 0.0,
+          "total_amount": -1374.37,
+          "pu_location_id": 132,
+          "do_location_id": 265
+        },
+        {
+          "vendor_id": 2,
+          "pickup_ts": "2024-06-30T18:20:04",
+          "dropoff_ts": "2024-06-30T21:39:34",
+          "pickup_day": 30,
+          "pickup_hour": 18,
+          "trip_distance": 185.27,
+          "duration_minutes": 199.5,
+          "fare_amount": -1285.4,
+          "tip_amount": 0.0,
+          "total_amount": -1315.97,
+          "pu_location_id": 138,
+          "do_location_id": 265
+        }
+      ]
+    }
+  },
+  "table_outputs": {
+    "null_percentages": "hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/project2026/results/tables/eda/null_percentages",
+    "pickup_hour_distribution": "hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/project2026/results/tables/eda/pickup_hour_distribution",
+    "pickup_day_distribution_2024": "hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/project2026/results/tables/eda/pickup_day_distribution_2024",
+    "trip_distance_log_histogram": "hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/project2026/results/tables/eda/trip_distance_log_histogram",
+    "total_amount_log_histogram": "hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/project2026/results/tables/eda/total_amount_log_histogram",
+    "top_10_pickup_zones_2024": "hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/project2026/results/tables/eda/top_10_pickup_zones_2024"
+  },
+  "hdfs_output_sizes_bytes": {
+    "eda_tables_dir": 6150
+  },
+  "hdfs_file_counts": {
+    "eda_tables_dir": 6
+  },
+  "elapsed_seconds": 4011.758
+}

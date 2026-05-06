@@ -23,7 +23,7 @@ from common import (
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Prepare raw NYC taxi CSV datasets into typed Parquet datasets."
+        description="Prepare taxi CSV datasets into Parquet datasets"
     )
     parser.add_argument("--student-id", required=True, type=int)
     parser.add_argument("--input-base", required=True)
