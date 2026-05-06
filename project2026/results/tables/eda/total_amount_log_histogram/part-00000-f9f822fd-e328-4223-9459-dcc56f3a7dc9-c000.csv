@@ -1,0 +1,16 @@
+dataset,column_name,log10_floor_bucket,count
+yellow_tripdata_2015,total_amount,-2,9
+yellow_tripdata_2015,total_amount,-1,2978
+yellow_tripdata_2015,total_amount,0,5339493
+yellow_tripdata_2015,total_amount,1,7388448
+yellow_tripdata_2015,total_amount,2,12783
+yellow_tripdata_2015,total_amount,3,13
+yellow_tripdata_2015,total_amount,6,1
+yellow_tripdata_2024,total_amount,-2,306
+yellow_tripdata_2024,total_amount,-1,491
+yellow_tripdata_2024,total_amount,0,1009087
+yellow_tripdata_2024,total_amount,1,38907097
+yellow_tripdata_2024,total_amount,2,638226
+yellow_tripdata_2024,total_amount,3,48
+yellow_tripdata_2024,total_amount,4,2
+yellow_tripdata_2024,total_amount,5,2

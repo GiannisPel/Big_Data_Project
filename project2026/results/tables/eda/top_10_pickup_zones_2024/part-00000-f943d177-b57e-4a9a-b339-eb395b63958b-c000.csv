@@ -1,0 +1,11 @@
+pu_location_id,borough,zone,service_zone,trip_count
+132,Queens,JFK Airport,Airports,1989986
+237,Manhattan,Upper East Side South,Yellow Zone,1915438
+161,Manhattan,Midtown Center,Yellow Zone,1914605
+236,Manhattan,Upper East Side North,Yellow Zone,1729895
+162,Manhattan,Midtown East,Yellow Zone,1418846
+230,Manhattan,Times Sq/Theatre District,Yellow Zone,1391157
+186,Manhattan,Penn Station/Madison Sq West,Yellow Zone,1362156
+142,Manhattan,Lincoln Square East,Yellow Zone,1314690
+138,Queens,LaGuardia Airport,Airports,1295499
+170,Manhattan,Murray Hill,Yellow Zone,1176580
