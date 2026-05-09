@@ -26,10 +26,11 @@ parameters:
 
 
 project2026/
-  jobs/
-  lib/
-  docs/
-  outputs/
+  - jobs/
+  - lib/
+  - docs/
+  - outputs/
+    
 README.md
 RUNBOOK.md
 
