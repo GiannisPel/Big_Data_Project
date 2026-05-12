@@ -1,0 +1,1 @@
+RDD implementation: no Catalyst logical/physical plan is available. The job manually parses CSV lines and uses map/filter/reduceByKey.

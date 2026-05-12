@@ -45,10 +45,10 @@ spark-submit \
 
 ## HDFS output 
 
-/user/ipelekanos/project2026/data/parquet/yellow_tripdata_2015
-/user/ipelekanos/project2026/data/parquet/yellow_tripdata_2024
-/user/ipelekanos/project2026/data/parquet/taxi_zone_lookup
-/user/ipelekanos/project2026/results/metrics/prepare_parquet_metrics.json
+yellow_tripdata_2015
+yellow_tripdata_2024
+taxi_zone_lookup
+prepare_parquet_metrics.json
 
 ## Partitions
 
@@ -77,20 +77,61 @@ spark-submit \
 
 ## EDA
 
-```bash
 ./project2026/scripts/run_eda.sh
 
 ### EDA outputs
 
-/user/ipelekanos/project2026/results/tables/eda/null_percentages
-/user/ipelekanos/project2026/results/tables/eda/pickup_day_distribution_2024
-/user/ipelekanos/project2026/results/tables/eda/pickup_hour_distribution
-/user/ipelekanos/project2026/results/tables/eda/top_10_pickup_zones_2024
-/user/ipelekanos/project2026/results/tables/eda/total_amount_log_histogram
-/user/ipelekanos/project2026/results/tables/eda/trip_distance_log_histogram
+null_percentages
+pickup_day_distribution_2024
+pickup_hour_distribution
+top_10_pickup_zones_2024
+total_amount_log_histogram
+trip_distance_log_histogram
 
-### EDA Spark
+## Q1
 
-Spark app ID: spark-7055d17eb1074174a68bf1a8e581be7a
-Metrics path: /user/ipelekanos/project2026/results/metrics/eda_metrics.json
+./project2026/scripts/run_q1_RDD.sh
+./project2026/scripts/run_q1_DF_CSV
+./project2026/scripts/run_q1_DF_Par
+./project2026/scripts/run_q1_SQL_Par
 
+### Q1 outputs
+
+METRICS:
+
+q1_rdd_metrics.json
+q1_df_metrics.json
+q1_df_parquet_metrics.json
+q1_sql_parquet_metrics.json
+
+TABLES:
+
+rdd_csv
+rdd_csv_time_band
+df_csv
+df_csv_time_band
+df_parquet
+df_parquet_time_band
+sql_parquet
+sql_parquet_time_band
+
+PLANS:
+
+q1_rdd_csv_plan.txt
+q1_df_csv_plan.txt
+q1_df_parquet_plan.txt
+q1_sql_parquet_plan.txt
+
+### Q1 outputs into local repo
+
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/metrics/q1_rdd_csv_metrics.json project2026/results/metrics/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/metrics/q1_df_csv_metrics.json project2026/results/metrics/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/metrics/q1_df_parquet_metrics.json project2026/results/metrics/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/metrics/q1_sql_parquet_metrics.json project2026/results/metrics/
+
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q1_rdd_csv_plan.txt project2026/results/plans/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q1_df_csv_plan.txt project2026/results/plans/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q1_df_parquet_plan.txt project2026/results/plans/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q1_sql_parquet_plan.txt project2026/results/plans/
+
+hdfs dfs -get /user/$VDCLOUD_USER/project2026/results/tables/q1 project2026/results/tables/q1

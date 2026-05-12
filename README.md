@@ -26,22 +26,17 @@ parameters:
 
 
 project2026/
-  - jobs/
-  - lib/
-  - docs/
-  - outputs/
-    
+  jobs/
+  docs/
+  outputs/
+  docs/
+  jobs/
+  outputs/
+  report/
+  results/
+  scripts/
+
 README.md
+LLM_USAGE.md
 RUNBOOK.md
 
-## Current status
-
-- Remote Spark/Kubernetes/HDFS test completed.
-- CSV to Parquet preparation completed successfully.
-- Prepared Parquet datasets are stored in HDFS under:
-
-/user/ipelekanos/project2026/data/parquet/
-
-AND preparation metrics are at:
-
-/user/ipelekanos/project2026/results/metrics/prepare_parquet_metrics.json
