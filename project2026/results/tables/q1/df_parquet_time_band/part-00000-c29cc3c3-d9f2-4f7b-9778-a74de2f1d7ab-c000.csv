@@ -1,0 +1,3 @@
+time_band,trips,unique_pickup_zones,avg_passenger_count,avg_duration_minutes,avg_trip_distance,avg_total_amount,total_revenue,trips_share_in_personal_window
+Late,469945,250,1.4061,16.1113,4.2389,29.1057,1.367807911E7,0.685861
+Evening,215245,241,1.4098,16.1715,5.6643,28.2564,6082053.36,0.314139
