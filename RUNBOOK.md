@@ -91,9 +91,9 @@ trip_distance_log_histogram
 ## Q1
 
 ./project2026/scripts/run_q1_RDD.sh
-./project2026/scripts/run_q1_DF_CSV
-./project2026/scripts/run_q1_DF_Par
-./project2026/scripts/run_q1_SQL_Par
+./project2026/scripts/run_q1_DF_CSV.sh
+./project2026/scripts/run_q1_DF_Par.sh
+./project2026/scripts/run_q1_SQL_Par.sh
 
 ### Q1 outputs
 
@@ -103,6 +103,12 @@ q1_rdd_metrics.json
 q1_df_metrics.json
 q1_df_parquet_metrics.json
 q1_sql_parquet_metrics.json
+
+PLANS:
+
+q1_df_csv_plan.txt
+q1_df_parquet_plan.txt
+q1_sql_parquet_plan.txt
 
 TABLES:
 
@@ -114,13 +120,6 @@ df_parquet
 df_parquet_time_band
 sql_parquet
 sql_parquet_time_band
-
-PLANS:
-
-q1_rdd_csv_plan.txt
-q1_df_csv_plan.txt
-q1_df_parquet_plan.txt
-q1_sql_parquet_plan.txt
 
 ### Q1 outputs into local repo
 
@@ -135,3 +134,51 @@ hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q1_df_parquet_pla
 hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q1_sql_parquet_plan.txt project2026/results/plans/
 
 hdfs dfs -get /user/$VDCLOUD_USER/project2026/results/tables/q1 project2026/results/tables/q1
+
+
+## Q2
+
+./project2026/scripts/run_q2_DF_Builtin.sh
+./project2026/scripts/run_q2_DF_UDF.sh
+./project2026/scripts/run_q2_SQL.sh
+
+### Q2 outputs
+
+SPARK APP ID: spark-f963a23942c34629b49ee7e36e60f8d0
+
+METRICS: 
+
+q2_df_builtin_metrics.json
+q2_df_udf_metrics.json
+q2_sql_metrics.json
+
+PLANS:
+
+q2_df_builtin_plan.txt
+q2_df_udf_plan.txt
+q2_sql_plan.txt
+
+TABLES:
+
+df_builtin_by_hour
+sql_by_hour
+sql_fastest
+sql_slowest_per_km
+
+### Q2 outputs into local repo
+
+METRICS:
+
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/metrics/q2_df_builtin_metrics.json project2026/results/metrics/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/metrics/q2_df_udf_metrics.json project2026/results/metrics/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/metrics/q2_sql_metrics.json project2026/results/metrics/
+
+PLANS:
+
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q2_df_builtin_plan.txt project2026/results/plans/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q2_df_udf_plan.txt project2026/results/plans/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q2_sql_plan.txt project2026/results/plans/
+
+TABLES:
+
+hdfs dfs -get /user/$VDCLOUD_USER/project2026/results/tables/q2 project2026/results/tables/q2
