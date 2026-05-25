@@ -182,3 +182,88 @@ hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q2_sql_plan.txt p
 TABLES:
 
 hdfs dfs -get /user/$VDCLOUD_USER/project2026/results/tables/q2 project2026/results/tables/q2
+
+## Q3
+
+./project2026/scripts/run_q3_DF_CSV.sh
+./project2026/scripts/run_q3_DF_Par.sh
+./project2026/scripts/run_q3_SQL_Par.sh
+./project2026/scripts/run_q3_DF_NoPruning.sh
+
+### Q3 outputs
+
+Spark DF CSV metrics ID: spark-a7d53e51ee8e4813b567f158f63dbf33
+Spark DF Parquate ID: spark-183e73870a1b4005896f12e7b8f615fd
+Spark SQL Parquate ID: spark-abdf683bf4c34101935e3099c6d417d2
+Spark DF No Pruning ID: spark-84bd661d42e1404e8c1f80b95b4daad1
+
+METRICS:
+
+q3_df_csv_metrics.json
+q3_df_parquet_metrics.json
+q3_df_parquet_no_pruning_metrics.json
+q3_sql_parquet_metrics.json
+
+PLANS:
+
+q3_df_csv_plan.txt
+q3_df_parquet_no_pruning_plan.txt
+q3_df_parquet_plan.txt
+q3_sql_parquet_plan.txt
+
+TABLES:
+
+df_csv_top_revenue_per_mile
+df_csv_top_revenue_per_minute
+df_csv_top_total_revenue
+df_parquet_no_pruning_top_revenue_per_mile
+df_parquet_no_pruning_top_revenue_per_minute
+df_parquet_no_pruning_top_total_revenue
+df_parquet_top_revenue_per_mile
+df_parquet_top_revenue_per_minute
+df_parquet_top_total_revenue
+sql_parquet_top_revenue_per_mile
+sql_parquet_top_revenue_per_minute
+sql_parquet_top_total_revenue
+
+PLOTS:
+
+q3_top_zones_revenue_per_mile.png
+q3_top_zones_revenue_per_minute.png
+q3_top_zones_total_revenue.png
+
+### Q3 outputs into local
+
+METRICS:
+
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/metrics/q3_df_csv_metrics.json project2026/results/metrics/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/metrics/q3_df_parquet_metrics.json project2026/results/metrics/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/metrics/q3_sql_parquet_metrics.json project2026/results/metrics/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/metrics/q3_df_parquet_no_pruning_metrics.json project2026/results/metrics/
+
+PLANS:
+
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q3_df_csv_plan.txt project2026/results/plans/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q3_df_parquet_plan.txt project2026/results/plans/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q3_sql_parquet_plan.txt project2026/results/plans/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q3_df_parquet_no_pruning_plan.txt project2026/results/plans/
+
+TABLES:
+
+hdfs dfs -get /user/$VDCLOUD_USER/project2026/results/tables/q3 project2026/results/tables/q3
+
+Generate PLOTS:
+
+python project2026/scripts/plot_q3.py \
+  --tables-dir project2026/results/tables/q3 \
+  --plots-dir project2026/results/plots \
+  --top-n 10
+
+PLOTS:
+
+project2026/results/plots/q3_top_zones_total_revenue.png
+project2026/results/plots/q3_top_zones_revenue_per_mile.png
+project2026/results/plots/q3_top_zones_revenue_per_minute.png
+
+## Q4
+

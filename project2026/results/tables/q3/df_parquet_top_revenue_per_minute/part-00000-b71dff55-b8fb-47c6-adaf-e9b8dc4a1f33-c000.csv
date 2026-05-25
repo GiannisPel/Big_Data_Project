@@ -1,0 +1,21 @@
+pickup_borough,pickup_zone,distance_bucket,trips,total_revenue,avg_revenue_per_trip,revenue_per_mile,revenue_per_minute,avg_fare_amount,avg_tip_amount,surcharge_share
+Queens,JFK Airport,very_short,441,11688.94,26.5055,134.8672,19.9045,21.451,1.0638,0.153255
+Queens,LaGuardia Airport,very_short,107,2542.28,23.7596,53.0526,7.1346,13.9841,0.9507,0.385874
+N/A,Outside of NYC,medium,62,4400.02,70.9681,11.8052,4.7171,59.1732,5.9358,0.082559
+Manhattan,East Harlem South,very_short,324,4149.06,12.8057,19.4199,3.5253,8.4322,1.1488,0.260257
+N/A,Outside of NYC,long,50,6159.26,123.1852,4.9875,3.4321,107.8712,7.9176,0.060733
+Manhattan,Upper West Side North,very_short,1378,18436.15,13.3789,19.8554,3.3893,7.0792,1.7187,0.37129
+Manhattan,Upper West Side South,very_short,2284,30994.15,13.5701,19.3513,3.328,6.849,1.7762,0.39529
+Manhattan,Lenox Hill East,very_short,1225,16589.57,13.5425,19.3923,3.2125,6.8649,1.7079,0.401031
+Manhattan,Two Bridges/Seward Park,very_short,177,3331.54,18.8223,28.3511,3.1547,12.226,1.9267,0.239079
+Queens,Maspeth,medium,53,2834.04,53.4725,9.515,3.1404,42.6551,5.3211,0.10455
+Manhattan,Lenox Hill West,very_short,2577,34597.45,13.4255,19.5357,3.1359,6.6927,1.7563,0.404782
+Manhattan,Washington Heights South,very_short,63,813.35,12.9103,21.3366,3.1215,9.914,0.7068,0.177341
+Unknown,N/A,very_short,272,4254.51,15.6416,23.9232,3.1064,9.2377,1.8821,0.366656
+Manhattan,Yorkville West,very_short,2644,34442.99,13.0268,19.5207,2.9834,6.3147,1.7518,0.415406
+Manhattan,Seaport,very_short,205,3234.5,15.778,24.0233,2.9433,9.2286,1.6912,0.30482
+Manhattan,East Harlem North,very_short,215,2434.77,11.3245,18.4076,2.9372,7.9695,0.6241,0.241144
+Queens,JFK Airport,short,595,11851.81,19.919,8.2137,2.9308,14.5179,1.3382,0.214751
+Queens,Baisley Park,long,167,15354.95,91.9458,6.0663,2.9136,74.169,10.0531,0.085632
+Queens,LaGuardia Airport,medium,14570,819070.52,56.2162,6.9926,2.8893,33.9059,7.4052,0.275826
+Queens,Springfield Gardens South,long,71,6485.13,91.3399,5.2382,2.8623,79.1486,7.3932,0.0533

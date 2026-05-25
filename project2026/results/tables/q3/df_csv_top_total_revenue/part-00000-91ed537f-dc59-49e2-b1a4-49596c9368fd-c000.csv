@@ -1,0 +1,21 @@
+pickup_borough,pickup_zone,distance_bucket,trips,total_revenue,avg_revenue_per_trip,revenue_per_mile,revenue_per_minute,avg_fare_amount,avg_tip_amount,surcharge_share
+Queens,JFK Airport,long,36302,3265402.2,89.951,4.9637,2.381,70.5866,10.6104,0.101809
+Queens,LaGuardia Airport,medium,14570,819070.52,56.2162,6.9926,2.8893,33.9059,7.4052,0.275826
+Queens,LaGuardia Airport,long,8087,613088.07,75.8116,6.0669,2.6511,51.7586,9.4717,0.200855
+Manhattan,West Village,short,18230,370261.03,20.3105,11.5237,1.5297,13.0879,2.3729,0.243176
+Manhattan,Midtown Center,short,16831,346905.72,20.6111,11.1712,1.5742,13.2056,2.5168,0.24606
+Manhattan,Times Sq/Theatre District,short,16344,345815.19,21.1585,11.6736,1.5378,13.6571,2.585,0.243473
+Manhattan,Lincoln Square East,short,16641,336375.34,20.2136,10.7583,1.6888,12.6534,2.6183,0.26173
+Manhattan,East Village,short,14804,298261.64,20.1474,11.3006,1.6267,12.9723,2.3233,0.244906
+Manhattan,Clinton East,short,13968,284638.62,20.3779,11.3345,1.6066,12.9151,2.5406,0.255235
+Manhattan,West Village,medium,7946,282565.41,35.5607,7.5919,1.4063,26.1438,4.3727,0.144007
+Manhattan,East Village,medium,8342,280871.67,33.6696,7.3523,1.5128,24.5738,4.1088,0.150348
+Manhattan,Penn Station/Madison Sq West,short,12878,275838.0,21.4193,11.8823,1.511,13.7495,2.7084,0.249363
+Manhattan,Times Sq/Theatre District,medium,7365,263274.39,35.7467,7.337,1.4894,26.4162,4.1091,0.147423
+Queens,JFK Airport,medium,7238,258418.39,35.703,5.4349,1.9639,28.6253,2.7651,0.126853
+Manhattan,Clinton East,medium,7180,254492.47,35.4446,7.1933,1.5476,26.0707,4.2645,0.145184
+Manhattan,Union Sq,short,12146,245860.57,20.2421,11.4723,1.6212,13.067,2.3115,0.244006
+Manhattan,Penn Station/Madison Sq West,medium,6744,244057.13,36.1888,7.7153,1.4379,26.1053,4.6069,0.160223
+Manhattan,Greenwich Village South,short,11604,233703.78,20.1399,11.3356,1.5348,12.9639,2.3226,0.246558
+Manhattan,East Chelsea,short,10891,231260.74,21.2341,11.5633,1.534,13.8773,2.4683,0.236694
+Manhattan,Midtown North,short,11175,226185.6,20.2403,11.3035,1.638,12.8698,2.4651,0.253986

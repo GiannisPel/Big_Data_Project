@@ -1,0 +1,21 @@
+pickup_borough,pickup_zone,distance_bucket,trips,total_revenue,avg_revenue_per_trip,revenue_per_mile,revenue_per_minute,avg_fare_amount,avg_tip_amount,surcharge_share
+Queens,JFK Airport,very_short,441,11688.94,26.5055,134.8672,19.9045,21.451,1.0638,0.153255
+Queens,LaGuardia Airport,very_short,107,2542.28,23.7596,53.0526,7.1346,13.9841,0.9507,0.385874
+Manhattan,Two Bridges/Seward Park,very_short,177,3331.54,18.8223,28.3511,3.1547,12.226,1.9267,0.239079
+Manhattan,Seaport,very_short,205,3234.5,15.778,24.0233,2.9433,9.2286,1.6912,0.30482
+Manhattan,Financial District North,very_short,317,4730.43,14.9225,24.0172,2.8035,8.415,1.6841,0.324283
+Unknown,N/A,very_short,272,4254.51,15.6416,23.9232,3.1064,9.2377,1.8821,0.366656
+Manhattan,Garment District,very_short,2337,36515.81,15.6251,22.9737,1.9055,9.0318,1.6312,0.336883
+Manhattan,Times Sq/Theatre District,very_short,6649,103589.79,15.5798,22.3721,1.7671,8.9171,1.7114,0.337925
+Manhattan,Lower East Side,very_short,2096,31763.57,15.1544,22.1692,2.2578,8.4624,1.7986,0.340215
+Manhattan,Battery Park City,very_short,198,2984.18,15.0716,22.0756,2.7666,8.7152,1.5209,0.310786
+Manhattan,World Trade Center,very_short,223,3116.54,13.9755,21.8459,2.7882,7.5733,1.4942,0.366432
+Manhattan,Penn Station/Madison Sq West,very_short,3576,55663.21,15.5658,21.7824,1.8074,8.7662,1.8303,0.346461
+Manhattan,Little Italy/NoLiTa,very_short,1775,25999.04,14.6473,21.596,2.144,8.0273,1.7401,0.344215
+Manhattan,Chinatown,very_short,200,3015.12,15.0756,21.5875,2.5682,8.8125,1.4657,0.318229
+Manhattan,Financial District South,very_short,145,2017.53,13.914,21.5272,2.8068,7.6259,1.4122,0.356624
+Manhattan,Murray Hill,very_short,3268,48560.6,14.8594,21.5192,1.9178,8.1269,1.7646,0.354873
+Manhattan,Midtown Center,very_short,5707,85492.29,14.9803,21.5117,2.0528,8.2884,1.7536,0.351872
+Manhattan,Midtown South,very_short,3754,55398.11,14.7571,21.4141,2.0917,8.1177,1.703,0.357122
+Manhattan,Washington Heights South,very_short,63,813.35,12.9103,21.3366,3.1215,9.914,0.7068,0.177341
+Brooklyn,Williamsburg (North Side),very_short,93,1204.11,12.9474,21.2029,2.5402,9.4302,1.3129,0.168174
