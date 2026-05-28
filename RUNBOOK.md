@@ -267,3 +267,66 @@ project2026/results/plots/q3_top_zones_revenue_per_minute.png
 
 ## Q4
 
+./project2026/scripts/run_q4_SQL_Par.sh
+./project2026/scripts/run_q4_DF_Par.sh
+./project2026/scripts/run_q4_SQL_CSV.sh
+
+### Q4 outputs
+
+Spark SQL Parquate ID: spark-cdfe89bd318e48dc8a582a57f908342d
+Spark DF Parquate ID: spark-20abfd23d91b4177a570daeb56b87d6a
+Spark SQL CSV ID: spark-5d58d6e9690b4d67b3d8fb966073644b
+
+METRICS:
+
+q4_df_parquet_metrics.json
+q4_sql_csv_metrics.json
+q4_sql_parquet_metrics.json
+
+PLANS:
+
+q4_df_parquet_plan.txt
+q4_sql_csv_plan.txt
+q4_sql_parquet_plan.txt
+
+TABLES:
+
+df_parquet_by_hour_payment
+df_parquet_card_vs_cash
+df_parquet_vendor_payment
+sql_csv_by_hour_payment
+sql_csv_card_vs_cash
+sql_csv_vendor_payment
+sql_parquet_by_hour_payment
+sql_parquet_card_vs_cash
+sql_parquet_vendor_payment
+
+PLOTS:
+q4_avg_tip_rate_card_by_hour.png
+q4_card_share_by_hour.png
+
+### Q4 outputs into local
+
+METRICS:
+
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/metrics/q4_sql_parquet_metrics.json project2026/results/metrics/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/metrics/q4_df_parquet_metrics.json project2026/results/metrics/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/metrics/q4_sql_csv_metrics.json project2026/results/metrics/
+
+PLANS:
+
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q4_sql_parquet_plan.txt project2026/results/plans/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q4_df_parquet_plan.txt project2026/results/plans/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q4_sql_csv_plan.txt project2026/results/plans/
+
+TABLES:
+
+hdfs dfs -get /user/$VDCLOUD_USER/project2026/results/tables/q4 project2026/results/tables/q4
+
+PLOTS:
+
+source .venv/bin/activate
+
+python project2026/scripts/plot_q4.py \
+  --tables-dir project2026/results/tables/q4 \
+  --plots-dir project2026/results/plots

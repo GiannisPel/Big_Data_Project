@@ -1,0 +1,5 @@
+vendor_id,payment_type,payment_label,trips,payment_share_in_vendor,avg_total_amount,avg_fare_amount,avg_tip_amount,tip_rate,zero_tip_share
+1,1,card,107747,0.869082,28.1293,18.3746,4.1531,0.25466,0.056753
+1,2,cash,16231,0.130918,23.856,18.4134,2.0E-4,2.4E-5,0.999877
+2,1,card,401877,0.871938,30.6916,20.4428,4.4721,0.245037,0.050555
+2,2,cash,59024,0.128062,26.8813,21.2828,1.0E-4,1.3E-5,0.999949

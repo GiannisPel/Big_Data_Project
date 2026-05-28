@@ -1,0 +1,255 @@
+{
+  "job": "q4_sql",
+  "input_format": "parquet",
+  "student_id": 2121261,
+  "spark_application_id": "spark-cdfe89bd318e48dc8a582a57f908342d",
+  "personalization": {
+    "days_2024": [
+      26,
+      27,
+      28
+    ],
+    "hours": [
+      21,
+      22,
+      23,
+      0
+    ],
+    "top_k": 20
+  },
+  "filters": {
+    "duration_minutes_gt_0": true,
+    "trip_distance_gt_0": true,
+    "fare_amount_gt_0": true,
+    "total_amount_gt_0": true,
+    "payment_type_in": [
+      1,
+      2
+    ]
+  },
+  "filtered_row_count": 584879,
+  "output_paths": {
+    "by_hour_payment": "hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/project2026/results/tables/q4/sql_parquet_by_hour_payment",
+    "vendor_payment": "hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/project2026/results/tables/q4/sql_parquet_vendor_payment",
+    "card_vs_cash": "hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/project2026/results/tables/q4/sql_parquet_card_vs_cash",
+    "metrics": "hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/project2026/results/metrics/q4_sql_parquet_metrics.json",
+    "plan": "hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/project2026/results/plans/q4_sql_parquet_plan.txt"
+  },
+  "sql": {
+    "prepare_query": "\n            CREATE OR REPLACE TEMP VIEW q4_filtered AS\n            SELECT\n                vendor_id,\n                pickup_day,\n                pickup_hour,\n                payment_type,\n                CASE\n                    WHEN payment_type = 1 THEN 'card'\n                    WHEN payment_type = 2 THEN 'cash'\n                    ELSE 'other'\n                END AS payment_label,\n                trip_distance,\n                duration_minutes,\n                fare_amount,\n                tip_amount,\n                total_amount\n            FROM yellow_2024_q4\n            WHERE pickup_ts IS NOT NULL\n              AND dropoff_ts IS NOT NULL\n              AND pickup_ts <= dropoff_ts\n              AND duration_minutes > 0\n              AND trip_distance > 0\n              AND fare_amount > 0\n              AND total_amount > 0\n              AND payment_type IN (1, 2)\n              AND pickup_day IN (26, 27, 28)\n              AND pickup_hour IN (21, 22, 23, 0)\n        ",
+    "by_hour_payment_query": "\n            WITH grouped AS (\n                SELECT\n                    pickup_hour,\n                    payment_type,\n                    payment_label,\n                    COUNT(*) AS trips,\n                    AVG(fare_amount) AS avg_fare_amount,\n                    AVG(total_amount) AS avg_total_amount,\n                    AVG(tip_amount) AS avg_tip_amount,\n                    AVG(tip_amount / fare_amount) AS tip_rate,\n                    AVG(CASE WHEN tip_amount = 0 THEN 1.0 ELSE 0.0 END) AS zero_tip_share,\n                    AVG(trip_distance) AS avg_trip_distance,\n                    AVG(duration_minutes) AS avg_duration_minutes\n                FROM q4_filtered\n                GROUP BY pickup_hour, payment_type, payment_label\n            )\n            SELECT\n                pickup_hour,\n                payment_type,\n                payment_label,\n                trips,\n                ROUND(trips / SUM(trips) OVER (PARTITION BY pickup_hour), 6) AS payment_share_in_hour,\n                ROUND(avg_fare_amount, 4) AS avg_fare_amount,\n                ROUND(avg_total_amount, 4) AS avg_total_amount,\n                ROUND(avg_tip_amount, 4) AS avg_tip_amount,\n                ROUND(tip_rate, 6) AS tip_rate,\n                ROUND(zero_tip_share, 6) AS zero_tip_share,\n                ROUND(avg_trip_distance, 4) AS avg_trip_distance,\n                ROUND(avg_duration_minutes, 4) AS avg_duration_minutes\n            FROM grouped\n            ORDER BY pickup_hour, payment_type\n        ",
+    "vendor_payment_query": "\n            WITH grouped AS (\n                SELECT\n                    vendor_id,\n                    payment_type,\n                    payment_label,\n                    COUNT(*) AS trips,\n                    AVG(total_amount) AS avg_total_amount,\n                    AVG(fare_amount) AS avg_fare_amount,\n                    AVG(tip_amount) AS avg_tip_amount,\n                    AVG(tip_amount / fare_amount) AS tip_rate,\n                    AVG(CASE WHEN tip_amount = 0 THEN 1.0 ELSE 0.0 END) AS zero_tip_share\n                FROM q4_filtered\n                GROUP BY vendor_id, payment_type, payment_label\n            )\n            SELECT\n                vendor_id,\n                payment_type,\n                payment_label,\n                trips,\n                ROUND(trips / SUM(trips) OVER (PARTITION BY vendor_id), 6) AS payment_share_in_vendor,\n                ROUND(avg_total_amount, 4) AS avg_total_amount,\n                ROUND(avg_fare_amount, 4) AS avg_fare_amount,\n                ROUND(avg_tip_amount, 4) AS avg_tip_amount,\n                ROUND(tip_rate, 6) AS tip_rate,\n                ROUND(zero_tip_share, 6) AS zero_tip_share\n            FROM grouped\n            ORDER BY vendor_id, payment_type\n        ",
+    "card_vs_cash_query": "\n            SELECT\n                pickup_hour,\n                SUM(CASE WHEN payment_type = 1 THEN 1 ELSE 0 END) AS card_trips,\n                SUM(CASE WHEN payment_type = 2 THEN 1 ELSE 0 END) AS cash_trips,\n                ROUND(\n                    SUM(CASE WHEN payment_type = 1 THEN 1 ELSE 0 END) / COUNT(*),\n                    6\n                ) AS card_share,\n                ROUND(AVG(CASE WHEN payment_type = 1 THEN total_amount END), 4) AS avg_total_card,\n                ROUND(AVG(CASE WHEN payment_type = 2 THEN total_amount END), 4) AS avg_total_cash,\n                ROUND(AVG(CASE WHEN payment_type = 1 THEN fare_amount END), 4) AS avg_fare_card,\n                ROUND(AVG(CASE WHEN payment_type = 2 THEN fare_amount END), 4) AS avg_fare_cash,\n                ROUND(AVG(CASE WHEN payment_type = 1 THEN tip_amount / fare_amount END), 6) AS avg_tip_rate_card\n            FROM q4_filtered\n            GROUP BY pickup_hour\n            ORDER BY pickup_hour\n        "
+  },
+  "by_hour_payment_preview": [
+    {
+      "pickup_hour": 0,
+      "payment_type": 1,
+      "payment_label": "card",
+      "trips": 82565,
+      "payment_share_in_hour": 0.877259,
+      "avg_fare_amount": 19.9643,
+      "avg_total_amount": 29.8698,
+      "avg_tip_amount": 4.2735,
+      "tip_rate": 0.24218,
+      "zero_tip_share": 0.06889,
+      "avg_trip_distance": 3.88,
+      "avg_duration_minutes": 15.427
+    },
+    {
+      "pickup_hour": 0,
+      "payment_type": 2,
+      "payment_label": "cash",
+      "trips": 11552,
+      "payment_share_in_hour": 0.122741,
+      "avg_fare_amount": 21.8137,
+      "avg_total_amount": 27.319,
+      "avg_tip_amount": 0.0002,
+      "tip_rate": 2e-05,
+      "zero_tip_share": 0.99991,
+      "avg_trip_distance": 4.3845,
+      "avg_duration_minutes": 17.5088
+    },
+    {
+      "pickup_hour": 21,
+      "payment_type": 1,
+      "payment_label": "card",
+      "trips": 162287,
+      "payment_share_in_hour": 0.868096,
+      "avg_fare_amount": 19.4046,
+      "avg_total_amount": 29.5014,
+      "avg_tip_amount": 4.3816,
+      "tip_rate": 0.252109,
+      "zero_tip_share": 0.04274,
+      "avg_trip_distance": 3.5558,
+      "avg_duration_minutes": 16.1198
+    },
+    {
+      "pickup_hour": 21,
+      "payment_type": 2,
+      "payment_label": "cash",
+      "trips": 24659,
+      "payment_share_in_hour": 0.131904,
+      "avg_fare_amount": 19.6941,
+      "avg_total_amount": 25.221,
+      "avg_tip_amount": 0.0001,
+      "tip_rate": 1.4e-05,
+      "zero_tip_share": 0.99996,
+      "avg_trip_distance": 3.5989,
+      "avg_duration_minutes": 16.6598
+    },
+    {
+      "pickup_hour": 22,
+      "payment_type": 1,
+      "payment_label": "card",
+      "trips": 147995,
+      "payment_share_in_hour": 0.872525,
+      "avg_fare_amount": 19.8976,
+      "avg_total_amount": 29.9876,
+      "avg_tip_amount": 4.4039,
+      "tip_rate": 0.247736,
+      "zero_tip_share": 0.04656,
+      "avg_trip_distance": 3.7345,
+      "avg_duration_minutes": 16.1477
+    },
+    {
+      "pickup_hour": 22,
+      "payment_type": 2,
+      "payment_label": "cash",
+      "trips": 21622,
+      "payment_share_in_hour": 0.127475,
+      "avg_fare_amount": 19.8257,
+      "avg_total_amount": 25.3229,
+      "avg_tip_amount": 0.0001,
+      "tip_rate": 5e-06,
+      "zero_tip_share": 0.99995,
+      "avg_trip_distance": 3.6766,
+      "avg_duration_minutes": 16.3722
+    },
+    {
+      "pickup_hour": 23,
+      "payment_type": 1,
+      "payment_label": "card",
+      "trips": 116777,
+      "payment_share_in_hour": 0.870178,
+      "avg_fare_amount": 21.0065,
+      "avg_total_amount": 31.4549,
+      "avg_tip_amount": 4.5305,
+      "tip_rate": 0.242688,
+      "zero_tip_share": 0.05924,
+      "avg_trip_distance": 4.0748,
+      "avg_duration_minutes": 16.3045
+    },
+    {
+      "pickup_hour": 23,
+      "payment_type": 2,
+      "payment_label": "cash",
+      "trips": 17422,
+      "payment_share_in_hour": 0.129822,
+      "avg_fare_amount": 22.3145,
+      "avg_total_amount": 28.0566,
+      "avg_tip_amount": 0.0002,
+      "tip_rate": 2.6e-05,
+      "zero_tip_share": 0.99989,
+      "avg_trip_distance": 4.3961,
+      "avg_duration_minutes": 16.9104
+    }
+  ],
+  "vendor_payment_preview": [
+    {
+      "vendor_id": 1,
+      "payment_type": 1,
+      "payment_label": "card",
+      "trips": 107747,
+      "payment_share_in_vendor": 0.869082,
+      "avg_total_amount": 28.1293,
+      "avg_fare_amount": 18.3746,
+      "avg_tip_amount": 4.1531,
+      "tip_rate": 0.25466,
+      "zero_tip_share": 0.05675
+    },
+    {
+      "vendor_id": 1,
+      "payment_type": 2,
+      "payment_label": "cash",
+      "trips": 16231,
+      "payment_share_in_vendor": 0.130918,
+      "avg_total_amount": 23.856,
+      "avg_fare_amount": 18.4134,
+      "avg_tip_amount": 0.0002,
+      "tip_rate": 2.4e-05,
+      "zero_tip_share": 0.99988
+    },
+    {
+      "vendor_id": 2,
+      "payment_type": 1,
+      "payment_label": "card",
+      "trips": 401877,
+      "payment_share_in_vendor": 0.871938,
+      "avg_total_amount": 30.6916,
+      "avg_fare_amount": 20.4428,
+      "avg_tip_amount": 4.4721,
+      "tip_rate": 0.245037,
+      "zero_tip_share": 0.05056
+    },
+    {
+      "vendor_id": 2,
+      "payment_type": 2,
+      "payment_label": "cash",
+      "trips": 59024,
+      "payment_share_in_vendor": 0.128062,
+      "avg_total_amount": 26.8813,
+      "avg_fare_amount": 21.2828,
+      "avg_tip_amount": 0.0001,
+      "tip_rate": 1.3e-05,
+      "zero_tip_share": 0.99995
+    }
+  ],
+  "card_vs_cash_preview": [
+    {
+      "pickup_hour": 0,
+      "card_trips": 82565,
+      "cash_trips": 11552,
+      "card_share": 0.877259,
+      "avg_total_card": 29.8698,
+      "avg_total_cash": 27.319,
+      "avg_fare_card": 19.9643,
+      "avg_fare_cash": 21.8137,
+      "avg_tip_rate_card": 0.24218
+    },
+    {
+      "pickup_hour": 21,
+      "card_trips": 162287,
+      "cash_trips": 24659,
+      "card_share": 0.868096,
+      "avg_total_card": 29.5014,
+      "avg_total_cash": 25.221,
+      "avg_fare_card": 19.4046,
+      "avg_fare_cash": 19.6941,
+      "avg_tip_rate_card": 0.252109
+    },
+    {
+      "pickup_hour": 22,
+      "card_trips": 147995,
+      "cash_trips": 21622,
+      "card_share": 0.872525,
+      "avg_total_card": 29.9876,
+      "avg_total_cash": 25.3229,
+      "avg_fare_card": 19.8976,
+      "avg_fare_cash": 19.8257,
+      "avg_tip_rate_card": 0.247736
+    },
+    {
+      "pickup_hour": 23,
+      "card_trips": 116777,
+      "cash_trips": 17422,
+      "card_share": 0.870178,
+      "avg_total_card": 31.4549,
+      "avg_total_cash": 28.0566,
+      "avg_fare_card": 21.0065,
+      "avg_fare_cash": 22.3145,
+      "avg_tip_rate_card": 0.242688
+    }
+  ],
+  "elapsed_seconds": 1000.471
+}
