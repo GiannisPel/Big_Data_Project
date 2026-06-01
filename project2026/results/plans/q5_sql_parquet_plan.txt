@@ -1,0 +1,84 @@
+== Parsed Logical Plan ==
+'GlobalLimit 20
++- 'LocalLimit 20
+   +- 'Sort ['trips DESC NULLS LAST, 'total_revenue DESC NULLS LAST], true
+      +- 'Aggregate ['pu_borough, 'do_borough], ['pu_borough, 'do_borough, 'COUNT(1) AS trips#120, 'ROUND(('COUNT(1) / cast(685190 as double)), 6) AS trip_share#121, 'ROUND('SUM('total_amount), 4) AS total_revenue#122, 'ROUND('AVG('total_amount), 4) AS avg_total_amount#123, 'ROUND('AVG('trip_distance), 4) AS avg_trip_distance#124, 'ROUND('AVG('duration_minutes), 4) AS avg_duration_minutes#125, 'ROUND('AVG('airport_trip), 6) AS airport_trip_share#126]
+         +- 'UnresolvedRelation [q5_enriched], [], false
+
+== Analyzed Logical Plan ==
+pu_borough: string, do_borough: string, trips: bigint, trip_share: double, total_revenue: double, avg_total_amount: double, avg_trip_distance: double, avg_duration_minutes: double, airport_trip_share: double
+GlobalLimit 20
++- LocalLimit 20
+   +- Sort [trips#120L DESC NULLS LAST, total_revenue#122 DESC NULLS LAST], true
+      +- Aggregate [pu_borough#160, do_borough#163], [pu_borough#160, do_borough#163, count(1) AS trips#120L, round((cast(count(1) as double) / cast(cast(685190 as double) as double)), 6) AS trip_share#121, round(sum(total_amount#152), 4) AS total_revenue#122, round(avg(total_amount#152), 4) AS avg_total_amount#123, round(avg(trip_distance#140), 4) AS avg_trip_distance#124, round(avg(duration_minutes#157), 4) AS avg_duration_minutes#125, round(avg(airport_trip#168), 6) AS airport_trip_share#126]
+         +- SubqueryAlias q5_enriched
+            +- View (`q5_enriched`, [vendor_id#136,pickup_ts#137,dropoff_ts#138,passenger_count#139,trip_distance#140,rate_code_id#141,store_and_fwd_flag#142,pu_location_id#143,do_location_id#144,payment_type#145,fare_amount#146,extra#147,mta_tax#148,tip_amount#149,tolls_amount#150,improvement_surcharge#151,total_amount#152,congestion_surcharge#153,airport_fee#154,pickup_date#155,pickup_hour#156,duration_minutes#157,trip_distance_km#158,pickup_day#159,pu_borough#160,pu_zone#161,pu_service_zone#162,do_borough#163,do_zone#164,do_service_zone#165,pu_is_airport#166,do_is_airport#167,airport_trip#168])
+               +- Project [cast(vendor_id#0 as int) AS vendor_id#136, cast(pickup_ts#1 as timestamp) AS pickup_ts#137, cast(dropoff_ts#2 as timestamp) AS dropoff_ts#138, cast(passenger_count#3 as int) AS passenger_count#139, cast(trip_distance#4 as double) AS trip_distance#140, cast(rate_code_id#5 as int) AS rate_code_id#141, cast(store_and_fwd_flag#6 as string) AS store_and_fwd_flag#142, cast(pu_location_id#7 as int) AS pu_location_id#143, cast(do_location_id#8 as int) AS do_location_id#144, cast(payment_type#9 as int) AS payment_type#145, cast(fare_amount#10 as double) AS fare_amount#146, cast(extra#11 as double) AS extra#147, cast(mta_tax#12 as double) AS mta_tax#148, cast(tip_amount#13 as double) AS tip_amount#149, cast(tolls_amount#14 as double) AS tolls_amount#150, cast(improvement_surcharge#15 as double) AS improvement_surcharge#151, cast(total_amount#16 as double) AS total_amount#152, cast(congestion_surcharge#17 as double) AS congestion_surcharge#153, cast(airport_fee#18 as double) AS airport_fee#154, cast(pickup_date#19 as date) AS pickup_date#155, cast(pickup_hour#20 as int) AS pickup_hour#156, cast(duration_minutes#21 as double) AS duration_minutes#157, cast(trip_distance_km#22 as double) AS trip_distance_km#158, cast(pickup_day#23 as int) AS pickup_day#159, ... 9 more fields]
+                  +- WithCTE
+                     :- CTERelationDef 4, false
+                     :  +- SubqueryAlias filtered
+                     :     +- Project [vendor_id#0, pickup_ts#1, dropoff_ts#2, passenger_count#3, trip_distance#4, rate_code_id#5, store_and_fwd_flag#6, pu_location_id#7, do_location_id#8, payment_type#9, fare_amount#10, extra#11, mta_tax#12, tip_amount#13, tolls_amount#14, improvement_surcharge#15, total_amount#16, congestion_surcharge#17, airport_fee#18, pickup_date#19, pickup_hour#20, duration_minutes#21, trip_distance_km#22, pickup_day#23]
+                     :        +- Filter (((isnotnull(pickup_ts#1) AND isnotnull(dropoff_ts#2)) AND ((pickup_ts#1 <= dropoff_ts#2) AND (duration_minutes#21 > cast(0 as double)))) AND (((trip_distance#4 > cast(0 as double)) AND (total_amount#16 > cast(0 as double))) AND (pickup_day#23 IN (26,27,28) AND pickup_hour#20 IN (21,22,23,0))))
+                     :           +- SubqueryAlias yellow_2024
+                     :              +- View (`yellow_2024`, [vendor_id#0,pickup_ts#1,dropoff_ts#2,passenger_count#3,trip_distance#4,rate_code_id#5,store_and_fwd_flag#6,pu_location_id#7,do_location_id#8,payment_type#9,fare_amount#10,extra#11,mta_tax#12,tip_amount#13,tolls_amount#14,improvement_surcharge#15,total_amount#16,congestion_surcharge#17,airport_fee#18,pickup_date#19,pickup_hour#20,duration_minutes#21,trip_distance_km#22,pickup_day#23])
+                     :                 +- Relation [vendor_id#0,pickup_ts#1,dropoff_ts#2,passenger_count#3,trip_distance#4,rate_code_id#5,store_and_fwd_flag#6,pu_location_id#7,do_location_id#8,payment_type#9,fare_amount#10,extra#11,mta_tax#12,tip_amount#13,tolls_amount#14,improvement_surcharge#15,total_amount#16,congestion_surcharge#17,airport_fee#18,pickup_date#19,pickup_hour#20,duration_minutes#21,trip_distance_km#22,pickup_day#23] parquet
+                     :- CTERelationDef 5, false
+                     :  +- SubqueryAlias joined
+                     :     +- Project [vendor_id#0, pickup_ts#1, dropoff_ts#2, passenger_count#3, trip_distance#4, rate_code_id#5, store_and_fwd_flag#6, pu_location_id#7, do_location_id#8, payment_type#9, fare_amount#10, extra#11, mta_tax#12, tip_amount#13, tolls_amount#14, improvement_surcharge#15, total_amount#16, congestion_surcharge#17, airport_fee#18, pickup_date#19, pickup_hour#20, duration_minutes#21, trip_distance_km#22, pickup_day#23, ... 6 more fields]
+                     :        +- Join LeftOuter, (do_location_id#8 = location_id#169)
+                     :           :- Join LeftOuter, (pu_location_id#7 = location_id#48)
+                     :           :  :- SubqueryAlias f
+                     :           :  :  +- SubqueryAlias filtered
+                     :           :  :     +- CTERelationRef 4, true, [vendor_id#0, pickup_ts#1, dropoff_ts#2, passenger_count#3, trip_distance#4, rate_code_id#5, store_and_fwd_flag#6, pu_location_id#7, do_location_id#8, payment_type#9, fare_amount#10, extra#11, mta_tax#12, tip_amount#13, tolls_amount#14, improvement_surcharge#15, total_amount#16, congestion_surcharge#17, airport_fee#18, pickup_date#19, pickup_hour#20, duration_minutes#21, trip_distance_km#22, pickup_day#23], false
+                     :           :  +- SubqueryAlias pu
+                     :           :     +- SubqueryAlias taxi_zones
+                     :           :        +- View (`taxi_zones`, [location_id#48,borough#49,zone#50,service_zone#51])
+                     :           :           +- Relation [location_id#48,borough#49,zone#50,service_zone#51] parquet
+                     :           +- SubqueryAlias doz
+                     :              +- SubqueryAlias taxi_zones
+                     :                 +- View (`taxi_zones`, [location_id#169,borough#170,zone#171,service_zone#172])
+                     :                    +- Relation [location_id#169,borough#170,zone#171,service_zone#172] parquet
+                     +- Project [vendor_id#0, pickup_ts#1, dropoff_ts#2, passenger_count#3, trip_distance#4, rate_code_id#5, store_and_fwd_flag#6, pu_location_id#7, do_location_id#8, payment_type#9, fare_amount#10, extra#11, mta_tax#12, tip_amount#13, tolls_amount#14, improvement_surcharge#15, total_amount#16, congestion_surcharge#17, airport_fee#18, pickup_date#19, pickup_hour#20, duration_minutes#21, trip_distance_km#22, pickup_day#23, ... 9 more fields]
+                        +- SubqueryAlias joined
+                           +- CTERelationRef 5, true, [vendor_id#0, pickup_ts#1, dropoff_ts#2, passenger_count#3, trip_distance#4, rate_code_id#5, store_and_fwd_flag#6, pu_location_id#7, do_location_id#8, payment_type#9, fare_amount#10, extra#11, mta_tax#12, tip_amount#13, tolls_amount#14, improvement_surcharge#15, total_amount#16, congestion_surcharge#17, airport_fee#18, pickup_date#19, pickup_hour#20, duration_minutes#21, trip_distance_km#22, pickup_day#23, ... 6 more fields], false
+
+== Optimized Logical Plan ==
+GlobalLimit 20
++- LocalLimit 20
+   +- Sort [trips#120L DESC NULLS LAST, total_revenue#122 DESC NULLS LAST], true
+      +- Aggregate [pu_borough#130, do_borough#133], [pu_borough#130, do_borough#133, count(1) AS trips#120L, round((cast(count(1) as double) / 685190.0), 6) AS trip_share#121, round(sum(total_amount#16), 4) AS total_revenue#122, round(avg(total_amount#16), 4) AS avg_total_amount#123, round(avg(trip_distance#4), 4) AS avg_trip_distance#124, round(avg(duration_minutes#21), 4) AS avg_duration_minutes#125, round(avg(airport_trip#168), 6) AS airport_trip_share#126]
+         +- Project [trip_distance#4, total_amount#16, duration_minutes#21, pu_borough#130, do_borough#133, CASE WHEN (((RLIKE(lower(pu_zone#131), jfk|laguardia|newark|airport) OR (lower(pu_borough#130) = ewr)) OR (coalesce(airport_fee#18, 0.0) > 0.0)) OR (RLIKE(lower(do_zone#134), jfk|laguardia|newark|airport) OR (lower(do_borough#133) = ewr))) THEN 1 ELSE 0 END AS airport_trip#168]
+            +- Project [trip_distance#4, total_amount#16, airport_fee#18, duration_minutes#21, coalesce(borough#49, Unknown) AS pu_borough#130, coalesce(zone#50, Unknown) AS pu_zone#131, coalesce(borough#170, Unknown) AS do_borough#133, coalesce(zone#171, Unknown) AS do_zone#134]
+               +- Join LeftOuter, (do_location_id#8 = location_id#169)
+                  :- Project [trip_distance#4, do_location_id#8, total_amount#16, airport_fee#18, duration_minutes#21, borough#49, zone#50]
+                  :  +- Join LeftOuter, (pu_location_id#7 = location_id#48)
+                  :     :- Project [trip_distance#4, pu_location_id#7, do_location_id#8, total_amount#16, airport_fee#18, duration_minutes#21]
+                  :     :  +- Filter (((isnotnull(duration_minutes#21) AND isnotnull(trip_distance#4)) AND isnotnull(total_amount#16)) AND (((isnotnull(pickup_ts#1) AND isnotnull(dropoff_ts#2)) AND ((pickup_ts#1 <= dropoff_ts#2) AND (duration_minutes#21 > 0.0))) AND (((trip_distance#4 > 0.0) AND (total_amount#16 > 0.0)) AND (pickup_day#23 IN (26,27,28) AND pickup_hour#20 IN (21,22,23,0)))))
+                  :     :     +- Relation [vendor_id#0,pickup_ts#1,dropoff_ts#2,passenger_count#3,trip_distance#4,rate_code_id#5,store_and_fwd_flag#6,pu_location_id#7,do_location_id#8,payment_type#9,fare_amount#10,extra#11,mta_tax#12,tip_amount#13,tolls_amount#14,improvement_surcharge#15,total_amount#16,congestion_surcharge#17,airport_fee#18,pickup_date#19,pickup_hour#20,duration_minutes#21,trip_distance_km#22,pickup_day#23] parquet
+                  :     +- Project [location_id#48, borough#49, zone#50]
+                  :        +- Filter isnotnull(location_id#48)
+                  :           +- Relation [location_id#48,borough#49,zone#50,service_zone#51] parquet
+                  +- Project [location_id#169, borough#170, zone#171]
+                     +- Filter isnotnull(location_id#169)
+                        +- Relation [location_id#169,borough#170,zone#171,service_zone#172] parquet
+
+== Physical Plan ==
+AdaptiveSparkPlan isFinalPlan=false
++- TakeOrderedAndProject(limit=20, orderBy=[trips#120L DESC NULLS LAST,total_revenue#122 DESC NULLS LAST], output=[pu_borough#130,do_borough#133,trips#120L,trip_share#121,total_revenue#122,avg_total_amount#123,avg_trip_distance#124,avg_duration_minutes#125,airport_trip_share#126])
+   +- HashAggregate(keys=[pu_borough#130, do_borough#133], functions=[count(1), sum(total_amount#16), avg(total_amount#16), avg(trip_distance#4), avg(duration_minutes#21), avg(airport_trip#168)], output=[pu_borough#130, do_borough#133, trips#120L, trip_share#121, total_revenue#122, avg_total_amount#123, avg_trip_distance#124, avg_duration_minutes#125, airport_trip_share#126])
+      +- Exchange hashpartitioning(pu_borough#130, do_borough#133, 200), ENSURE_REQUIREMENTS, [plan_id=974]
+         +- HashAggregate(keys=[pu_borough#130, do_borough#133], functions=[partial_count(1), partial_sum(total_amount#16), partial_avg(total_amount#16), partial_avg(trip_distance#4), partial_avg(duration_minutes#21), partial_avg(airport_trip#168)], output=[pu_borough#130, do_borough#133, count#275L, sum#372, sum#373, count#374L, sum#375, count#376L, sum#377, count#378L, sum#283, count#284L])
+            +- Project [trip_distance#4, total_amount#16, duration_minutes#21, pu_borough#130, do_borough#133, CASE WHEN (((RLIKE(lower(pu_zone#131), jfk|laguardia|newark|airport) OR (lower(pu_borough#130) = ewr)) OR (coalesce(airport_fee#18, 0.0) > 0.0)) OR (RLIKE(lower(do_zone#134), jfk|laguardia|newark|airport) OR (lower(do_borough#133) = ewr))) THEN 1 ELSE 0 END AS airport_trip#168]
+               +- Project [trip_distance#4, total_amount#16, airport_fee#18, duration_minutes#21, coalesce(borough#49, Unknown) AS pu_borough#130, coalesce(zone#50, Unknown) AS pu_zone#131, coalesce(borough#170, Unknown) AS do_borough#133, coalesce(zone#171, Unknown) AS do_zone#134]
+                  +- BroadcastHashJoin [do_location_id#8], [location_id#169], LeftOuter, BuildRight, false
+                     :- Project [trip_distance#4, do_location_id#8, total_amount#16, airport_fee#18, duration_minutes#21, borough#49, zone#50]
+                     :  +- BroadcastHashJoin [pu_location_id#7], [location_id#48], LeftOuter, BuildRight, false
+                     :     :- Project [trip_distance#4, pu_location_id#7, do_location_id#8, total_amount#16, airport_fee#18, duration_minutes#21]
+                     :     :  +- Filter (((((((((isnotnull(duration_minutes#21) AND isnotnull(trip_distance#4)) AND isnotnull(total_amount#16)) AND isnotnull(pickup_ts#1)) AND isnotnull(dropoff_ts#2)) AND (pickup_ts#1 <= dropoff_ts#2)) AND (duration_minutes#21 > 0.0)) AND (trip_distance#4 > 0.0)) AND (total_amount#16 > 0.0)) AND pickup_hour#20 IN (21,22,23,0))
+                     :     :     +- FileScan parquet [pickup_ts#1,dropoff_ts#2,trip_distance#4,pu_location_id#7,do_location_id#8,total_amount#16,airport_fee#18,pickup_hour#20,duration_minutes#21,pickup_day#23] Batched: true, DataFilters: [isnotnull(duration_minutes#21), isnotnull(trip_distance#4), isnotnull(total_amount#16), isnotnul..., Format: Parquet, Location: InMemoryFileIndex(1 paths)[hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/pr..., PartitionFilters: [pickup_day#23 IN (26,27,28)], PushedFilters: [IsNotNull(duration_minutes), IsNotNull(trip_distance), IsNotNull(total_amount), IsNotNull(pickup..., ReadSchema: struct<pickup_ts:timestamp,dropoff_ts:timestamp,trip_distance:double,pu_location_id:int,do_locati...
+                     :     +- BroadcastExchange HashedRelationBroadcastMode(List(cast(input[0, int, false] as bigint)),false), [plan_id=964]
+                     :        +- Filter isnotnull(location_id#48)
+                     :           +- FileScan parquet [location_id#48,borough#49,zone#50] Batched: true, DataFilters: [isnotnull(location_id#48)], Format: Parquet, Location: InMemoryFileIndex(1 paths)[hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/pr..., PartitionFilters: [], PushedFilters: [IsNotNull(location_id)], ReadSchema: struct<location_id:int,borough:string,zone:string>
+                     +- BroadcastExchange HashedRelationBroadcastMode(List(cast(input[0, int, false] as bigint)),false), [plan_id=968]
+                        +- Filter isnotnull(location_id#169)
+                           +- FileScan parquet [location_id#169,borough#170,zone#171] Batched: true, DataFilters: [isnotnull(location_id#169)], Format: Parquet, Location: InMemoryFileIndex(1 paths)[hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/pr..., PartitionFilters: [], PushedFilters: [IsNotNull(location_id)], ReadSchema: struct<location_id:int,borough:string,zone:string>

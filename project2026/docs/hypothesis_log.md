@@ -59,3 +59,20 @@
 Τα card trips είχαν πολύ υψηλότερο tip rate από τα cash trips. Για παράδειγμα, στις 21:00 το avg_tip_rate_card ήταν 0.252109, ενώ τα cash tips ήταν σχεδόν μηδενικά. (όμωςτα cash tips συνήθως δεν καταγράφονται πλήρως στο dataset)
 
 Στο vendor summary, και οι δύο vendors είχαν παρόμοια κατανομή πληρωμών. Ο vendor 1 είχε card_share = 0.869082, ενώ ο vendor 2 είχε card_share = 0.871938
+
+## Q5 hypothesis
+
+Πριν την εκτέλεση του Q5, περιμένω ότι οι μεγαλύτερες ροές θα είναι κυρίως Manhattan προς Manhattan, επειδή μεγάλο μέρος της ζήτησης ταξί είναι μέσα στο Manhattan
+
+Περίμενα επίσης ότι οι airport related διαδρομές θα έχουν μεγαλύτερο avg_total_amount, avg_trip_distance και avg_duration_minutes από τις συνηθισμένες ροές, επειδή τα αεροδρόμια βρίσκονται πιο μακριά και συχνά έχουν κι άλλες χρεώσεις
+
+
+### Q5 Result Check
+
+Η υπόθεση επιβεβαιώθηκε αρκετά. Μετά τα φίλτρα, το Q5 είχε 685190 trips
+
+Η μεγαλύτερη borough-to-borough ήταν Manhattan προς Manhattan, με 554348 trips και trip_share = 0.809043. Αυτό δείχνει ότι στο προσωπικό μου παράθυρο η κίνηση είναι κυρίως μέσα στο Manhattan
+
+Οι airport related ροές εμφανίζονται έντονα στις διαδρομές που ξεκινούν από Queens. Για παράδειγμα, η ροή Queens προς Manhattan είχε 40005 trips, avg_total_amount = 80.4754, άρα συνδέεται σε μεγάλο βαθμό με αεροδρομιακές διαδρομές
+
+Στις airport routes, η μεγαλύτερη ροή ήταν JFK Airport προς Outside of NYC, με 2071 trips, avg_total_amount = 126.4984 και avg_trip_distance = 21.338. Επίσης, πολλές από τις top airport routes ξεκινούν από JFK Airport προς Manhattan zones, όπως Times Sq/Theatre District και Clinton East

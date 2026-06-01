@@ -1,0 +1,21 @@
+pu_zone,do_zone,trips,avg_airport_fee,avg_total_amount,avg_duration_minutes,avg_trip_distance
+JFK Airport,Outside of NYC,2071,1.6359,126.4984,35.4897,21.338
+JFK Airport,Times Sq/Theatre District,1326,1.6299,92.9318,45.1867,17.9588
+JFK Airport,Clinton East,941,1.6384,92.8036,43.8582,18.319
+JFK Airport,Baisley Park,886,1.6611,25.3888,10.2923,3.8431
+JFK Airport,JFK Airport,879,1.5967,27.0311,11.8384,2.6586
+JFK Airport,Midtown South,830,1.6404,94.5437,37.0085,17.3795
+JFK Airport,South Ozone Park,796,1.6796,26.2163,15.9238,4.3211
+LaGuardia Airport,Times Sq/Theatre District,761,1.7408,72.3752,28.125,10.1246
+JFK Airport,Murray Hill,705,1.6284,94.5902,31.33,16.8674
+JFK Airport,Midtown North,685,1.6682,92.8199,42.3527,18.2472
+JFK Airport,Upper West Side South,663,1.6233,94.6481,42.5111,20.6681
+JFK Airport,East Chelsea,625,1.624,93.9886,40.5685,18.2471
+JFK Airport,Upper East Side North,612,1.6185,94.8494,36.8793,19.2116
+JFK Airport,Upper West Side North,610,1.6582,96.0157,40.9625,20.4635
+JFK Airport,Park Slope,605,1.6488,94.3913,42.453,19.6196
+LaGuardia Airport,Yorkville West,587,1.7261,59.5415,16.6545,8.1897
+JFK Airport,Crown Heights North,571,1.655,61.6107,33.7004,11.6388
+JFK Airport,Midtown Center,557,1.662,94.0072,40.2124,17.7296
+LaGuardia Airport,Upper East Side North,550,1.7341,61.7941,18.5038,8.5114
+JFK Airport,Lenox Hill West,533,1.6745,92.2514,39.4066,18.6073

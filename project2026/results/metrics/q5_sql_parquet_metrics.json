@@ -1,0 +1,474 @@
+{
+  "job": "q5_sql",
+  "input_format": "parquet",
+  "student_id": 2121261,
+  "spark_application_id": "spark-9a871dee8c524e6f9d527516e52dd2aa",
+  "personalization": {
+    "days_2024": [
+      26,
+      27,
+      28
+    ],
+    "hours": [
+      21,
+      22,
+      23,
+      0
+    ],
+    "top_k": 20
+  },
+  "filters": {
+    "duration_minutes_gt_0": true,
+    "trip_distance_gt_0": true,
+    "total_amount_gt_0": true
+  },
+  "airport_detection_policy": {
+    "zone_name_terms": [
+      "JFK",
+      "LaGuardia",
+      "Newark",
+      "Airport"
+    ],
+    "borough_ewr": "EWR",
+    "airport_fee_gt_0_used_as_pickup_airport_signal": true
+  },
+  "filtered_row_count": 685190,
+  "output_paths": {
+    "borough_flows": "hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/project2026/results/tables/q5/sql_parquet_borough_flows",
+    "airport_routes": "hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/project2026/results/tables/q5/sql_parquet_airport_routes",
+    "airport_zone_examples": "hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/project2026/results/tables/q5/sql_parquet_airport_zone_examples",
+    "metrics": "hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/project2026/results/metrics/q5_sql_parquet_metrics.json",
+    "plan": "hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/project2026/results/plans/q5_sql_parquet_plan.txt"
+  },
+  "sql": {
+    "prepare_query": "\n            CREATE OR REPLACE TEMP VIEW q5_enriched AS\n            WITH filtered AS (\n                SELECT\n                    *\n                FROM yellow_2024\n                WHERE pickup_ts IS NOT NULL\n                  AND dropoff_ts IS NOT NULL\n                  AND pickup_ts <= dropoff_ts\n                  AND duration_minutes > 0\n                  AND trip_distance > 0\n                  AND total_amount > 0\n                  AND pickup_day IN (26, 27, 28)\n                  AND pickup_hour IN (21, 22, 23, 0)\n            ),\n            joined AS (\n                SELECT\n                    f.*,\n                    coalesce(pu.borough, 'Unknown') AS pu_borough,\n                    coalesce(pu.zone, 'Unknown') AS pu_zone,\n                    coalesce(pu.service_zone, 'Unknown') AS pu_service_zone,\n                    coalesce(doz.borough, 'Unknown') AS do_borough,\n                    coalesce(doz.zone, 'Unknown') AS do_zone,\n                    coalesce(doz.service_zone, 'Unknown') AS do_service_zone\n                FROM filtered f\n                LEFT JOIN taxi_zones pu\n                  ON f.pu_location_id = pu.location_id\n                LEFT JOIN taxi_zones doz\n                  ON f.do_location_id = doz.location_id\n            )\n            SELECT\n                *,\n                -- pu_is_airport: airport zone/borough match OR airport_fee > 0 as pickup signal\n                CASE\n                    WHEN lower(pu_zone) RLIKE 'jfk|laguardia|newark|airport'\n                      OR lower(pu_borough) = 'ewr'\n                      OR coalesce(airport_fee, 0.0) > 0\n                    THEN 1 ELSE 0\n                END AS pu_is_airport,\n                -- do_is_airport: zone/borough only, NOT airport_fee (fee is charged at trip origin)\n                CASE\n                    WHEN lower(do_zone) RLIKE 'jfk|laguardia|newark|airport'\n                      OR lower(do_borough) = 'ewr'\n                    THEN 1 ELSE 0\n                END AS do_is_airport,\n                -- airport_trip: 1 if either endpoint is an airport\n                CASE\n                    WHEN lower(pu_zone) RLIKE 'jfk|laguardia|newark|airport'\n                      OR lower(pu_borough) = 'ewr'\n                      OR coalesce(airport_fee, 0.0) > 0\n                      OR lower(do_zone) RLIKE 'jfk|laguardia|newark|airport'\n                      OR lower(do_borough) = 'ewr'\n                    THEN 1 ELSE 0\n                END AS airport_trip\n            FROM joined\n        ",
+    "borough_flows_query": "\n            SELECT\n                pu_borough,\n                do_borough,\n                COUNT(*) AS trips,\n                ROUND(COUNT(*) / CAST(685190 AS DOUBLE), 6) AS trip_share,\n                ROUND(SUM(total_amount), 4) AS total_revenue,\n                ROUND(AVG(total_amount), 4) AS avg_total_amount,\n                ROUND(AVG(trip_distance), 4) AS avg_trip_distance,\n                ROUND(AVG(duration_minutes), 4) AS avg_duration_minutes,\n                ROUND(AVG(airport_trip), 6) AS airport_trip_share\n            FROM q5_enriched\n            GROUP BY pu_borough, do_borough\n            ORDER BY trips DESC, total_revenue DESC\n            LIMIT 20\n        ",
+    "airport_routes_query": "\n            SELECT\n                pu_zone,\n                do_zone,\n                COUNT(*) AS trips,\n                ROUND(AVG(coalesce(airport_fee, 0.0)), 4) AS avg_airport_fee,\n                ROUND(AVG(total_amount), 4) AS avg_total_amount,\n                ROUND(AVG(duration_minutes), 4) AS avg_duration_minutes,\n                ROUND(AVG(trip_distance), 4) AS avg_trip_distance\n            FROM q5_enriched\n            WHERE airport_trip = 1\n            GROUP BY pu_zone, do_zone\n            ORDER BY trips DESC, avg_total_amount DESC\n            LIMIT 20\n        ",
+    "airport_examples_query": "\n            SELECT\n                location_id,\n                borough,\n                zone,\n                service_zone\n            FROM taxi_zones\n            WHERE lower(zone) RLIKE 'jfk|laguardia|newark|airport'\n               OR lower(borough) = 'ewr'\n            ORDER BY borough, zone\n            LIMIT 10\n        "
+  },
+  "borough_flows_preview": [
+    {
+      "pu_borough": "Manhattan",
+      "do_borough": "Manhattan",
+      "trips": 554348,
+      "trip_share": 0.809043,
+      "total_revenue": 12060397.47,
+      "avg_total_amount": 21.756,
+      "avg_trip_distance": 3.2159,
+      "avg_duration_minutes": 13.3853,
+      "airport_trip_share": 2.9e-05
+    },
+    {
+      "pu_borough": "Queens",
+      "do_borough": "Manhattan",
+      "trips": 40005,
+      "trip_share": 0.058385,
+      "total_revenue": 3219416.96,
+      "avg_total_amount": 80.4754,
+      "avg_trip_distance": 14.5455,
+      "avg_duration_minutes": 32.0677,
+      "airport_trip_share": 0.940257
+    },
+    {
+      "pu_borough": "Manhattan",
+      "do_borough": "Brooklyn",
+      "trips": 23725,
+      "trip_share": 0.034625,
+      "total_revenue": 1032660.65,
+      "avg_total_amount": 43.5263,
+      "avg_trip_distance": 6.1418,
+      "avg_duration_minutes": 27.8988,
+      "airport_trip_share": 4.2e-05
+    },
+    {
+      "pu_borough": "Queens",
+      "do_borough": "Queens",
+      "trips": 18546,
+      "trip_share": 0.027067,
+      "total_revenue": 710680.22,
+      "avg_total_amount": 38.3199,
+      "avg_trip_distance": 6.8342,
+      "avg_duration_minutes": 17.7775,
+      "airport_trip_share": 0.804378
+    },
+    {
+      "pu_borough": "Queens",
+      "do_borough": "Brooklyn",
+      "trips": 15083,
+      "trip_share": 0.022013,
+      "total_revenue": 1040390.94,
+      "avg_total_amount": 68.9777,
+      "avg_trip_distance": 13.8477,
+      "avg_duration_minutes": 31.9646,
+      "airport_trip_share": 0.910827
+    },
+    {
+      "pu_borough": "Manhattan",
+      "do_borough": "Queens",
+      "trips": 10920,
+      "trip_share": 0.015937,
+      "total_revenue": 506466.67,
+      "avg_total_amount": 46.3797,
+      "avg_trip_distance": 7.0567,
+      "avg_duration_minutes": 28.3932,
+      "airport_trip_share": 0.063187
+    },
+    {
+      "pu_borough": "Brooklyn",
+      "do_borough": "Brooklyn",
+      "trips": 5091,
+      "trip_share": 0.00743,
+      "total_revenue": 113918.97,
+      "avg_total_amount": 22.3765,
+      "avg_trip_distance": 19.5605,
+      "avg_duration_minutes": 16.8651,
+      "airport_trip_share": 0.000589
+    },
+    {
+      "pu_borough": "Brooklyn",
+      "do_borough": "Manhattan",
+      "trips": 3508,
+      "trip_share": 0.00512,
+      "total_revenue": 128238.67,
+      "avg_total_amount": 36.5561,
+      "avg_trip_distance": 5.9514,
+      "avg_duration_minutes": 24.8458,
+      "airport_trip_share": 0.0
+    },
+    {
+      "pu_borough": "Queens",
+      "do_borough": "N/A",
+      "trips": 2710,
+      "trip_share": 0.003955,
+      "total_revenue": 350023.67,
+      "avg_total_amount": 129.16,
+      "avg_trip_distance": 21.4684,
+      "avg_duration_minutes": 36.1044,
+      "airport_trip_share": 0.954982
+    },
+    {
+      "pu_borough": "Manhattan",
+      "do_borough": "Bronx",
+      "trips": 2147,
+      "trip_share": 0.003133,
+      "total_revenue": 106207.94,
+      "avg_total_amount": 49.4681,
+      "avg_trip_distance": 9.2506,
+      "avg_duration_minutes": 27.5135,
+      "airport_trip_share": 0.0
+    },
+    {
+      "pu_borough": "Queens",
+      "do_borough": "Bronx",
+      "trips": 1754,
+      "trip_share": 0.00256,
+      "total_revenue": 138487.21,
+      "avg_total_amount": 78.9551,
+      "avg_trip_distance": 15.9332,
+      "avg_duration_minutes": 31.5148,
+      "airport_trip_share": 0.884265
+    },
+    {
+      "pu_borough": "Manhattan",
+      "do_borough": "Unknown",
+      "trips": 1271,
+      "trip_share": 0.001855,
+      "total_revenue": 30358.03,
+      "avg_total_amount": 23.8852,
+      "avg_trip_distance": 2.4077,
+      "avg_duration_minutes": 15.4947,
+      "airport_trip_share": 0.0
+    },
+    {
+      "pu_borough": "Manhattan",
+      "do_borough": "N/A",
+      "trips": 1088,
+      "trip_share": 0.001588,
+      "total_revenue": 113582.29,
+      "avg_total_amount": 104.3955,
+      "avg_trip_distance": 19.6082,
+      "avg_duration_minutes": 37.0733,
+      "airport_trip_share": 0.0
+    },
+    {
+      "pu_borough": "Brooklyn",
+      "do_borough": "Queens",
+      "trips": 1075,
+      "trip_share": 0.001569,
+      "total_revenue": 37275.72,
+      "avg_total_amount": 34.6751,
+      "avg_trip_distance": 7.7505,
+      "avg_duration_minutes": 24.6298,
+      "airport_trip_share": 0.024186
+    },
+    {
+      "pu_borough": "Unknown",
+      "do_borough": "Unknown",
+      "trips": 1069,
+      "trip_share": 0.00156,
+      "total_revenue": 30902.36,
+      "avg_total_amount": 28.9077,
+      "avg_trip_distance": 3.696,
+      "avg_duration_minutes": 21.8208,
+      "airport_trip_share": 0.016838
+    },
+    {
+      "pu_borough": "Bronx",
+      "do_borough": "Bronx",
+      "trips": 704,
+      "trip_share": 0.001027,
+      "total_revenue": 14457.5,
+      "avg_total_amount": 20.5362,
+      "avg_trip_distance": 3.7429,
+      "avg_duration_minutes": 16.0,
+      "airport_trip_share": 0.0
+    },
+    {
+      "pu_borough": "Unknown",
+      "do_borough": "Manhattan",
+      "trips": 664,
+      "trip_share": 0.000969,
+      "total_revenue": 19004.26,
+      "avg_total_amount": 28.6209,
+      "avg_trip_distance": 3.5448,
+      "avg_duration_minutes": 14.7119,
+      "airport_trip_share": 0.021084
+    },
+    {
+      "pu_borough": "Bronx",
+      "do_borough": "Manhattan",
+      "trips": 391,
+      "trip_share": 0.000571,
+      "total_revenue": 13971.75,
+      "avg_total_amount": 35.7334,
+      "avg_trip_distance": 7.2665,
+      "avg_duration_minutes": 24.643,
+      "airport_trip_share": 0.002558
+    },
+    {
+      "pu_borough": "Brooklyn",
+      "do_borough": "Bronx",
+      "trips": 134,
+      "trip_share": 0.000196,
+      "total_revenue": 8286.87,
+      "avg_total_amount": 61.8423,
+      "avg_trip_distance": 16.5378,
+      "avg_duration_minutes": 41.1842,
+      "airport_trip_share": 0.0
+    },
+    {
+      "pu_borough": "Manhattan",
+      "do_borough": "Staten Island",
+      "trips": 117,
+      "trip_share": 0.000171,
+      "total_revenue": 13835.96,
+      "avg_total_amount": 118.2561,
+      "avg_trip_distance": 19.7235,
+      "avg_duration_minutes": 56.1161,
+      "airport_trip_share": 0.0
+    }
+  ],
+  "airport_routes_preview": [
+    {
+      "pu_zone": "JFK Airport",
+      "do_zone": "Outside of NYC",
+      "trips": 2071,
+      "avg_airport_fee": 1.6359,
+      "avg_total_amount": 126.4984,
+      "avg_duration_minutes": 35.4897,
+      "avg_trip_distance": 21.338
+    },
+    {
+      "pu_zone": "JFK Airport",
+      "do_zone": "Times Sq/Theatre District",
+      "trips": 1326,
+      "avg_airport_fee": 1.6299,
+      "avg_total_amount": 92.9318,
+      "avg_duration_minutes": 45.1867,
+      "avg_trip_distance": 17.9588
+    },
+    {
+      "pu_zone": "JFK Airport",
+      "do_zone": "Clinton East",
+      "trips": 941,
+      "avg_airport_fee": 1.6384,
+      "avg_total_amount": 92.8036,
+      "avg_duration_minutes": 43.8582,
+      "avg_trip_distance": 18.319
+    },
+    {
+      "pu_zone": "JFK Airport",
+      "do_zone": "Baisley Park",
+      "trips": 886,
+      "avg_airport_fee": 1.6611,
+      "avg_total_amount": 25.3888,
+      "avg_duration_minutes": 10.2923,
+      "avg_trip_distance": 3.8431
+    },
+    {
+      "pu_zone": "JFK Airport",
+      "do_zone": "JFK Airport",
+      "trips": 879,
+      "avg_airport_fee": 1.5967,
+      "avg_total_amount": 27.0311,
+      "avg_duration_minutes": 11.8384,
+      "avg_trip_distance": 2.6586
+    },
+    {
+      "pu_zone": "JFK Airport",
+      "do_zone": "Midtown South",
+      "trips": 830,
+      "avg_airport_fee": 1.6404,
+      "avg_total_amount": 94.5437,
+      "avg_duration_minutes": 37.0085,
+      "avg_trip_distance": 17.3795
+    },
+    {
+      "pu_zone": "JFK Airport",
+      "do_zone": "South Ozone Park",
+      "trips": 796,
+      "avg_airport_fee": 1.6796,
+      "avg_total_amount": 26.2163,
+      "avg_duration_minutes": 15.9238,
+      "avg_trip_distance": 4.3211
+    },
+    {
+      "pu_zone": "LaGuardia Airport",
+      "do_zone": "Times Sq/Theatre District",
+      "trips": 761,
+      "avg_airport_fee": 1.7408,
+      "avg_total_amount": 72.3752,
+      "avg_duration_minutes": 28.125,
+      "avg_trip_distance": 10.1246
+    },
+    {
+      "pu_zone": "JFK Airport",
+      "do_zone": "Murray Hill",
+      "trips": 705,
+      "avg_airport_fee": 1.6284,
+      "avg_total_amount": 94.5902,
+      "avg_duration_minutes": 31.33,
+      "avg_trip_distance": 16.8674
+    },
+    {
+      "pu_zone": "JFK Airport",
+      "do_zone": "Midtown North",
+      "trips": 685,
+      "avg_airport_fee": 1.6682,
+      "avg_total_amount": 92.8199,
+      "avg_duration_minutes": 42.3527,
+      "avg_trip_distance": 18.2472
+    },
+    {
+      "pu_zone": "JFK Airport",
+      "do_zone": "Upper West Side South",
+      "trips": 663,
+      "avg_airport_fee": 1.6233,
+      "avg_total_amount": 94.6481,
+      "avg_duration_minutes": 42.5111,
+      "avg_trip_distance": 20.6681
+    },
+    {
+      "pu_zone": "JFK Airport",
+      "do_zone": "East Chelsea",
+      "trips": 625,
+      "avg_airport_fee": 1.624,
+      "avg_total_amount": 93.9886,
+      "avg_duration_minutes": 40.5685,
+      "avg_trip_distance": 18.2471
+    },
+    {
+      "pu_zone": "JFK Airport",
+      "do_zone": "Upper East Side North",
+      "trips": 612,
+      "avg_airport_fee": 1.6185,
+      "avg_total_amount": 94.8494,
+      "avg_duration_minutes": 36.8793,
+      "avg_trip_distance": 19.2116
+    },
+    {
+      "pu_zone": "JFK Airport",
+      "do_zone": "Upper West Side North",
+      "trips": 610,
+      "avg_airport_fee": 1.6582,
+      "avg_total_amount": 96.0157,
+      "avg_duration_minutes": 40.9625,
+      "avg_trip_distance": 20.4635
+    },
+    {
+      "pu_zone": "JFK Airport",
+      "do_zone": "Park Slope",
+      "trips": 605,
+      "avg_airport_fee": 1.6488,
+      "avg_total_amount": 94.3913,
+      "avg_duration_minutes": 42.453,
+      "avg_trip_distance": 19.6196
+    },
+    {
+      "pu_zone": "LaGuardia Airport",
+      "do_zone": "Yorkville West",
+      "trips": 587,
+      "avg_airport_fee": 1.7261,
+      "avg_total_amount": 59.5415,
+      "avg_duration_minutes": 16.6545,
+      "avg_trip_distance": 8.1897
+    },
+    {
+      "pu_zone": "JFK Airport",
+      "do_zone": "Crown Heights North",
+      "trips": 571,
+      "avg_airport_fee": 1.655,
+      "avg_total_amount": 61.6107,
+      "avg_duration_minutes": 33.7004,
+      "avg_trip_distance": 11.6388
+    },
+    {
+      "pu_zone": "JFK Airport",
+      "do_zone": "Midtown Center",
+      "trips": 557,
+      "avg_airport_fee": 1.662,
+      "avg_total_amount": 94.0072,
+      "avg_duration_minutes": 40.2124,
+      "avg_trip_distance": 17.7296
+    },
+    {
+      "pu_zone": "LaGuardia Airport",
+      "do_zone": "Upper East Side North",
+      "trips": 550,
+      "avg_airport_fee": 1.7341,
+      "avg_total_amount": 61.7941,
+      "avg_duration_minutes": 18.5038,
+      "avg_trip_distance": 8.5114
+    },
+    {
+      "pu_zone": "JFK Airport",
+      "do_zone": "Lenox Hill West",
+      "trips": 533,
+      "avg_airport_fee": 1.6745,
+      "avg_total_amount": 92.2514,
+      "avg_duration_minutes": 39.4066,
+      "avg_trip_distance": 18.6073
+    }
+  ],
+  "airport_zone_examples_preview": [
+    {
+      "location_id": 1,
+      "borough": "EWR",
+      "zone": "Newark Airport",
+      "service_zone": "EWR"
+    },
+    {
+      "location_id": 132,
+      "borough": "Queens",
+      "zone": "JFK Airport",
+      "service_zone": "Airports"
+    },
+    {
+      "location_id": 138,
+      "borough": "Queens",
+      "zone": "LaGuardia Airport",
+      "service_zone": "Airports"
+    }
+  ],
+  "elapsed_seconds": 103.191
+}

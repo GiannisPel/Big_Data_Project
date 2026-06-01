@@ -232,6 +232,13 @@ q3_top_zones_revenue_per_mile.png
 q3_top_zones_revenue_per_minute.png
 q3_top_zones_total_revenue.png
 
+Generate PLOTS:
+
+python project2026/scripts/plot_q3.py \
+  --tables-dir project2026/results/tables/q3 \
+  --plots-dir project2026/results/plots \
+  --top-n 10
+
 ### Q3 outputs into local
 
 METRICS:
@@ -252,13 +259,6 @@ TABLES:
 
 hdfs dfs -get /user/$VDCLOUD_USER/project2026/results/tables/q3 project2026/results/tables/q3
 
-Generate PLOTS:
-
-python project2026/scripts/plot_q3.py \
-  --tables-dir project2026/results/tables/q3 \
-  --plots-dir project2026/results/plots \
-  --top-n 10
-
 PLOTS:
 
 project2026/results/plots/q3_top_zones_total_revenue.png
@@ -270,6 +270,14 @@ project2026/results/plots/q3_top_zones_revenue_per_minute.png
 ./project2026/scripts/run_q4_SQL_Par.sh
 ./project2026/scripts/run_q4_DF_Par.sh
 ./project2026/scripts/run_q4_SQL_CSV.sh
+
+Generate PLOTS:
+
+source .venv/bin/activate
+
+python project2026/scripts/plot_q4.py \
+  --tables-dir project2026/results/tables/q4 \
+  --plots-dir project2026/results/plots
 
 ### Q4 outputs
 
@@ -323,10 +331,73 @@ TABLES:
 
 hdfs dfs -get /user/$VDCLOUD_USER/project2026/results/tables/q4 project2026/results/tables/q4
 
-PLOTS:
+## Q5 
+
+./project2026/scripts/run_q5_DF_Par.sh
+./project2026/scripts/run_q5_SQL_Par.sh
+./project2026/scripts/run_q5_DF_NoBroadcast.sh
+
+Generate PLOTS:
 
 source .venv/bin/activate
 
-python project2026/scripts/plot_q4.py \
-  --tables-dir project2026/results/tables/q4 \
-  --plots-dir project2026/results/plots
+python project2026/scripts/plot_q5.py \
+  --tables-dir project2026/results/tables/q5 \
+  --plots-dir project2026/results/plots \
+  --top-n 10
+
+### Q5 outputs
+
+Spark DF parquate ID: spark-96c8586594b9460caeca2980c5152f78
+Spark SQL Parquate ID: spark-9a871dee8c524e6f9d527516e52dd2aa
+Spark DF no broad ID: spark-7a2b32a25a794a479140bfa93a18e8b0
+
+METRICS:
+
+q5_df_parquet_metrics.json
+q5_df_parquet_no_broadcast_metrics.json
+q5_sql_parquet_metrics.json
+
+PLANS:
+
+q5_df_parquet_no_broadcast_plan.txt
+q5_df_parquet_plan.txt
+q5_sql_parquet_plan.txt
+
+PLOTS:
+
+q5_top_airport_routes_by_avg_amount.png
+q5_top_airport_routes_by_trips.png
+q5_top_borough_flows_by_trips.png
+
+TABLES:
+
+df_parquet_airport_routes
+df_parquet_airport_zone_examples
+df_parquet_borough_flows
+df_parquet_no_broadcast_airport_routes
+df_parquet_no_broadcast_airport_zone_examples
+df_parquet_no_broadcast_borough_flows
+sql_parquet_airport_routes
+sql_parquet_airport_zone_examples
+sql_parquet_borough_flows
+
+### Q5 outputs into local repo
+
+METRICS:
+
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/metrics/q5_df_parquet_metrics.json project2026/results/metrics/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/metrics/q5_sql_parquet_metrics.json project2026/results/metrics/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/metrics/q5_df_parquet_no_broadcast_metrics.json project2026/results/metrics/
+
+PLANS:
+
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q5_df_parquet_plan.txt project2026/results/plans/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q5_sql_parquet_plan.txt project2026/results/plans/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q5_df_parquet_no_broadcast_plan.txt project2026/results/plans/
+
+TABLES:
+
+hdfs dfs -get /user/$VDCLOUD_USER/project2026/results/tables/q5 project2026/results/tables/q5
+
+## Q6
