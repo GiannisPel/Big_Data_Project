@@ -1,0 +1,196 @@
+== Parsed Logical Plan ==
+GlobalLimit 20
++- LocalLimit 20
+   +- Sort [abs_imbalance_ratio#1129 DESC NULLS LAST], true
+      +- Filter isnotnull(abs_imbalance_ratio#1129)
+         +- Project [hour#1024, location_id#1025, borough#1114, zone#1115, service_zone#1116, pickups#1026L, dropoffs#1027L, activity#1032L, net_pickups#1038L, round(imbalance_ratio#1045, 6) AS imbalance_ratio#1128, round(abs_imbalance_ratio#1053, 6) AS abs_imbalance_ratio#1129]
+            +- Project [hour#1024, location_id#1025, pickups#1026L, dropoffs#1027L, activity#1032L, net_pickups#1038L, imbalance_ratio#1045, abs_imbalance_ratio#1053, coalesce(borough#49, cast(Unknown as string)) AS borough#1114, coalesce(zone#50, cast(Unknown as string)) AS zone#1115, coalesce(service_zone#51, cast(Unknown as string)) AS service_zone#1116]
+               +- Project [hour#1024, location_id#1025, pickups#1026L, dropoffs#1027L, activity#1032L, net_pickups#1038L, imbalance_ratio#1045, abs_imbalance_ratio#1053, borough#49, zone#50, service_zone#51]
+                  +- Join LeftOuter, (location_id#1025 = z_location_id#1062)
+                     :- Filter (activity#1032L >= cast(30 as bigint))
+                     :  +- Project [hour#1024, location_id#1025, pickups#1026L, dropoffs#1027L, activity#1032L, net_pickups#1038L, imbalance_ratio#1045, abs(imbalance_ratio#1045) AS abs_imbalance_ratio#1053]
+                     :     +- Project [hour#1024, location_id#1025, pickups#1026L, dropoffs#1027L, activity#1032L, net_pickups#1038L, CASE WHEN (activity#1032L > cast(0 as bigint)) THEN round((cast((pickups#1026L - dropoffs#1027L) as double) / cast(activity#1032L as double)), 6) ELSE cast(null as double) END AS imbalance_ratio#1045]
+                     :        +- Project [hour#1024, location_id#1025, pickups#1026L, dropoffs#1027L, activity#1032L, (pickups#1026L - dropoffs#1027L) AS net_pickups#1038L]
+                     :           +- Project [hour#1024, location_id#1025, pickups#1026L, dropoffs#1027L, (pickups#1026L + dropoffs#1027L) AS activity#1032L]
+                     :              +- Project [coalesce(hour#177, hour#585) AS hour#1024, coalesce(location_id#178, location_id#586) AS location_id#1025, coalesce(pickups#204L, cast(0 as bigint)) AS pickups#1026L, coalesce(dropoffs#612L, cast(0 as bigint)) AS dropoffs#1027L]
+                     :                 +- Project [coalesce(hour#177, hour#585) AS hour#1018, coalesce(location_id#178, location_id#586) AS location_id#1019, pickups#204L, dropoffs#612L, hour#177, location_id#178, hour#585, location_id#586]
+                     :                    +- Join FullOuter, ((hour#177 = hour#585) AND (location_id#178 = location_id#586))
+                     :                       :- SubqueryAlias p
+                     :                       :  +- Aggregate [pickup_hour#20, pu_location_id#7], [pickup_hour#20 AS hour#177, pu_location_id#7 AS location_id#178, count(1) AS pickups#204L]
+                     :                       :     +- Filter pickup_hour#20 IN (21,22,23,0)
+                     :                       :        +- Filter pickup_day#23 IN (26,27,28)
+                     :                       :           +- Filter (total_amount#16 > cast(0 as double))
+                     :                       :              +- Filter (duration_minutes#21 > cast(0 as double))
+                     :                       :                 +- Filter isnotnull(pickup_ts#1)
+                     :                       :                    +- Relation [vendor_id#0,pickup_ts#1,dropoff_ts#2,passenger_count#3,trip_distance#4,rate_code_id#5,store_and_fwd_flag#6,pu_location_id#7,do_location_id#8,payment_type#9,fare_amount#10,extra#11,mta_tax#12,tip_amount#13,tolls_amount#14,improvement_surcharge#15,total_amount#16,congestion_surcharge#17,airport_fee#18,pickup_date#19,pickup_hour#20,duration_minutes#21,trip_distance_km#22,pickup_day#23] parquet
+                     :                       +- SubqueryAlias d
+                     :                          +- Aggregate [pickup_hour#1013, do_location_id#1001], [pickup_hour#1013 AS hour#585, do_location_id#1001 AS location_id#586, count(1) AS dropoffs#612L]
+                     :                             +- Filter pickup_hour#1013 IN (21,22,23,0)
+                     :                                +- Filter pickup_day#1016 IN (26,27,28)
+                     :                                   +- Filter (total_amount#1009 > cast(0 as double))
+                     :                                      +- Filter (duration_minutes#1014 > cast(0 as double))
+                     :                                         +- Filter isnotnull(pickup_ts#994)
+                     :                                            +- Relation [vendor_id#993,pickup_ts#994,dropoff_ts#995,passenger_count#996,trip_distance#997,rate_code_id#998,store_and_fwd_flag#999,pu_location_id#1000,do_location_id#1001,payment_type#1002,fare_amount#1003,extra#1004,mta_tax#1005,tip_amount#1006,tolls_amount#1007,improvement_surcharge#1008,total_amount#1009,congestion_surcharge#1010,airport_fee#1011,pickup_date#1012,pickup_hour#1013,duration_minutes#1014,trip_distance_km#1015,pickup_day#1016] parquet
+                     +- Project [location_id#48 AS z_location_id#1062, borough#49, zone#50, service_zone#51]
+                        +- Relation [location_id#48,borough#49,zone#50,service_zone#51] parquet
+
+== Analyzed Logical Plan ==
+hour: int, location_id: int, borough: string, zone: string, service_zone: string, pickups: bigint, dropoffs: bigint, activity: bigint, net_pickups: bigint, imbalance_ratio: double, abs_imbalance_ratio: double
+GlobalLimit 20
++- LocalLimit 20
+   +- Sort [abs_imbalance_ratio#1129 DESC NULLS LAST], true
+      +- Filter isnotnull(abs_imbalance_ratio#1129)
+         +- Project [hour#1024, location_id#1025, borough#1114, zone#1115, service_zone#1116, pickups#1026L, dropoffs#1027L, activity#1032L, net_pickups#1038L, round(imbalance_ratio#1045, 6) AS imbalance_ratio#1128, round(abs_imbalance_ratio#1053, 6) AS abs_imbalance_ratio#1129]
+            +- Project [hour#1024, location_id#1025, pickups#1026L, dropoffs#1027L, activity#1032L, net_pickups#1038L, imbalance_ratio#1045, abs_imbalance_ratio#1053, coalesce(borough#49, cast(Unknown as string)) AS borough#1114, coalesce(zone#50, cast(Unknown as string)) AS zone#1115, coalesce(service_zone#51, cast(Unknown as string)) AS service_zone#1116]
+               +- Project [hour#1024, location_id#1025, pickups#1026L, dropoffs#1027L, activity#1032L, net_pickups#1038L, imbalance_ratio#1045, abs_imbalance_ratio#1053, borough#49, zone#50, service_zone#51]
+                  +- Join LeftOuter, (location_id#1025 = z_location_id#1062)
+                     :- Filter (activity#1032L >= cast(30 as bigint))
+                     :  +- Project [hour#1024, location_id#1025, pickups#1026L, dropoffs#1027L, activity#1032L, net_pickups#1038L, imbalance_ratio#1045, abs(imbalance_ratio#1045) AS abs_imbalance_ratio#1053]
+                     :     +- Project [hour#1024, location_id#1025, pickups#1026L, dropoffs#1027L, activity#1032L, net_pickups#1038L, CASE WHEN (activity#1032L > cast(0 as bigint)) THEN round((cast((pickups#1026L - dropoffs#1027L) as double) / cast(activity#1032L as double)), 6) ELSE cast(null as double) END AS imbalance_ratio#1045]
+                     :        +- Project [hour#1024, location_id#1025, pickups#1026L, dropoffs#1027L, activity#1032L, (pickups#1026L - dropoffs#1027L) AS net_pickups#1038L]
+                     :           +- Project [hour#1024, location_id#1025, pickups#1026L, dropoffs#1027L, (pickups#1026L + dropoffs#1027L) AS activity#1032L]
+                     :              +- Project [coalesce(hour#177, hour#585) AS hour#1024, coalesce(location_id#178, location_id#586) AS location_id#1025, coalesce(pickups#204L, cast(0 as bigint)) AS pickups#1026L, coalesce(dropoffs#612L, cast(0 as bigint)) AS dropoffs#1027L]
+                     :                 +- Project [coalesce(hour#177, hour#585) AS hour#1018, coalesce(location_id#178, location_id#586) AS location_id#1019, pickups#204L, dropoffs#612L, hour#177, location_id#178, hour#585, location_id#586]
+                     :                    +- Join FullOuter, ((hour#177 = hour#585) AND (location_id#178 = location_id#586))
+                     :                       :- SubqueryAlias p
+                     :                       :  +- Aggregate [pickup_hour#20, pu_location_id#7], [pickup_hour#20 AS hour#177, pu_location_id#7 AS location_id#178, count(1) AS pickups#204L]
+                     :                       :     +- Filter pickup_hour#20 IN (21,22,23,0)
+                     :                       :        +- Filter pickup_day#23 IN (26,27,28)
+                     :                       :           +- Filter (total_amount#16 > cast(0 as double))
+                     :                       :              +- Filter (duration_minutes#21 > cast(0 as double))
+                     :                       :                 +- Filter isnotnull(pickup_ts#1)
+                     :                       :                    +- Relation [vendor_id#0,pickup_ts#1,dropoff_ts#2,passenger_count#3,trip_distance#4,rate_code_id#5,store_and_fwd_flag#6,pu_location_id#7,do_location_id#8,payment_type#9,fare_amount#10,extra#11,mta_tax#12,tip_amount#13,tolls_amount#14,improvement_surcharge#15,total_amount#16,congestion_surcharge#17,airport_fee#18,pickup_date#19,pickup_hour#20,duration_minutes#21,trip_distance_km#22,pickup_day#23] parquet
+                     :                       +- SubqueryAlias d
+                     :                          +- Aggregate [pickup_hour#1013, do_location_id#1001], [pickup_hour#1013 AS hour#585, do_location_id#1001 AS location_id#586, count(1) AS dropoffs#612L]
+                     :                             +- Filter pickup_hour#1013 IN (21,22,23,0)
+                     :                                +- Filter pickup_day#1016 IN (26,27,28)
+                     :                                   +- Filter (total_amount#1009 > cast(0 as double))
+                     :                                      +- Filter (duration_minutes#1014 > cast(0 as double))
+                     :                                         +- Filter isnotnull(pickup_ts#994)
+                     :                                            +- Relation [vendor_id#993,pickup_ts#994,dropoff_ts#995,passenger_count#996,trip_distance#997,rate_code_id#998,store_and_fwd_flag#999,pu_location_id#1000,do_location_id#1001,payment_type#1002,fare_amount#1003,extra#1004,mta_tax#1005,tip_amount#1006,tolls_amount#1007,improvement_surcharge#1008,total_amount#1009,congestion_surcharge#1010,airport_fee#1011,pickup_date#1012,pickup_hour#1013,duration_minutes#1014,trip_distance_km#1015,pickup_day#1016] parquet
+                     +- Project [location_id#48 AS z_location_id#1062, borough#49, zone#50, service_zone#51]
+                        +- Relation [location_id#48,borough#49,zone#50,service_zone#51] parquet
+
+== Optimized Logical Plan ==
+GlobalLimit 20
++- LocalLimit 20
+   +- Sort [abs_imbalance_ratio#1129 DESC NULLS LAST], true
+      +- Project [hour#1024, location_id#1025, coalesce(borough#49, Unknown) AS borough#1114, coalesce(zone#50, Unknown) AS zone#1115, coalesce(service_zone#51, Unknown) AS service_zone#1116, pickups#1026L, dropoffs#1027L, activity#1032L, net_pickups#1038L, round(imbalance_ratio#1045, 6) AS imbalance_ratio#1128, round(abs_imbalance_ratio#1053, 6) AS abs_imbalance_ratio#1129]
+         +- Join LeftOuter, (location_id#1025 = z_location_id#1062)
+            :- Project [hour#1024, location_id#1025, pickups#1026L, dropoffs#1027L, activity#1032L, net_pickups#1038L, imbalance_ratio#1045, abs(imbalance_ratio#1045) AS abs_imbalance_ratio#1053]
+            :  +- Project [hour#1024, location_id#1025, pickups#1026L, dropoffs#1027L, activity#1032L, net_pickups#1038L, CASE WHEN (activity#1032L > 0) THEN round((cast((pickups#1026L - dropoffs#1027L) as double) / cast(activity#1032L as double)), 6) END AS imbalance_ratio#1045]
+            :     +- Project [hour#1024, location_id#1025, pickups#1026L, dropoffs#1027L, (pickups#1026L + dropoffs#1027L) AS activity#1032L, (pickups#1026L - dropoffs#1027L) AS net_pickups#1038L]
+            :        +- Project [coalesce(hour#177, hour#585) AS hour#1024, coalesce(location_id#178, location_id#586) AS location_id#1025, coalesce(pickups#204L, 0) AS pickups#1026L, coalesce(dropoffs#612L, 0) AS dropoffs#1027L]
+            :           +- Filter (((coalesce(pickups#204L, 0) + coalesce(dropoffs#612L, 0)) >= 30) AND CASE WHEN ((coalesce(pickups#204L, 0) + coalesce(dropoffs#612L, 0)) > 0) THEN isnotnull(round(abs(round((cast((coalesce(pickups#204L, 0) - coalesce(dropoffs#612L, 0)) as double) / cast((coalesce(pickups#204L, 0) + coalesce(dropoffs#612L, 0)) as double)), 6)), 6)) ELSE false END)
+            :              +- Join FullOuter, ((hour#177 = hour#585) AND (location_id#178 = location_id#586))
+            :                 :- InMemoryRelation [hour#177, location_id#178, pickups#204L], StorageLevel(disk, memory, deserialized, 1 replicas)
+            :                 :     +- AdaptiveSparkPlan isFinalPlan=true
+                                       +- == Final Plan ==
+                                          *(2) HashAggregate(keys=[pickup_hour#20, pu_location_id#7], functions=[count(1)], output=[hour#177, location_id#178, pickups#204L])
+                                          +- ShuffleQueryStage 1
+                                             +- Exchange hashpartitioning(pickup_hour#20, pu_location_id#7, 200), ENSURE_REQUIREMENTS, [plan_id=195]
+                                                +- *(1) HashAggregate(keys=[pickup_hour#20, pu_location_id#7], functions=[partial_count(1)], output=[pickup_hour#20, pu_location_id#7, count#569L])
+                                                   +- TableCacheQueryStage 0
+                                                      +- InMemoryTableScan [pu_location_id#7, pickup_hour#20]
+                                                            +- InMemoryRelation [vendor_id#0, pickup_ts#1, dropoff_ts#2, passenger_count#3, trip_distance#4, rate_code_id#5, store_and_fwd_flag#6, pu_location_id#7, do_location_id#8, payment_type#9, fare_amount#10, extra#11, mta_tax#12, tip_amount#13, tolls_amount#14, improvement_surcharge#15, total_amount#16, congestion_surcharge#17, airport_fee#18, pickup_date#19, pickup_hour#20, duration_minutes#21, trip_distance_km#22, pickup_day#23], StorageLevel(disk, memory, deserialized, 1 replicas)
+                                                                  +- *(1) Filter (((((isnotnull(duration_minutes#21) AND isnotnull(total_amount#16)) AND isnotnull(pickup_ts#1)) AND (duration_minutes#21 > 0.0)) AND (total_amount#16 > 0.0)) AND pickup_hour#20 IN (21,22,23,0))
+                                                                     +- *(1) ColumnarToRow
+                                                                        +- FileScan parquet [vendor_id#0,pickup_ts#1,dropoff_ts#2,passenger_count#3,trip_distance#4,rate_code_id#5,store_and_fwd_flag#6,pu_location_id#7,do_location_id#8,payment_type#9,fare_amount#10,extra#11,mta_tax#12,tip_amount#13,tolls_amount#14,improvement_surcharge#15,total_amount#16,congestion_surcharge#17,airport_fee#18,pickup_date#19,pickup_hour#20,duration_minutes#21,trip_distance_km#22,pickup_day#23] Batched: true, DataFilters: [isnotnull(duration_minutes#21), isnotnull(total_amount#16), isnotnull(pickup_ts#1), (duration_mi..., Format: Parquet, Location: InMemoryFileIndex(1 paths)[hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/pr..., PartitionFilters: [pickup_day#23 IN (26,27,28)], PushedFilters: [IsNotNull(duration_minutes), IsNotNull(total_amount), IsNotNull(pickup_ts), GreaterThan(duration..., ReadSchema: struct<vendor_id:int,pickup_ts:timestamp,dropoff_ts:timestamp,passenger_count:int,trip_distance:d...
+                                       +- == Initial Plan ==
+                                          HashAggregate(keys=[pickup_hour#20, pu_location_id#7], functions=[count(1)], output=[hour#177, location_id#178, pickups#204L])
+                                          +- Exchange hashpartitioning(pickup_hour#20, pu_location_id#7, 200), ENSURE_REQUIREMENTS, [plan_id=24]
+                                             +- HashAggregate(keys=[pickup_hour#20, pu_location_id#7], functions=[partial_count(1)], output=[pickup_hour#20, pu_location_id#7, count#569L])
+                                                +- InMemoryTableScan [pu_location_id#7, pickup_hour#20]
+                                                      +- InMemoryRelation [vendor_id#0, pickup_ts#1, dropoff_ts#2, passenger_count#3, trip_distance#4, rate_code_id#5, store_and_fwd_flag#6, pu_location_id#7, do_location_id#8, payment_type#9, fare_amount#10, extra#11, mta_tax#12, tip_amount#13, tolls_amount#14, improvement_surcharge#15, total_amount#16, congestion_surcharge#17, airport_fee#18, pickup_date#19, pickup_hour#20, duration_minutes#21, trip_distance_km#22, pickup_day#23], StorageLevel(disk, memory, deserialized, 1 replicas)
+                                                            +- *(1) Filter (((((isnotnull(duration_minutes#21) AND isnotnull(total_amount#16)) AND isnotnull(pickup_ts#1)) AND (duration_minutes#21 > 0.0)) AND (total_amount#16 > 0.0)) AND pickup_hour#20 IN (21,22,23,0))
+                                                               +- *(1) ColumnarToRow
+                                                                  +- FileScan parquet [vendor_id#0,pickup_ts#1,dropoff_ts#2,passenger_count#3,trip_distance#4,rate_code_id#5,store_and_fwd_flag#6,pu_location_id#7,do_location_id#8,payment_type#9,fare_amount#10,extra#11,mta_tax#12,tip_amount#13,tolls_amount#14,improvement_surcharge#15,total_amount#16,congestion_surcharge#17,airport_fee#18,pickup_date#19,pickup_hour#20,duration_minutes#21,trip_distance_km#22,pickup_day#23] Batched: true, DataFilters: [isnotnull(duration_minutes#21), isnotnull(total_amount#16), isnotnull(pickup_ts#1), (duration_mi..., Format: Parquet, Location: InMemoryFileIndex(1 paths)[hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/pr..., PartitionFilters: [pickup_day#23 IN (26,27,28)], PushedFilters: [IsNotNull(duration_minutes), IsNotNull(total_amount), IsNotNull(pickup_ts), GreaterThan(duration..., ReadSchema: struct<vendor_id:int,pickup_ts:timestamp,dropoff_ts:timestamp,passenger_count:int,trip_distance:d...
+            :                 +- InMemoryRelation [hour#585, location_id#586, dropoffs#612L], StorageLevel(disk, memory, deserialized, 1 replicas)
+            :                       +- AdaptiveSparkPlan isFinalPlan=true
+                                       +- == Final Plan ==
+                                          *(2) HashAggregate(keys=[pickup_hour#20, do_location_id#8], functions=[count(1)], output=[hour#585, location_id#586, dropoffs#612L])
+                                          +- ShuffleQueryStage 1
+                                             +- Exchange hashpartitioning(pickup_hour#20, do_location_id#8, 200), ENSURE_REQUIREMENTS, [plan_id=231]
+                                                +- *(1) HashAggregate(keys=[pickup_hour#20, do_location_id#8], functions=[partial_count(1)], output=[pickup_hour#20, do_location_id#8, count#977L])
+                                                   +- TableCacheQueryStage 0
+                                                      +- InMemoryTableScan [do_location_id#8, pickup_hour#20]
+                                                            +- InMemoryRelation [vendor_id#0, pickup_ts#1, dropoff_ts#2, passenger_count#3, trip_distance#4, rate_code_id#5, store_and_fwd_flag#6, pu_location_id#7, do_location_id#8, payment_type#9, fare_amount#10, extra#11, mta_tax#12, tip_amount#13, tolls_amount#14, improvement_surcharge#15, total_amount#16, congestion_surcharge#17, airport_fee#18, pickup_date#19, pickup_hour#20, duration_minutes#21, trip_distance_km#22, pickup_day#23], StorageLevel(disk, memory, deserialized, 1 replicas)
+                                                                  +- *(1) Filter (((((isnotnull(duration_minutes#21) AND isnotnull(total_amount#16)) AND isnotnull(pickup_ts#1)) AND (duration_minutes#21 > 0.0)) AND (total_amount#16 > 0.0)) AND pickup_hour#20 IN (21,22,23,0))
+                                                                     +- *(1) ColumnarToRow
+                                                                        +- FileScan parquet [vendor_id#0,pickup_ts#1,dropoff_ts#2,passenger_count#3,trip_distance#4,rate_code_id#5,store_and_fwd_flag#6,pu_location_id#7,do_location_id#8,payment_type#9,fare_amount#10,extra#11,mta_tax#12,tip_amount#13,tolls_amount#14,improvement_surcharge#15,total_amount#16,congestion_surcharge#17,airport_fee#18,pickup_date#19,pickup_hour#20,duration_minutes#21,trip_distance_km#22,pickup_day#23] Batched: true, DataFilters: [isnotnull(duration_minutes#21), isnotnull(total_amount#16), isnotnull(pickup_ts#1), (duration_mi..., Format: Parquet, Location: InMemoryFileIndex(1 paths)[hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/pr..., PartitionFilters: [pickup_day#23 IN (26,27,28)], PushedFilters: [IsNotNull(duration_minutes), IsNotNull(total_amount), IsNotNull(pickup_ts), GreaterThan(duration..., ReadSchema: struct<vendor_id:int,pickup_ts:timestamp,dropoff_ts:timestamp,passenger_count:int,trip_distance:d...
+                                       +- == Initial Plan ==
+                                          HashAggregate(keys=[pickup_hour#20, do_location_id#8], functions=[count(1)], output=[hour#585, location_id#586, dropoffs#612L])
+                                          +- Exchange hashpartitioning(pickup_hour#20, do_location_id#8, 200), ENSURE_REQUIREMENTS, [plan_id=37]
+                                             +- HashAggregate(keys=[pickup_hour#20, do_location_id#8], functions=[partial_count(1)], output=[pickup_hour#20, do_location_id#8, count#977L])
+                                                +- InMemoryTableScan [do_location_id#8, pickup_hour#20]
+                                                      +- InMemoryRelation [vendor_id#0, pickup_ts#1, dropoff_ts#2, passenger_count#3, trip_distance#4, rate_code_id#5, store_and_fwd_flag#6, pu_location_id#7, do_location_id#8, payment_type#9, fare_amount#10, extra#11, mta_tax#12, tip_amount#13, tolls_amount#14, improvement_surcharge#15, total_amount#16, congestion_surcharge#17, airport_fee#18, pickup_date#19, pickup_hour#20, duration_minutes#21, trip_distance_km#22, pickup_day#23], StorageLevel(disk, memory, deserialized, 1 replicas)
+                                                            +- *(1) Filter (((((isnotnull(duration_minutes#21) AND isnotnull(total_amount#16)) AND isnotnull(pickup_ts#1)) AND (duration_minutes#21 > 0.0)) AND (total_amount#16 > 0.0)) AND pickup_hour#20 IN (21,22,23,0))
+                                                               +- *(1) ColumnarToRow
+                                                                  +- FileScan parquet [vendor_id#0,pickup_ts#1,dropoff_ts#2,passenger_count#3,trip_distance#4,rate_code_id#5,store_and_fwd_flag#6,pu_location_id#7,do_location_id#8,payment_type#9,fare_amount#10,extra#11,mta_tax#12,tip_amount#13,tolls_amount#14,improvement_surcharge#15,total_amount#16,congestion_surcharge#17,airport_fee#18,pickup_date#19,pickup_hour#20,duration_minutes#21,trip_distance_km#22,pickup_day#23] Batched: true, DataFilters: [isnotnull(duration_minutes#21), isnotnull(total_amount#16), isnotnull(pickup_ts#1), (duration_mi..., Format: Parquet, Location: InMemoryFileIndex(1 paths)[hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/pr..., PartitionFilters: [pickup_day#23 IN (26,27,28)], PushedFilters: [IsNotNull(duration_minutes), IsNotNull(total_amount), IsNotNull(pickup_ts), GreaterThan(duration..., ReadSchema: struct<vendor_id:int,pickup_ts:timestamp,dropoff_ts:timestamp,passenger_count:int,trip_distance:d...
+            +- Project [location_id#48 AS z_location_id#1062, borough#49, zone#50, service_zone#51]
+               +- Filter isnotnull(location_id#48)
+                  +- Relation [location_id#48,borough#49,zone#50,service_zone#51] parquet
+
+== Physical Plan ==
+AdaptiveSparkPlan isFinalPlan=false
++- TakeOrderedAndProject(limit=20, orderBy=[abs_imbalance_ratio#1129 DESC NULLS LAST], output=[hour#1024,location_id#1025,borough#1114,zone#1115,service_zone#1116,pickups#1026L,dropoffs#1027L,activity#1032L,net_pickups#1038L,imbalance_ratio#1128,abs_imbalance_ratio#1129])
+   +- Project [hour#1024, location_id#1025, coalesce(borough#49, Unknown) AS borough#1114, coalesce(zone#50, Unknown) AS zone#1115, coalesce(service_zone#51, Unknown) AS service_zone#1116, pickups#1026L, dropoffs#1027L, activity#1032L, net_pickups#1038L, round(imbalance_ratio#1045, 6) AS imbalance_ratio#1128, round(abs_imbalance_ratio#1053, 6) AS abs_imbalance_ratio#1129]
+      +- BroadcastHashJoin [location_id#1025], [z_location_id#1062], LeftOuter, BuildRight, false
+         :- Project [hour#1024, location_id#1025, pickups#1026L, dropoffs#1027L, activity#1032L, net_pickups#1038L, imbalance_ratio#1045, abs(imbalance_ratio#1045) AS abs_imbalance_ratio#1053]
+         :  +- Project [hour#1024, location_id#1025, pickups#1026L, dropoffs#1027L, activity#1032L, net_pickups#1038L, CASE WHEN (activity#1032L > 0) THEN round((cast((pickups#1026L - dropoffs#1027L) as double) / cast(activity#1032L as double)), 6) END AS imbalance_ratio#1045]
+         :     +- Project [hour#1024, location_id#1025, pickups#1026L, dropoffs#1027L, (pickups#1026L + dropoffs#1027L) AS activity#1032L, (pickups#1026L - dropoffs#1027L) AS net_pickups#1038L]
+         :        +- Project [coalesce(hour#177, hour#585) AS hour#1024, coalesce(location_id#178, location_id#586) AS location_id#1025, coalesce(pickups#204L, 0) AS pickups#1026L, coalesce(dropoffs#612L, 0) AS dropoffs#1027L]
+         :           +- Filter (((coalesce(pickups#204L, 0) + coalesce(dropoffs#612L, 0)) >= 30) AND CASE WHEN ((coalesce(pickups#204L, 0) + coalesce(dropoffs#612L, 0)) > 0) THEN isnotnull(round(abs(round((cast((coalesce(pickups#204L, 0) - coalesce(dropoffs#612L, 0)) as double) / cast((coalesce(pickups#204L, 0) + coalesce(dropoffs#612L, 0)) as double)), 6)), 6)) ELSE false END)
+         :              +- SortMergeJoin [hour#177, location_id#178], [hour#585, location_id#586], FullOuter
+         :                 :- Sort [hour#177 ASC NULLS FIRST, location_id#178 ASC NULLS FIRST], false, 0
+         :                 :  +- InMemoryTableScan [hour#177, location_id#178, pickups#204L]
+         :                 :        +- InMemoryRelation [hour#177, location_id#178, pickups#204L], StorageLevel(disk, memory, deserialized, 1 replicas)
+         :                 :              +- AdaptiveSparkPlan isFinalPlan=true
+                                             +- == Final Plan ==
+                                                *(2) HashAggregate(keys=[pickup_hour#20, pu_location_id#7], functions=[count(1)], output=[hour#177, location_id#178, pickups#204L])
+                                                +- ShuffleQueryStage 1
+                                                   +- Exchange hashpartitioning(pickup_hour#20, pu_location_id#7, 200), ENSURE_REQUIREMENTS, [plan_id=195]
+                                                      +- *(1) HashAggregate(keys=[pickup_hour#20, pu_location_id#7], functions=[partial_count(1)], output=[pickup_hour#20, pu_location_id#7, count#569L])
+                                                         +- TableCacheQueryStage 0
+                                                            +- InMemoryTableScan [pu_location_id#7, pickup_hour#20]
+                                                                  +- InMemoryRelation [vendor_id#0, pickup_ts#1, dropoff_ts#2, passenger_count#3, trip_distance#4, rate_code_id#5, store_and_fwd_flag#6, pu_location_id#7, do_location_id#8, payment_type#9, fare_amount#10, extra#11, mta_tax#12, tip_amount#13, tolls_amount#14, improvement_surcharge#15, total_amount#16, congestion_surcharge#17, airport_fee#18, pickup_date#19, pickup_hour#20, duration_minutes#21, trip_distance_km#22, pickup_day#23], StorageLevel(disk, memory, deserialized, 1 replicas)
+                                                                        +- *(1) Filter (((((isnotnull(duration_minutes#21) AND isnotnull(total_amount#16)) AND isnotnull(pickup_ts#1)) AND (duration_minutes#21 > 0.0)) AND (total_amount#16 > 0.0)) AND pickup_hour#20 IN (21,22,23,0))
+                                                                           +- *(1) ColumnarToRow
+                                                                              +- FileScan parquet [vendor_id#0,pickup_ts#1,dropoff_ts#2,passenger_count#3,trip_distance#4,rate_code_id#5,store_and_fwd_flag#6,pu_location_id#7,do_location_id#8,payment_type#9,fare_amount#10,extra#11,mta_tax#12,tip_amount#13,tolls_amount#14,improvement_surcharge#15,total_amount#16,congestion_surcharge#17,airport_fee#18,pickup_date#19,pickup_hour#20,duration_minutes#21,trip_distance_km#22,pickup_day#23] Batched: true, DataFilters: [isnotnull(duration_minutes#21), isnotnull(total_amount#16), isnotnull(pickup_ts#1), (duration_mi..., Format: Parquet, Location: InMemoryFileIndex(1 paths)[hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/pr..., PartitionFilters: [pickup_day#23 IN (26,27,28)], PushedFilters: [IsNotNull(duration_minutes), IsNotNull(total_amount), IsNotNull(pickup_ts), GreaterThan(duration..., ReadSchema: struct<vendor_id:int,pickup_ts:timestamp,dropoff_ts:timestamp,passenger_count:int,trip_distance:d...
+                                             +- == Initial Plan ==
+                                                HashAggregate(keys=[pickup_hour#20, pu_location_id#7], functions=[count(1)], output=[hour#177, location_id#178, pickups#204L])
+                                                +- Exchange hashpartitioning(pickup_hour#20, pu_location_id#7, 200), ENSURE_REQUIREMENTS, [plan_id=24]
+                                                   +- HashAggregate(keys=[pickup_hour#20, pu_location_id#7], functions=[partial_count(1)], output=[pickup_hour#20, pu_location_id#7, count#569L])
+                                                      +- InMemoryTableScan [pu_location_id#7, pickup_hour#20]
+                                                            +- InMemoryRelation [vendor_id#0, pickup_ts#1, dropoff_ts#2, passenger_count#3, trip_distance#4, rate_code_id#5, store_and_fwd_flag#6, pu_location_id#7, do_location_id#8, payment_type#9, fare_amount#10, extra#11, mta_tax#12, tip_amount#13, tolls_amount#14, improvement_surcharge#15, total_amount#16, congestion_surcharge#17, airport_fee#18, pickup_date#19, pickup_hour#20, duration_minutes#21, trip_distance_km#22, pickup_day#23], StorageLevel(disk, memory, deserialized, 1 replicas)
+                                                                  +- *(1) Filter (((((isnotnull(duration_minutes#21) AND isnotnull(total_amount#16)) AND isnotnull(pickup_ts#1)) AND (duration_minutes#21 > 0.0)) AND (total_amount#16 > 0.0)) AND pickup_hour#20 IN (21,22,23,0))
+                                                                     +- *(1) ColumnarToRow
+                                                                        +- FileScan parquet [vendor_id#0,pickup_ts#1,dropoff_ts#2,passenger_count#3,trip_distance#4,rate_code_id#5,store_and_fwd_flag#6,pu_location_id#7,do_location_id#8,payment_type#9,fare_amount#10,extra#11,mta_tax#12,tip_amount#13,tolls_amount#14,improvement_surcharge#15,total_amount#16,congestion_surcharge#17,airport_fee#18,pickup_date#19,pickup_hour#20,duration_minutes#21,trip_distance_km#22,pickup_day#23] Batched: true, DataFilters: [isnotnull(duration_minutes#21), isnotnull(total_amount#16), isnotnull(pickup_ts#1), (duration_mi..., Format: Parquet, Location: InMemoryFileIndex(1 paths)[hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/pr..., PartitionFilters: [pickup_day#23 IN (26,27,28)], PushedFilters: [IsNotNull(duration_minutes), IsNotNull(total_amount), IsNotNull(pickup_ts), GreaterThan(duration..., ReadSchema: struct<vendor_id:int,pickup_ts:timestamp,dropoff_ts:timestamp,passenger_count:int,trip_distance:d...
+         :                 +- Sort [hour#585 ASC NULLS FIRST, location_id#586 ASC NULLS FIRST], false, 0
+         :                    +- InMemoryTableScan [hour#585, location_id#586, dropoffs#612L]
+         :                          +- InMemoryRelation [hour#585, location_id#586, dropoffs#612L], StorageLevel(disk, memory, deserialized, 1 replicas)
+         :                                +- AdaptiveSparkPlan isFinalPlan=true
+                                             +- == Final Plan ==
+                                                *(2) HashAggregate(keys=[pickup_hour#20, do_location_id#8], functions=[count(1)], output=[hour#585, location_id#586, dropoffs#612L])
+                                                +- ShuffleQueryStage 1
+                                                   +- Exchange hashpartitioning(pickup_hour#20, do_location_id#8, 200), ENSURE_REQUIREMENTS, [plan_id=231]
+                                                      +- *(1) HashAggregate(keys=[pickup_hour#20, do_location_id#8], functions=[partial_count(1)], output=[pickup_hour#20, do_location_id#8, count#977L])
+                                                         +- TableCacheQueryStage 0
+                                                            +- InMemoryTableScan [do_location_id#8, pickup_hour#20]
+                                                                  +- InMemoryRelation [vendor_id#0, pickup_ts#1, dropoff_ts#2, passenger_count#3, trip_distance#4, rate_code_id#5, store_and_fwd_flag#6, pu_location_id#7, do_location_id#8, payment_type#9, fare_amount#10, extra#11, mta_tax#12, tip_amount#13, tolls_amount#14, improvement_surcharge#15, total_amount#16, congestion_surcharge#17, airport_fee#18, pickup_date#19, pickup_hour#20, duration_minutes#21, trip_distance_km#22, pickup_day#23], StorageLevel(disk, memory, deserialized, 1 replicas)
+                                                                        +- *(1) Filter (((((isnotnull(duration_minutes#21) AND isnotnull(total_amount#16)) AND isnotnull(pickup_ts#1)) AND (duration_minutes#21 > 0.0)) AND (total_amount#16 > 0.0)) AND pickup_hour#20 IN (21,22,23,0))
+                                                                           +- *(1) ColumnarToRow
+                                                                              +- FileScan parquet [vendor_id#0,pickup_ts#1,dropoff_ts#2,passenger_count#3,trip_distance#4,rate_code_id#5,store_and_fwd_flag#6,pu_location_id#7,do_location_id#8,payment_type#9,fare_amount#10,extra#11,mta_tax#12,tip_amount#13,tolls_amount#14,improvement_surcharge#15,total_amount#16,congestion_surcharge#17,airport_fee#18,pickup_date#19,pickup_hour#20,duration_minutes#21,trip_distance_km#22,pickup_day#23] Batched: true, DataFilters: [isnotnull(duration_minutes#21), isnotnull(total_amount#16), isnotnull(pickup_ts#1), (duration_mi..., Format: Parquet, Location: InMemoryFileIndex(1 paths)[hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/pr..., PartitionFilters: [pickup_day#23 IN (26,27,28)], PushedFilters: [IsNotNull(duration_minutes), IsNotNull(total_amount), IsNotNull(pickup_ts), GreaterThan(duration..., ReadSchema: struct<vendor_id:int,pickup_ts:timestamp,dropoff_ts:timestamp,passenger_count:int,trip_distance:d...
+                                             +- == Initial Plan ==
+                                                HashAggregate(keys=[pickup_hour#20, do_location_id#8], functions=[count(1)], output=[hour#585, location_id#586, dropoffs#612L])
+                                                +- Exchange hashpartitioning(pickup_hour#20, do_location_id#8, 200), ENSURE_REQUIREMENTS, [plan_id=37]
+                                                   +- HashAggregate(keys=[pickup_hour#20, do_location_id#8], functions=[partial_count(1)], output=[pickup_hour#20, do_location_id#8, count#977L])
+                                                      +- InMemoryTableScan [do_location_id#8, pickup_hour#20]
+                                                            +- InMemoryRelation [vendor_id#0, pickup_ts#1, dropoff_ts#2, passenger_count#3, trip_distance#4, rate_code_id#5, store_and_fwd_flag#6, pu_location_id#7, do_location_id#8, payment_type#9, fare_amount#10, extra#11, mta_tax#12, tip_amount#13, tolls_amount#14, improvement_surcharge#15, total_amount#16, congestion_surcharge#17, airport_fee#18, pickup_date#19, pickup_hour#20, duration_minutes#21, trip_distance_km#22, pickup_day#23], StorageLevel(disk, memory, deserialized, 1 replicas)
+                                                                  +- *(1) Filter (((((isnotnull(duration_minutes#21) AND isnotnull(total_amount#16)) AND isnotnull(pickup_ts#1)) AND (duration_minutes#21 > 0.0)) AND (total_amount#16 > 0.0)) AND pickup_hour#20 IN (21,22,23,0))
+                                                                     +- *(1) ColumnarToRow
+                                                                        +- FileScan parquet [vendor_id#0,pickup_ts#1,dropoff_ts#2,passenger_count#3,trip_distance#4,rate_code_id#5,store_and_fwd_flag#6,pu_location_id#7,do_location_id#8,payment_type#9,fare_amount#10,extra#11,mta_tax#12,tip_amount#13,tolls_amount#14,improvement_surcharge#15,total_amount#16,congestion_surcharge#17,airport_fee#18,pickup_date#19,pickup_hour#20,duration_minutes#21,trip_distance_km#22,pickup_day#23] Batched: true, DataFilters: [isnotnull(duration_minutes#21), isnotnull(total_amount#16), isnotnull(pickup_ts#1), (duration_mi..., Format: Parquet, Location: InMemoryFileIndex(1 paths)[hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/pr..., PartitionFilters: [pickup_day#23 IN (26,27,28)], PushedFilters: [IsNotNull(duration_minutes), IsNotNull(total_amount), IsNotNull(pickup_ts), GreaterThan(duration..., ReadSchema: struct<vendor_id:int,pickup_ts:timestamp,dropoff_ts:timestamp,passenger_count:int,trip_distance:d...
+         +- BroadcastExchange HashedRelationBroadcastMode(List(cast(input[0, int, true] as bigint)),false), [plan_id=1415]
+            +- Project [location_id#48 AS z_location_id#1062, borough#49, zone#50, service_zone#51]
+               +- Filter isnotnull(location_id#48)
+                  +- FileScan parquet [location_id#48,borough#49,zone#50,service_zone#51] Batched: true, DataFilters: [isnotnull(location_id#48)], Format: Parquet, Location: InMemoryFileIndex(1 paths)[hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/pr..., PartitionFilters: [], PushedFilters: [IsNotNull(location_id)], ReadSchema: struct<location_id:int,borough:string,zone:string,service_zone:string>

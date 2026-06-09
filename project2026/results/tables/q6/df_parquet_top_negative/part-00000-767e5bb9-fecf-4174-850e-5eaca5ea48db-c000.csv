@@ -1,0 +1,21 @@
+hour,location_id,borough,zone,service_zone,pickups,dropoffs,activity,net_pickups,imbalance_ratio,abs_imbalance_ratio
+22,236,Manhattan,Upper East Side North,Yellow Zone,3296,6744,10040,-3448,-0.343426,0.343426
+21,236,Manhattan,Upper East Side North,Yellow Zone,5184,8554,13738,-3370,-0.245305,0.245305
+21,238,Manhattan,Upper West Side North,Yellow Zone,2699,5729,8428,-3030,-0.359516,0.359516
+21,262,Manhattan,Yorkville East,Yellow Zone,1055,4018,5073,-2963,-0.584073,0.584073
+22,238,Manhattan,Upper West Side North,Yellow Zone,2129,4814,6943,-2685,-0.38672,0.38672
+22,262,Manhattan,Yorkville East,Yellow Zone,757,3433,4190,-2676,-0.638663,0.638663
+22,141,Manhattan,Lenox Hill West,Yellow Zone,3310,5764,9074,-2454,-0.270443,0.270443
+21,141,Manhattan,Lenox Hill West,Yellow Zone,4148,6561,10709,-2413,-0.225324,0.225324
+21,143,Manhattan,Lincoln Square West,Yellow Zone,1648,3980,5628,-2332,-0.414357,0.414357
+23,236,Manhattan,Upper East Side North,Yellow Zone,1740,3975,5715,-2235,-0.391076,0.391076
+22,229,Manhattan,Sutton Place/Turtle Bay North,Yellow Zone,2719,4808,7527,-2089,-0.277534,0.277534
+21,229,Manhattan,Sutton Place/Turtle Bay North,Yellow Zone,3557,5599,9156,-2042,-0.223023,0.223023
+22,263,Manhattan,Yorkville West,Yellow Zone,2988,4993,7981,-2005,-0.251222,0.251222
+23,238,Manhattan,Upper West Side North,Yellow Zone,1331,3310,4641,-1979,-0.426417,0.426417
+23,141,Manhattan,Lenox Hill West,Yellow Zone,2222,4172,6394,-1950,-0.304973,0.304973
+22,143,Manhattan,Lincoln Square West,Yellow Zone,1333,3271,4604,-1938,-0.420938,0.420938
+23,262,Manhattan,Yorkville East,Yellow Zone,515,2453,2968,-1938,-0.652965,0.652965
+23,263,Manhattan,Yorkville West,Yellow Zone,2173,3941,6114,-1768,-0.289172,0.289172
+21,263,Manhattan,Yorkville West,Yellow Zone,3428,5166,8594,-1738,-0.202234,0.202234
+22,233,Manhattan,UN/Turtle Bay South,Yellow Zone,1522,3232,4754,-1710,-0.359697,0.359697

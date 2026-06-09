@@ -1,0 +1,21 @@
+hour,location_id,borough,zone,service_zone,pickups,dropoffs,activity,net_pickups,imbalance_ratio,abs_imbalance_ratio
+21,138,Queens,LaGuardia Airport,Airports,6866,131,6997,6735,0.962555,0.962555
+22,138,Queens,LaGuardia Airport,Airports,5739,114,5853,5625,0.961046,0.961046
+23,138,Queens,LaGuardia Airport,Airports,7795,160,7955,7635,0.959774,0.959774
+0,227,Brooklyn,Sunset Park East,Boro Zone,1,48,49,-47,-0.959184,0.959184
+23,9,Queens,Auburndale,Boro Zone,1,42,43,-41,-0.953488,0.953488
+21,123,Brooklyn,Homecrest,Boro Zone,1,41,42,-40,-0.952381,0.952381
+0,138,Queens,LaGuardia Airport,Airports,3118,83,3201,3035,0.948141,0.948141
+0,18,Bronx,Bedford Park,Boro Zone,1,36,37,-35,-0.945946,0.945946
+0,38,Queens,Cambria Heights,Boro Zone,1,30,31,-29,-0.935484,0.935484
+22,243,Manhattan,Washington Heights North,Boro Zone,28,839,867,-811,-0.935409,0.935409
+21,135,Queens,Kew Gardens Hills,Boro Zone,2,58,60,-56,-0.933333,0.933333
+0,132,Queens,JFK Airport,Airports,8280,305,8585,7975,0.928946,0.928946
+23,132,Queens,JFK Airport,Airports,11768,446,12214,11322,0.926969,0.926969
+22,123,Brooklyn,Homecrest,Boro Zone,2,51,53,-49,-0.924528,0.924528
+21,26,Brooklyn,Borough Park,Boro Zone,2,49,51,-47,-0.921569,0.921569
+0,102,Queens,Glendale,Boro Zone,2,47,49,-45,-0.918367,0.918367
+21,243,Manhattan,Washington Heights North,Boro Zone,30,705,735,-675,-0.918367,0.918367
+22,202,Manhattan,Roosevelt Island,Boro Zone,7,154,161,-147,-0.913043,0.913043
+0,257,Brooklyn,Windsor Terrace,Boro Zone,5,108,113,-103,-0.911504,0.911504
+0,62,Brooklyn,Crown Heights South,Boro Zone,6,126,132,-120,-0.909091,0.909091

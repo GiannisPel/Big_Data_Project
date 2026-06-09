@@ -1,0 +1,109 @@
+== Parsed Logical Plan ==
+'GlobalLimit 20
++- 'LocalLimit 20
+   +- 'Sort ['abs_imbalance_ratio DESC NULLS LAST], true
+      +- 'Project [*]
+         +- 'Filter isnotnull('abs_imbalance_ratio)
+            +- 'UnresolvedRelation [q6_imbalance], [], false
+
+== Analyzed Logical Plan ==
+hour: int, location_id: int, borough: string, zone: string, service_zone: string, pickups: bigint, dropoffs: bigint, activity: bigint, net_pickups: bigint, imbalance_ratio: double, abs_imbalance_ratio: double
+GlobalLimit 20
++- LocalLimit 20
+   +- Sort [abs_imbalance_ratio#352 DESC NULLS LAST], true
+      +- Project [hour#342, location_id#343, borough#344, zone#345, service_zone#346, pickups#347L, dropoffs#348L, activity#349L, net_pickups#350L, imbalance_ratio#351, abs_imbalance_ratio#352]
+         +- Filter isnotnull(abs_imbalance_ratio#352)
+            +- SubqueryAlias q6_imbalance
+               +- View (`q6_imbalance`, [hour#342,location_id#343,borough#344,zone#345,service_zone#346,pickups#347L,dropoffs#348L,activity#349L,net_pickups#350L,imbalance_ratio#351,abs_imbalance_ratio#352])
+                  +- Project [cast(hour#335 as int) AS hour#342, cast(location_id#336 as int) AS location_id#343, cast(borough#325 as string) AS borough#344, cast(zone#326 as string) AS zone#345, cast(service_zone#327 as string) AS service_zone#346, cast(pickups#337L as bigint) AS pickups#347L, cast(dropoffs#338L as bigint) AS dropoffs#348L, cast(activity#339L as bigint) AS activity#349L, cast(net_pickups#340L as bigint) AS net_pickups#350L, cast(imbalance_ratio#341 as double) AS imbalance_ratio#351, cast(abs_imbalance_ratio#328 as double) AS abs_imbalance_ratio#352]
+                     +- WithCTE
+                        :- CTERelationDef 15, false
+                        :  +- SubqueryAlias filtered
+                        :     +- Project [vendor_id#0, pickup_ts#1, dropoff_ts#2, passenger_count#3, trip_distance#4, rate_code_id#5, store_and_fwd_flag#6, pu_location_id#7, do_location_id#8, payment_type#9, fare_amount#10, extra#11, mta_tax#12, tip_amount#13, tolls_amount#14, improvement_surcharge#15, total_amount#16, congestion_surcharge#17, airport_fee#18, pickup_date#19, pickup_hour#20, duration_minutes#21, trip_distance_km#22, pickup_day#23]
+                        :        +- Filter (((isnotnull(pickup_ts#1) AND (duration_minutes#21 > cast(0 as double))) AND (total_amount#16 > cast(0 as double))) AND (pickup_day#23 IN (26,27,28) AND pickup_hour#20 IN (21,22,23,0)))
+                        :           +- SubqueryAlias yellow_2024
+                        :              +- View (`yellow_2024`, [vendor_id#0,pickup_ts#1,dropoff_ts#2,passenger_count#3,trip_distance#4,rate_code_id#5,store_and_fwd_flag#6,pu_location_id#7,do_location_id#8,payment_type#9,fare_amount#10,extra#11,mta_tax#12,tip_amount#13,tolls_amount#14,improvement_surcharge#15,total_amount#16,congestion_surcharge#17,airport_fee#18,pickup_date#19,pickup_hour#20,duration_minutes#21,trip_distance_km#22,pickup_day#23])
+                        :                 +- Relation [vendor_id#0,pickup_ts#1,dropoff_ts#2,passenger_count#3,trip_distance#4,rate_code_id#5,store_and_fwd_flag#6,pu_location_id#7,do_location_id#8,payment_type#9,fare_amount#10,extra#11,mta_tax#12,tip_amount#13,tolls_amount#14,improvement_surcharge#15,total_amount#16,congestion_surcharge#17,airport_fee#18,pickup_date#19,pickup_hour#20,duration_minutes#21,trip_distance_km#22,pickup_day#23] parquet
+                        :- CTERelationDef 16, false
+                        :  +- SubqueryAlias pickups
+                        :     +- Aggregate [pickup_hour#20, pu_location_id#7], [pickup_hour#20 AS hour#329, pu_location_id#7 AS location_id#330, count(1) AS pickups#331L]
+                        :        +- SubqueryAlias filtered
+                        :           +- CTERelationRef 15, true, [vendor_id#0, pickup_ts#1, dropoff_ts#2, passenger_count#3, trip_distance#4, rate_code_id#5, store_and_fwd_flag#6, pu_location_id#7, do_location_id#8, payment_type#9, fare_amount#10, extra#11, mta_tax#12, tip_amount#13, tolls_amount#14, improvement_surcharge#15, total_amount#16, congestion_surcharge#17, airport_fee#18, pickup_date#19, pickup_hour#20, duration_minutes#21, trip_distance_km#22, pickup_day#23], false
+                        :- CTERelationDef 17, false
+                        :  +- SubqueryAlias dropoffs
+                        :     +- Aggregate [pickup_hour#375, do_location_id#363], [pickup_hour#375 AS hour#332, do_location_id#363 AS location_id#333, count(1) AS dropoffs#334L]
+                        :        +- SubqueryAlias filtered
+                        :           +- CTERelationRef 15, true, [vendor_id#355, pickup_ts#356, dropoff_ts#357, passenger_count#358, trip_distance#359, rate_code_id#360, store_and_fwd_flag#361, pu_location_id#362, do_location_id#363, payment_type#364, fare_amount#365, extra#366, mta_tax#367, tip_amount#368, tolls_amount#369, improvement_surcharge#370, total_amount#371, congestion_surcharge#372, airport_fee#373, pickup_date#374, pickup_hour#375, duration_minutes#376, trip_distance_km#377, pickup_day#378], false
+                        :- CTERelationDef 18, false
+                        :  +- SubqueryAlias combined
+                        :     +- Project [coalesce(hour#329, hour#332) AS hour#335, coalesce(location_id#330, location_id#333) AS location_id#336, coalesce(pickups#331L, cast(0 as bigint)) AS pickups#337L, coalesce(dropoffs#334L, cast(0 as bigint)) AS dropoffs#338L]
+                        :        +- Join FullOuter, ((hour#329 = hour#332) AND (location_id#330 = location_id#333))
+                        :           :- SubqueryAlias p
+                        :           :  +- SubqueryAlias pickups
+                        :           :     +- CTERelationRef 16, true, [hour#329, location_id#330, pickups#331L], false
+                        :           +- SubqueryAlias d
+                        :              +- SubqueryAlias dropoffs
+                        :                 +- CTERelationRef 17, true, [hour#332, location_id#333, dropoffs#334L], false
+                        :- CTERelationDef 19, false
+                        :  +- SubqueryAlias with_metrics
+                        :     +- Project [hour#335, location_id#336, pickups#337L, dropoffs#338L, (pickups#337L + dropoffs#338L) AS activity#339L, (pickups#337L - dropoffs#338L) AS net_pickups#340L, CASE WHEN ((pickups#337L + dropoffs#338L) > cast(0 as bigint)) THEN round((cast((pickups#337L - dropoffs#338L) as double) / cast(cast((pickups#337L + dropoffs#338L) as double) as double)), 6) ELSE cast(null as double) END AS imbalance_ratio#341]
+                        :        +- SubqueryAlias combined
+                        :           +- CTERelationRef 18, true, [hour#335, location_id#336, pickups#337L, dropoffs#338L], false
+                        +- Project [hour#335, location_id#336, coalesce(borough#49, Unknown) AS borough#325, coalesce(zone#50, Unknown) AS zone#326, coalesce(service_zone#51, Unknown) AS service_zone#327, pickups#337L, dropoffs#338L, activity#339L, net_pickups#340L, imbalance_ratio#341, abs(imbalance_ratio#341) AS abs_imbalance_ratio#328]
+                           +- Filter (activity#339L >= cast(30 as bigint))
+                              +- Join LeftOuter, (location_id#336 = location_id#48)
+                                 :- SubqueryAlias m
+                                 :  +- SubqueryAlias with_metrics
+                                 :     +- CTERelationRef 19, true, [hour#335, location_id#336, pickups#337L, dropoffs#338L, activity#339L, net_pickups#340L, imbalance_ratio#341], false
+                                 +- SubqueryAlias z
+                                    +- SubqueryAlias taxi_zones
+                                       +- View (`taxi_zones`, [location_id#48,borough#49,zone#50,service_zone#51])
+                                          +- Relation [location_id#48,borough#49,zone#50,service_zone#51] parquet
+
+== Optimized Logical Plan ==
+GlobalLimit 20
++- LocalLimit 20
+   +- Sort [abs_imbalance_ratio#352 DESC NULLS LAST], true
+      +- Project [hour#335, location_id#336, coalesce(borough#49, Unknown) AS borough#344, coalesce(zone#50, Unknown) AS zone#345, coalesce(service_zone#51, Unknown) AS service_zone#346, pickups#337L, dropoffs#338L, activity#339L, net_pickups#340L, imbalance_ratio#341, abs(imbalance_ratio#341) AS abs_imbalance_ratio#352]
+         +- Join LeftOuter, (location_id#336 = location_id#48)
+            :- Project [hour#335, location_id#336, pickups#337L, dropoffs#338L, (pickups#337L + dropoffs#338L) AS activity#339L, (pickups#337L - dropoffs#338L) AS net_pickups#340L, CASE WHEN ((pickups#337L + dropoffs#338L) > 0) THEN round((cast((pickups#337L - dropoffs#338L) as double) / cast((pickups#337L + dropoffs#338L) as double)), 6) END AS imbalance_ratio#341]
+            :  +- Project [coalesce(hour#329, hour#332) AS hour#335, coalesce(location_id#330, location_id#333) AS location_id#336, coalesce(pickups#331L, 0) AS pickups#337L, coalesce(dropoffs#334L, 0) AS dropoffs#338L]
+            :     +- Filter (((coalesce(pickups#331L, 0) + coalesce(dropoffs#334L, 0)) >= 30) AND CASE WHEN ((coalesce(pickups#331L, 0) + coalesce(dropoffs#334L, 0)) > 0) THEN isnotnull(abs(round((cast((coalesce(pickups#331L, 0) - coalesce(dropoffs#334L, 0)) as double) / cast((coalesce(pickups#331L, 0) + coalesce(dropoffs#334L, 0)) as double)), 6))) ELSE false END)
+            :        +- Join FullOuter, ((hour#329 = hour#332) AND (location_id#330 = location_id#333))
+            :           :- Aggregate [pickup_hour#20, pu_location_id#7], [pickup_hour#20 AS hour#329, pu_location_id#7 AS location_id#330, count(1) AS pickups#331L]
+            :           :  +- Project [pu_location_id#7, pickup_hour#20]
+            :           :     +- Filter ((isnotnull(duration_minutes#21) AND isnotnull(total_amount#16)) AND (((isnotnull(pickup_ts#1) AND (duration_minutes#21 > 0.0)) AND (total_amount#16 > 0.0)) AND (pickup_day#23 IN (26,27,28) AND pickup_hour#20 IN (21,22,23,0))))
+            :           :        +- Relation [vendor_id#0,pickup_ts#1,dropoff_ts#2,passenger_count#3,trip_distance#4,rate_code_id#5,store_and_fwd_flag#6,pu_location_id#7,do_location_id#8,payment_type#9,fare_amount#10,extra#11,mta_tax#12,tip_amount#13,tolls_amount#14,improvement_surcharge#15,total_amount#16,congestion_surcharge#17,airport_fee#18,pickup_date#19,pickup_hour#20,duration_minutes#21,trip_distance_km#22,pickup_day#23] parquet
+            :           +- Aggregate [pickup_hour#934, do_location_id#922], [pickup_hour#934 AS hour#332, do_location_id#922 AS location_id#333, count(1) AS dropoffs#334L]
+            :              +- Project [do_location_id#922, pickup_hour#934]
+            :                 +- Filter ((isnotnull(duration_minutes#935) AND isnotnull(total_amount#930)) AND (((isnotnull(pickup_ts#915) AND (duration_minutes#935 > 0.0)) AND (total_amount#930 > 0.0)) AND (pickup_day#937 IN (26,27,28) AND pickup_hour#934 IN (21,22,23,0))))
+            :                    +- Relation [vendor_id#914,pickup_ts#915,dropoff_ts#916,passenger_count#917,trip_distance#918,rate_code_id#919,store_and_fwd_flag#920,pu_location_id#921,do_location_id#922,payment_type#923,fare_amount#924,extra#925,mta_tax#926,tip_amount#927,tolls_amount#928,improvement_surcharge#929,total_amount#930,congestion_surcharge#931,airport_fee#932,pickup_date#933,pickup_hour#934,duration_minutes#935,trip_distance_km#936,pickup_day#937] parquet
+            +- Filter isnotnull(location_id#48)
+               +- Relation [location_id#48,borough#49,zone#50,service_zone#51] parquet
+
+== Physical Plan ==
+AdaptiveSparkPlan isFinalPlan=false
++- TakeOrderedAndProject(limit=20, orderBy=[abs_imbalance_ratio#352 DESC NULLS LAST], output=[hour#335,location_id#336,borough#344,zone#345,service_zone#346,pickups#337L,dropoffs#338L,activity#339L,net_pickups#340L,imbalance_ratio#341,abs_imbalance_ratio#352])
+   +- Project [hour#335, location_id#336, coalesce(borough#49, Unknown) AS borough#344, coalesce(zone#50, Unknown) AS zone#345, coalesce(service_zone#51, Unknown) AS service_zone#346, pickups#337L, dropoffs#338L, activity#339L, net_pickups#340L, imbalance_ratio#341, abs(imbalance_ratio#341) AS abs_imbalance_ratio#352]
+      +- BroadcastHashJoin [location_id#336], [location_id#48], LeftOuter, BuildRight, false
+         :- Project [hour#335, location_id#336, pickups#337L, dropoffs#338L, (pickups#337L + dropoffs#338L) AS activity#339L, (pickups#337L - dropoffs#338L) AS net_pickups#340L, CASE WHEN ((pickups#337L + dropoffs#338L) > 0) THEN round((cast((pickups#337L - dropoffs#338L) as double) / cast((pickups#337L + dropoffs#338L) as double)), 6) END AS imbalance_ratio#341]
+         :  +- Project [coalesce(hour#329, hour#332) AS hour#335, coalesce(location_id#330, location_id#333) AS location_id#336, coalesce(pickups#331L, 0) AS pickups#337L, coalesce(dropoffs#334L, 0) AS dropoffs#338L]
+         :     +- Filter (((coalesce(pickups#331L, 0) + coalesce(dropoffs#334L, 0)) >= 30) AND CASE WHEN ((coalesce(pickups#331L, 0) + coalesce(dropoffs#334L, 0)) > 0) THEN isnotnull(abs(round((cast((coalesce(pickups#331L, 0) - coalesce(dropoffs#334L, 0)) as double) / cast((coalesce(pickups#331L, 0) + coalesce(dropoffs#334L, 0)) as double)), 6))) ELSE false END)
+         :        +- SortMergeJoin [hour#329, location_id#330], [hour#332, location_id#333], FullOuter
+         :           :- Sort [hour#329 ASC NULLS FIRST, location_id#330 ASC NULLS FIRST], false, 0
+         :           :  +- HashAggregate(keys=[pickup_hour#20, pu_location_id#7], functions=[count(1)], output=[hour#329, location_id#330, pickups#331L])
+         :           :     +- Exchange hashpartitioning(pickup_hour#20, pu_location_id#7, 200), ENSURE_REQUIREMENTS, [plan_id=1831]
+         :           :        +- HashAggregate(keys=[pickup_hour#20, pu_location_id#7], functions=[partial_count(1)], output=[pickup_hour#20, pu_location_id#7, count#805L])
+         :           :           +- Project [pu_location_id#7, pickup_hour#20]
+         :           :              +- Filter (((((isnotnull(duration_minutes#21) AND isnotnull(total_amount#16)) AND isnotnull(pickup_ts#1)) AND (duration_minutes#21 > 0.0)) AND (total_amount#16 > 0.0)) AND pickup_hour#20 IN (21,22,23,0))
+         :           :                 +- FileScan parquet [pickup_ts#1,pu_location_id#7,total_amount#16,pickup_hour#20,duration_minutes#21,pickup_day#23] Batched: true, DataFilters: [isnotnull(duration_minutes#21), isnotnull(total_amount#16), isnotnull(pickup_ts#1), (duration_mi..., Format: Parquet, Location: InMemoryFileIndex(1 paths)[hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/pr..., PartitionFilters: [pickup_day#23 IN (26,27,28)], PushedFilters: [IsNotNull(duration_minutes), IsNotNull(total_amount), IsNotNull(pickup_ts), GreaterThan(duration..., ReadSchema: struct<pickup_ts:timestamp,pu_location_id:int,total_amount:double,pickup_hour:int,duration_minute...
+         :           +- Sort [hour#332 ASC NULLS FIRST, location_id#333 ASC NULLS FIRST], false, 0
+         :              +- HashAggregate(keys=[pickup_hour#934, do_location_id#922], functions=[count(1)], output=[hour#332, location_id#333, dropoffs#334L])
+         :                 +- Exchange hashpartitioning(pickup_hour#934, do_location_id#922, 200), ENSURE_REQUIREMENTS, [plan_id=1833]
+         :                    +- HashAggregate(keys=[pickup_hour#934, do_location_id#922], functions=[partial_count(1)], output=[pickup_hour#934, do_location_id#922, count#807L])
+         :                       +- Project [do_location_id#922, pickup_hour#934]
+         :                          +- Filter (((((isnotnull(duration_minutes#935) AND isnotnull(total_amount#930)) AND isnotnull(pickup_ts#915)) AND (duration_minutes#935 > 0.0)) AND (total_amount#930 > 0.0)) AND pickup_hour#934 IN (21,22,23,0))
+         :                             +- FileScan parquet [pickup_ts#915,do_location_id#922,total_amount#930,pickup_hour#934,duration_minutes#935,pickup_day#937] Batched: true, DataFilters: [isnotnull(duration_minutes#935), isnotnull(total_amount#930), isnotnull(pickup_ts#915), (duratio..., Format: Parquet, Location: InMemoryFileIndex(1 paths)[hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/pr..., PartitionFilters: [pickup_day#937 IN (26,27,28)], PushedFilters: [IsNotNull(duration_minutes), IsNotNull(total_amount), IsNotNull(pickup_ts), GreaterThan(duration..., ReadSchema: struct<pickup_ts:timestamp,do_location_id:int,total_amount:double,pickup_hour:int,duration_minute...
+         +- BroadcastExchange HashedRelationBroadcastMode(List(cast(input[0, int, false] as bigint)),false), [plan_id=1844]
+            +- Filter isnotnull(location_id#48)
+               +- FileScan parquet [location_id#48,borough#49,zone#50,service_zone#51] Batched: true, DataFilters: [isnotnull(location_id#48)], Format: Parquet, Location: InMemoryFileIndex(1 paths)[hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/ipelekanos/pr..., PartitionFilters: [], PushedFilters: [IsNotNull(location_id)], ReadSchema: struct<location_id:int,borough:string,zone:string,service_zone:string>

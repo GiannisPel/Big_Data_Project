@@ -28,6 +28,14 @@ source ~/bigdata-env.sh
 Εδω διαβασα τα 3 datasets, δημιουργησα βοηθητικες στηλες/διαμορφωσα τα ονοματα των στηλων οπως τα ζητησατε,
 αναλυση χρονικων και αριθμητικων πεδιων, αναγραφη εξοδων parquet και αποηθηκευση μετρησεων προετοιμασιας.
 
+## FOR EACH JOB YOU CAN SEE SPARK UI
+
+kubectl -n "$VDCLOUD_USER-priv" get pods -o wide
+
+kubectl -n "$VDCLOUD_USER-priv" port-forward pod/"driver pod name" 4040:4040
+
+Then open tab in browser on the 4040 ports
+
 ### Prepare Parquate Commands
 
 spark-submit \
@@ -81,6 +89,9 @@ spark-submit \
 
 ### EDA outputs
 
+Spark EDA ID: spark-7055d17eb1074174a68bf1a8e581be7a
+Elapsed seconds: 4011.758 seconds
+
 null_percentages
 pickup_day_distribution_2024
 pickup_hour_distribution
@@ -96,6 +107,18 @@ trip_distance_log_histogram
 ./project2026/scripts/run_q1_SQL_Par.sh
 
 ### Q1 outputs
+
+Spark DF ID: spark-e55e23dc54854c969da2f5e5ba3a98a7
+Elapsed seconds: 628.513 seconds
+
+Spark DF Parqaute ID: spark-5c571a7967b8471588d7e7e0f63de27b
+Elapsed seconds: 447.276 seconds
+
+Spark RDD ID: spark-0cc020bd647741729e8f0467659d5cba
+Elapsed seconds: 1410.911 seconds
+
+SPARK SQL ID: spark-05e1d5eff3e443b88a2e790589b39224
+Elapsed seconds: 122.192 seconds
 
 METRICS:
 
@@ -144,7 +167,14 @@ hdfs dfs -get /user/$VDCLOUD_USER/project2026/results/tables/q1 project2026/resu
 
 ### Q2 outputs
 
-SPARK APP ID: spark-f963a23942c34629b49ee7e36e60f8d0
+Spark DF built in ID: spark-f963a23942c34629b49ee7e36e60f8d0
+Elapsed seconds: 190.714 seconds
+
+Spark DF UDF ID: spark-b552a3669292466782e2f242bd82b39c
+Elapsed seconds: 140.939 seconds
+
+Spark SQL ID: spark-f68dcb130ce54db5add75c78e7087a14
+Elapsed seconds: 589.772 seconds
 
 METRICS: 
 
@@ -193,9 +223,16 @@ hdfs dfs -get /user/$VDCLOUD_USER/project2026/results/tables/q2 project2026/resu
 ### Q3 outputs
 
 Spark DF CSV metrics ID: spark-a7d53e51ee8e4813b567f158f63dbf33
+Elapsed seconds: 568.984 seconds
+
 Spark DF Parquate ID: spark-183e73870a1b4005896f12e7b8f615fd
+Elapsed seconds: 316.275 seconds
+
 Spark SQL Parquate ID: spark-abdf683bf4c34101935e3099c6d417d2
+Elapsed seconds: 107.972 seconds
+
 Spark DF No Pruning ID: spark-84bd661d42e1404e8c1f80b95b4daad1
+Elapsed seconds: 229.864 seconds
 
 METRICS:
 
@@ -282,8 +319,13 @@ python project2026/scripts/plot_q4.py \
 ### Q4 outputs
 
 Spark SQL Parquate ID: spark-cdfe89bd318e48dc8a582a57f908342d
+Elapsed seconds: 1000.471 seconds
+
 Spark DF Parquate ID: spark-20abfd23d91b4177a570daeb56b87d6a
+Elapsed seconds: 160.937 seconds
+
 Spark SQL CSV ID: spark-5d58d6e9690b4d67b3d8fb966073644b
+Elapsed seconds: 3313.016 seconds
 
 METRICS:
 
@@ -349,8 +391,13 @@ python project2026/scripts/plot_q5.py \
 ### Q5 outputs
 
 Spark DF parquate ID: spark-96c8586594b9460caeca2980c5152f78
+Elapsed seconds: 54.649 seconds
+
 Spark SQL Parquate ID: spark-9a871dee8c524e6f9d527516e52dd2aa
+Elapsed seconds: 103.191 seconds
+
 Spark DF no broad ID: spark-7a2b32a25a794a479140bfa93a18e8b0
+Elapsed seconds: 65.593 seconds
 
 METRICS:
 
@@ -401,3 +448,103 @@ TABLES:
 hdfs dfs -get /user/$VDCLOUD_USER/project2026/results/tables/q5 project2026/results/tables/q5
 
 ## Q6
+
+./project2026/scripts/run_q6_DF_Par.sh
+./project2026/scripts/run_q6_SQL_Par.sh
+
+./project2026/scripts/run_q6_OD_A.sh cold
+./project2026/scripts/run_q6_OD_A.sh warm
+
+./project2026/scripts/run_q6_OD_B.sh cold
+./project2026/scripts/run_q6_OD_B.sh warm
+
+./project2026/scripts/run_q6_OD_C.sh cold
+./project2026/scripts/run_q6_OD_C.sh warm
+
+Generate Plots:
+
+source .venv/bin/activate
+
+python project2026/scripts/plot_q6.py \
+  --tables-dir project2026/results/tables/q6 \
+  --od-metrics-dir project2026/results/metrics \
+  --plots-dir project2026/results/plots \
+  --top-n 15
+
+### Q6 outputs
+
+Spark DF Par ID: spark-fe2b06fb42ed49a69e37ef6698548fc8
+Elapsed seconds: 81.587 seconds
+
+Spark SQL ID: spark-49ed2828358e4097a6c16a65b1f4bfd6
+Elapsed seconds: 186.761 seconds
+
+Spark cold A Half ID: spark-59d4a6f6d1f741738160af228422652e
+Elapsed seconds: 355.798 seconds
+Spark warm A Half ID: spark-9546f228b19d4dac812ee6df71cc90eb
+Elapsed seconds: 225.216 seconds
+
+Spark cold B Half ID: spark-dddc36e3bf8645c8b3d3c0f5fb6e6aed
+Elapsed seconds: 133.326 seconds
+Spark warm B Half ID: spark-1dbd0e8ab4ad4be382b18a2493f235ae
+Elapsed seconds: 120.434 seconds
+
+Spark cold C Half ID: spark-0aba698d1b5f4cc88930b15b4dbd1e63
+Elapsed seconds: 100.972 seconds
+Spark warm C Half ID: spark-0c230232d06d4039981bdecc24f0aa4b
+Elapsed seconds: 88.189 seconds
+
+METRICS:
+
+q6_df_parquet_metrics.json
+q6_sql_parquet_metrics.json
+q6_od_halves_configA_cold_metrics.json
+q6_od_halves_configA_warm_metrics.json
+q6_od_halves_configB_cold_metrics.json
+q6_od_halves_configB_warm_metrics.json
+
+
+PLANS:
+
+q6_df_parquet_plan.txt
+q6_sql_parquet_plan.txt
+q6_od_halves_configA_cold_plan.txt
+q6_od_halves_configA_warm_plan.txt
+q6_od_halves_configB_cold_plan.txt
+q6_od_halves_configB_warm_plan.txt
+
+TABLES:
+
+df_parquet_hourly_summary
+df_parquet_top_abs
+df_parquet_top_negative
+df_parquet_top_positive
+
+sql_parquet_hourly_summary
+sql_parquet_top_abs
+sql_parquet_top_negative
+sql_parquet_top_positive
+
+od_halves_configA_cold_top_decrease
+od_halves_configA_cold_top_increase
+od_halves_configA_warm_top_decrease
+od_halves_configA_warm_top_increase
+
+od_halves_configB_cold_top_decrease
+od_halves_configB_cold_top_increase
+od_halves_configB_warm_top_decrease
+od_halves_configB_warm_top_increase
+
+### Q6 outputs into local repo
+
+METRICS:
+
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/metrics/q6_*.json project2026/results/metrics/
+
+PLANS:
+
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q6_*.txt project2026/results/plans/
+
+TABLES:
+
+hdfs dfs -get /user/$VDCLOUD_USER/project2026/results/tables/q6 project2026/results/tables/q6

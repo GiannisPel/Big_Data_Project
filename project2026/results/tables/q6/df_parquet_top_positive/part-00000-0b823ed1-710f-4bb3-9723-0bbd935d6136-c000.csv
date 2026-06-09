@@ -1,0 +1,21 @@
+hour,location_id,borough,zone,service_zone,pickups,dropoffs,activity,net_pickups,imbalance_ratio,abs_imbalance_ratio
+22,132,Queens,JFK Airport,Airports,12461,627,13088,11834,0.904187,0.904187
+21,132,Queens,JFK Airport,Airports,12578,773,13351,11805,0.884203,0.884203
+23,132,Queens,JFK Airport,Airports,11768,446,12214,11322,0.926969,0.926969
+0,132,Queens,JFK Airport,Airports,8280,305,8585,7975,0.928946,0.928946
+23,138,Queens,LaGuardia Airport,Airports,7795,160,7955,7635,0.959774,0.959774
+21,138,Queens,LaGuardia Airport,Airports,6866,131,6997,6735,0.962555,0.962555
+21,161,Manhattan,Midtown Center,Yellow Zone,10646,4883,15529,5763,0.371112,0.371112
+22,138,Queens,LaGuardia Airport,Airports,5739,114,5853,5625,0.961046,0.961046
+22,161,Manhattan,Midtown Center,Yellow Zone,9622,4082,13704,5540,0.404262,0.404262
+22,230,Manhattan,Times Sq/Theatre District,Yellow Zone,10451,5106,15557,5345,0.343575,0.343575
+22,142,Manhattan,Lincoln Square East,Yellow Zone,9850,4642,14492,5208,0.359371,0.359371
+23,249,Manhattan,West Village,Yellow Zone,8522,3774,12296,4748,0.386142,0.386142
+0,249,Manhattan,West Village,Yellow Zone,7580,3043,10623,4537,0.427092,0.427092
+21,230,Manhattan,Times Sq/Theatre District,Yellow Zone,10236,5971,16207,4265,0.263158,0.263158
+0,114,Manhattan,Greenwich Village South,Yellow Zone,5778,1708,7486,4070,0.543682,0.543682
+21,142,Manhattan,Lincoln Square East,Yellow Zone,9617,5669,15286,3948,0.258276,0.258276
+22,249,Manhattan,West Village,Yellow Zone,8117,4223,12340,3894,0.315559,0.315559
+23,230,Manhattan,Times Sq/Theatre District,Yellow Zone,6947,3760,10707,3187,0.297656,0.297656
+23,114,Manhattan,Greenwich Village South,Yellow Zone,5444,2297,7741,3147,0.406537,0.406537
+23,161,Manhattan,Midtown Center,Yellow Zone,5751,2687,8438,3064,0.363119,0.363119
