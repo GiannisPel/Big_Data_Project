@@ -124,9 +124,10 @@ run_step "Q1 DataFrame CSV" run_script "project2026/scripts/run_q1_DF_CSV.sh"
 run_step "Q1 DataFrame Parquet" run_script "project2026/scripts/run_q1_DF_Par.sh"
 run_step "Q1 Spark SQL Parquet" run_script "project2026/scripts/run_q1_SQL_Par.sh"
 
-run_step "Q2 DataFrame Builtin" run_script "project2026/scripts/run_q2_DF_Builtin.sh"
-run_step "Q2 DataFrame UDF" run_script "project2026/scripts/run_q2_DF_UDF.sh"
-run_step "Q2 Spark SQL" run_script "project2026/scripts/run_q2_SQL.sh"
+run_step "Q2 DF Builtin CSV" run_script project2026/scripts/run_q2_DF_Builtin_CSV.sh
+run_step "Q2 DF Builtin Parquet" run_script project2026/scripts/run_q2_DF_Builtin.sh
+run_step "Q2 DF UDF" run_script project2026/scripts/run_q2_DF_UDF.sh
+run_step "Q2 SQL" run_script project2026/scripts/run_q2_SQL.sh
 
 run_step "Q3 DataFrame CSV" run_script "project2026/scripts/run_q3_DF_CSV.sh"
 run_step "Q3 DataFrame Parquet" run_script "project2026/scripts/run_q3_DF_Par.sh"
