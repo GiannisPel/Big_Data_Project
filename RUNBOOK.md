@@ -162,6 +162,7 @@ hdfs dfs -get /user/$VDCLOUD_USER/project2026/results/tables/q1 project2026/resu
 ## Q2
 
 ./project2026/scripts/run_q2_DF_Builtin.sh
+./project2026/scripts/run_q2_DF_Builtin_CSV.sh
 ./project2026/scripts/run_q2_DF_UDF.sh
 ./project2026/scripts/run_q2_SQL.sh
 
@@ -169,6 +170,8 @@ hdfs dfs -get /user/$VDCLOUD_USER/project2026/results/tables/q1 project2026/resu
 
 Spark DF built in ID: spark-f963a23942c34629b49ee7e36e60f8d0
 Elapsed seconds: 190.714 seconds
+
+Spark DF CSV built in ID: spark-dcb33cd1ca8c4ceca7f80a7663dc69d2
 
 Spark DF UDF ID: spark-b552a3669292466782e2f242bd82b39c
 Elapsed seconds: 140.939 seconds
@@ -179,12 +182,14 @@ Elapsed seconds: 589.772 seconds
 METRICS: 
 
 q2_df_builtin_metrics.json
+q2_df_builtin_csv_metrics.json
 q2_df_udf_metrics.json
 q2_sql_metrics.json
 
 PLANS:
 
 q2_df_builtin_plan.txt
+q2_df_builtin_csv_plan.txt
 q2_df_udf_plan.txt
 q2_sql_plan.txt
 
@@ -200,12 +205,14 @@ sql_slowest_per_km
 METRICS:
 
 hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/metrics/q2_df_builtin_metrics.json project2026/results/metrics/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/metrics/q2_df_builtin_csv_metrics.json project2026/results/metrics/
 hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/metrics/q2_df_udf_metrics.json project2026/results/metrics/
 hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/metrics/q2_sql_metrics.json project2026/results/metrics/
 
 PLANS:
 
 hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q2_df_builtin_plan.txt project2026/results/plans/
+hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q2_df_builtin_csv_plan.txt project2026/results/plans/
 hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q2_df_udf_plan.txt project2026/results/plans/
 hdfs dfs -get -f /user/$VDCLOUD_USER/project2026/results/plans/q2_sql_plan.txt project2026/results/plans/
 
