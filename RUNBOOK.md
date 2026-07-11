@@ -41,7 +41,7 @@ Then open tab in browser on the 4040 ports
 spark-submit \
   --py-files project2026/jobs/common.py \
   project2026/jobs/prepare_parquet.py \
-  --student-id 2121261 \
+  --student-id [id] \
   --input-base hdfs://hdfs-namenode.default.svc.cluster.local:9000/data \
   --output-base hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/$VDCLOUD_USER/project2026 
 
