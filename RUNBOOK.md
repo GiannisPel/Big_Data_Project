@@ -4,8 +4,8 @@
 
 App ID: spark-4bc269b040a54a9187388212666be3cc
 Pod example: test-wordcount-py-786c2c9ddf7882d8-driver
-Input: hdfs:///user/ipelekanos/project2026/tmp/test_text.txt
-Output: hdfs:///user/ipelekanos/project2026/output/test_wordcount
+Input: hdfs:///user/[user]/project2026/tmp/test_text.txt
+Output: hdfs:///user/[user]/project2026/output/test_wordcount
 
 Result:
 - ('spark', 4)
@@ -78,7 +78,7 @@ hdfs dfs -cat /user/$VDCLOUD_USER/project2026/results/metrics/prepare_parquet_me
 spark-submit \
   --py-files project2026/jobs/common.py \
   project2026/jobs/eda.py \
-  --student-id 2121261 \
+  --student-id [id] \
   --input-base hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/$VDCLOUD_USER/project2026 \
   --output-base hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/$VDCLOUD_USER/project2026
 
