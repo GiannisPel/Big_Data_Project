@@ -8,11 +8,8 @@
 - Hadoop client 3.4.1
 - kubectl
 - OpenVPN connection to vdcloud
-- Kubernetes namespace: `ipelekanos-priv`
 
 ## Info
-
-ID: `2121261`
 
 parameters:
 - `h = 21`
